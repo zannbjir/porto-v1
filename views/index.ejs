@@ -1,0 +1,154 @@
+<%- include('partials/header') %>
+
+<section id="bio" class="section section-bio">
+    <div class="bio-text">
+        <h1 class="bio-name"><%= bio.name %></h1>
+        <p class="bio-title"><%= bio.title %></p>
+        <p class="bio-desc"><%= bio.description %></p>
+
+        <div class="bio-status-container">
+            <% bio.status.forEach(stat => { %>
+                <div class="status-item">
+                    <span class="status-label"><%= stat.label %>:</span>
+                    <span class="status-value"><%= stat.value %></span>
+                </div>
+            <% }) %>
+        </div>
+        </div>
+    <div class="bio-image">
+    <img src="<%= bio.image %>" alt="Foto Profil <%= bio.name %>" id="profile-pic-btn"> </div>
+    </div>
+</section>
+
+<section id="skills" class="section">
+    <h2 class="section-title">Skills</h2>
+    
+    <div class="skills-container">
+
+        <div class="skill-category">
+            <h3 class="category-title">Frontend</h3>
+            <div class="skills-list">
+                <% skills.frontend.forEach(skill => { %>
+                    <div class="skill-entry">
+                        <div class="skill-info">
+                            <span class="skill-name"><%= skill.name %></span>
+                            <span class="skill-percentage"><%= skill.level %></span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar-level" style="width: <%= skill.level %>;"></div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+
+        <div class="skill-category">
+            <h3 class="category-title">Backend</h3>
+            <div class="skills-list">
+                <% skills.backend.forEach(skill => { %>
+                    <div class="skill-entry">
+                        <div class="skill-info">
+                            <span class="skill-name"><%= skill.name %></span>
+                            <span class="skill-percentage"><%= skill.level %></span>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar-level" style="width: <%= skill.level %>;"></div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+
+    </div> </section>
+
+<section id="projects" class="section">
+    <h2 class="section-title">Projects</h2>
+    <div class="project-grid">
+        <% projects.forEach(project => { %>
+            <div class="project-card">
+                <img src="<%= project.image %>" alt="<%= project.title %>" class="project-img project-modal-trigger">
+                <div class="project-content">
+                    <h3><%= project.title %></h3>
+                    <p><%= project.tagline %></p>
+                    <a href="<%= project.url %>" class="btn" target="_blank" rel="noopener noreferrer">
+                        Lihat
+                    </a>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</section>
+
+<section id="contact" class="section">
+    <h2 class="section-title">Hubungi</h2>
+    <p class="contact-intro">
+        Ada yang ingin didiskusikan? Kirim saya pesan dan mari kita bicara.
+    </p>
+
+    <div class="contact-container">
+
+        <div class="contact-form-wrapper">
+            <form action="mailto:<%= contact.email %>" method="POST" enctype="text/plain">
+                <div class="form-group">
+                    <label for="name">Nama Anda</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Anda</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Pesan Anda</label>
+                    <textarea id="message" name="message" rows="6" required></textarea>
+                </div>
+                <button type="submit" class="btn">
+                    Kirim Pesan
+                </button>
+            </form>
+        </div>
+
+        <div class="connect-links-wrapper">
+            <h3 class="connect-title">Connect With Me</h3>
+            <div class="connect-grid">
+                
+                <% if (contact.github) { %>
+                    <a href="https://github.com/<%= contact.github %>" target="_blank" rel="noopener noreferrer" class="connect-card">
+                        <div class="connect-text">
+                            <h4>GitHub</h4>
+                            <p><%= contact.github %></p>
+                        </div>
+                    </a>
+                <% } %>
+                
+                <% if (contact.instagram) { %>
+                    <a href="https://instagram.com/<%= contact.instagram %>" target="_blank" rel="noopener noreferrer" class="connect-card">
+                        <div class="connect-text">
+                            <h4>Instagram</h4>
+                            <p>@<%= contact.instagram %></p>
+                        </div>
+                    </a>
+                <% } %>
+
+                <% if (contact.facebook) { %>
+                    <a href="https://facebook.com/<%= contact.facebook %>" target="_blank" rel="noopener noreferrer" class="connect-card">
+                        <div class="connect-text">
+                            <h4>Facebook</h4>
+                            <p><%= contact.facebook %></p>
+                        </div>
+                    </a>
+                <% } %>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="image-modal" class="modal-overlay">
+    <div class="modal-card modal-card-image">
+        <button id="image-modal-close-btn" class="modal-close-image">&times;</button>
+        
+        <img id="image-modal-content" src="" alt="Tampilan Modal">
+    </div>
+</div>
+
+<%- include('partials/footer') %>

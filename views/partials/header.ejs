@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="id"> <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="<%= bio.description %>">
+    <title><%= pageTitle %></title>
+    <link rel="icon" type="image/png" href="<%= bio.image %>">
+    <script src="/script.js"></script>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="main-container">
+
+        <div class="theme-toggle-container">
+            <button id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                <div class="sun-moon"></div>
+            </button>
+        </div>
