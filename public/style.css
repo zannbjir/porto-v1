@@ -1,8 +1,8 @@
 :root {
-    --color-bg: #f4f7f6; 
+    --color-bg: #f4f7f6;
     --color-surface: #ffffff;
-    --color-text: #1a1a1a; 
-    --color-border-subtle: #e0e0e0; 
+    --color-text: #1a1a1a;
+    --color-border-subtle: #e0e0e0;
     --color-btn-bg: #1a1a1a;
     --color-btn-text: #ffffff;
     --color-btn-hover-bg: #333333;
@@ -11,10 +11,11 @@
     
     --font-pixel: 'Ubuntu Mono', 'Courier New', Courier, monospace;
     --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --rounded-radius: 8px; 
+    --rounded-radius: 8px;
     --soft-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     --soft-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
+
 [data-theme="dark"] {
     --color-bg: #121212;
     --color-surface: #1e1e1e;
@@ -36,7 +37,7 @@
 
 body {
     font-family: var(--font-sans);
-    font-weight: 400; 
+    font-weight: 400;
     background-color: var(--color-bg);
     color: var(--color-text);
     line-height: 1.6;
@@ -52,10 +53,10 @@ p, .bio-desc {
     max-width: 1200px;
     margin: 40px auto;
     background-color: var(--color-surface);
-    border: 1px solid var(--color-border-subtle); 
+    border: 1px solid var(--color-border-subtle);
     box-shadow: var(--soft-shadow);
     border-radius: var(--rounded-radius);
-    overflow: hidden; 
+    overflow: hidden;
 }
 
 .theme-toggle-container { padding: 20px 25px 0 25px; display: flex; justify-content: flex-end; }
@@ -84,16 +85,19 @@ p, .bio-desc {
 .sun-moon { width: 20px; height: 20px; background-color: var(--color-text); transition: all 0.3s ease-in-out; border-radius: 50%; }
 [data-theme="dark"] .sun-moon { background-color: transparent; box-shadow: -5px 0 0 0 var(--color-text); }
 
+
 .section { padding: 60px 40px; border-bottom: 1px solid var(--color-border-subtle); }
 .section:last-of-type { border-bottom: none; }
+
 .section-title { 
     font-size: 2.5rem; 
-    font-weight: 700; 
+    font-weight: 700;
     text-transform: uppercase; 
     margin-bottom: 30px; 
     text-align: center; 
-    font-family: var(--font-sans); 
+    font-family: var(--font-sans);
 }
+
 .section-bio { display: flex; align-items: center; gap: 40px; }
 .bio-text { flex: 2; }
 .bio-image { flex: 1; }
@@ -122,13 +126,14 @@ p, .bio-desc {
 }
 .bio-title { font-family: var(--font-pixel); font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; opacity: 0.8; }
 .bio-desc { font-size: 1.1rem; line-height: 1.7; }
+
 .bio-status-container { margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 .status-item {
     background-color: var(--color-surface);
     border: 1px solid var(--color-border-subtle);
     padding: 12px 15px;
     transition: all 0.2s ease-out;
-    border-radius: var(--rounded-radius); 
+    border-radius: var(--rounded-radius);
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 .status-item:hover { 
@@ -145,6 +150,7 @@ p, .bio-desc {
     opacity: 0.7;
 }
 .status-value { font-family: var(--font-sans); font-weight: 600; font-size: 1.1rem; }
+
 .skills-container { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
 .category-title {
     font-size: 1.5rem;
@@ -162,18 +168,19 @@ p, .bio-desc {
 .skill-percentage { font-family: var(--font-pixel); font-weight: 700; font-size: 1.1rem; }
 .skill-bar-container {
     width: 100%;
-    height: 25px; 
-    background-color: var(--color-bg); 
+    height: 25px;
+    background-color: var(--color-bg);
     border: 1px solid var(--color-border-subtle);
     padding: 4px;
     border-radius: var(--rounded-radius);
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); 
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
 }
 .skill-bar-level { 
     height: 100%; 
     background-color: var(--color-text); 
-    border-radius: 4px; 
+    border-radius: 4px;
 }
+
 
 .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
 .project-card {
@@ -182,7 +189,7 @@ p, .bio-desc {
     transition: all 0.2s ease-out;
     border-radius: var(--rounded-radius);
     box-shadow: var(--soft-shadow);
-    overflow: hidden; 
+    overflow: hidden;
 }
 .project-card:hover { 
     transform: translateY(-5px); 
@@ -199,7 +206,7 @@ p, .bio-desc {
     transition: filter 0.2s ease;
 }
 .project-card:hover .project-img {
-    filter: grayscale(0%); 
+    filter: grayscale(0%);
 }
 .project-content { padding: 20px; }
 .project-content h3 { font-size: 1.5rem; margin-bottom: 5px; font-family: var(--font-sans); font-weight: 700; }
@@ -232,6 +239,17 @@ p, .bio-desc {
     transform: translateY(0);
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+.btn-special {
+    background-color: transparent;
+    color: #ff69b4;
+    border-color: #ff69b4;
+}
+.btn-special:hover {
+    background-color: #ff69b4;
+    color: var(--color-surface);
+    border-color: #ff69b4;
+}
+
 
 .contact-intro { 
     text-align: center; 
@@ -262,12 +280,12 @@ p, .bio-desc {
 .contact-form-wrapper input[type="email"],
 .contact-form-wrapper textarea {
     width: 100%;
-    background-color: var(--color-bg); 
+    background-color: var(--color-bg);
     color: var(--color-text);
     border: 1px solid var(--color-border-subtle);
     border-radius: var(--rounded-radius);
     padding: 12px;
-    font-family: var(--font-sans); 
+    font-family: var(--font-sans);
     font-size: 1rem;
     transition: all 0.2s ease;
 }
@@ -281,6 +299,8 @@ p, .bio-desc {
 }
 .contact-form-wrapper textarea { resize: vertical; }
 .contact-form-wrapper .btn { width: 100%; padding: 12px; }
+
+
 .connect-links-wrapper { width: 100%; }
 .connect-title {
     font-size: 1.5rem;
@@ -428,24 +448,31 @@ p, .bio-desc {
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
+
 @media (max-width: 768px) {
     .main-container { margin: 10px; }
     .section { padding: 40px 20px; }
     .theme-toggle-container { padding: 15px 15px 0 15px; }
+    
     .section-bio { flex-direction: column; }
     .bio-name { font-size: 2.5rem; }
     .bio-title { font-size: 1.2rem; }
     .bio-image img { max-width: 250px; margin-top: 20px; }
     .bio-status-container { grid-template-columns: 1fr; }
+    
     .section-title { font-size: 2rem; }
+    
     .skills-container { grid-template-columns: 1fr; gap: 40px; }
     .category-title { font-size: 1.3rem; }
     .skill-bar-container { height: 25px; }
+
     .project-grid { grid-template-columns: 1fr; }
+
     .contact-container {
         grid-template-columns: 1fr;
         gap: 50px;
     }
+
     .modal-card-image {
         max-width: 90vw;
         max-height: 70vh;
