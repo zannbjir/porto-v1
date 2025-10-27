@@ -48,6 +48,13 @@ const portfolioData = {
             tagline: "Website Anime Streaming Dibangun dengan React.js TypeScript dan Tailwind CSS.",
             image: "https://cihuy.biz.id/file/j5BsQbJV.png",
             url: "https://zannime.zone.id"
+        },
+        {
+            id: 4,
+            title: "Website Kelas",
+            tagline: "Website Kelas Dibangun dengan React.js JavaScript dan Tailwind CSS.",
+            image: "https://cihuy.biz.id/file/vIFwcJFB.png",
+            url: "https://nettwo.zone.id"
         }
     ],
     contact: {
