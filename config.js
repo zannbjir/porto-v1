@@ -65,4 +65,4 @@ const portfolioData = {
     }
 };
 
-module.exports = portfolioData;
+export default portfolioData;

@@ -448,6 +448,21 @@ p, .bio-desc {
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
+.footer-links {
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+.footer-links a {
+  color: #00b7ff;           /* warna link */
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.footer-links a:hover {
+  opacity: 0.6;
+}
 
 @media (max-width: 768px) {
     .main-container { margin: 10px; }

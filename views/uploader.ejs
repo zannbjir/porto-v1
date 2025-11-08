@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="icon" type="image/png" href="https://cihuy.biz.id/file/nLmiSWzy.png">
+    <script src="/script.js"></script>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        h1 { text-align: center; color: #333; margin-bottom: 25px; }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        .tool-switcher {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        .tool-switcher label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+            font-size: 16px;
+        }
+        .tool-switcher select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007bff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-13%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2013l128%20128c3.6%203.6%207.8%205.4%2013%205.4s9.4-1.8%2013-5.4l128-128c3.6-3.6%205.4-7.8%205.4-13%200-5-1.8-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 14px;
+        }
+
+        /* === Uploader Styles (Sudah diperbaiki) === */
+        .upload-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #d0d6de;
+            border-radius: 10px;
+            padding: 30px;
+            background-color: #fcfdff;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .upload-area:hover, .upload-area.dragover {
+            background-color: #f4f8ff;
+            border-color: #007bff;
+        }
+        .upload-icon {
+            font-size: 3rem;
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+        .upload-area p { margin: 0; font-size: 1.1em; font-weight: 500; color: #333; }
+        .upload-area span { font-size: 0.9em; color: #555; }
+        #file-input { display: none; }
+
+        /* === Preview File === */
+        #preview { margin-top: 20px; text-align: left; }
+        .file-preview {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+        }
+        .file-icon { flex-shrink: 0; margin-right: 15px; color: #495057; }
+        .file-details { overflow: hidden; }
+        .file-details strong {
+            display: block;
+            font-size: 1em;
+            color: #212529;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .file-details span { font-size: 0.9em; color: #6c757d; }
+
+        /* === Tombol & Status === */
+        button {
+            width: 100%; padding: 12px 18px; background: #007bff;
+            color: white; border: none; border-radius: 8px; cursor: pointer;
+            font-size: 16px; font-weight: bold; margin-top: 20px;
+            transition: background-color 0.2s;
+        }
+        button:hover { background: #0056b3; }
+        button:disabled { background: #aaa; cursor: not-allowed; }
+        
+        .status { margin-top: 20px; text-align: center; }
+        .loading {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+        }
+        .loader {
+            border: 4px solid #f3f3f3; border-top: 4px solid #007bff;
+            border-radius: 50%; width: 30px; height: 30px;
+            animation: spin 1s linear infinite; margin-bottom: 10px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .error {
+            color: #D8000C; background-color: #FFD2D2;
+            border: 1px solid #D8000C; padding: 10px;
+            border-radius: 5px; font-weight: bold;
+        }
+        .result-link { text-align: left; }
+        .result-link p { margin-bottom: 8px; font-weight: 500;}
+        .result-group { display: flex; gap: 10px; }
+        .result-group input {
+            flex-grow: 1; padding: 10px; border: 1px solid #ccc;
+            border-radius: 5px; font-size: 1em; background: #f9f9f9;
+        }
+        .result-group button { width: auto; margin-top: 0; background: #28a745; }
+        .result-group button:hover { background: #218838; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/tools" class="back-link">&larr; Kembali ke Semua Tools</a>
+        <h1 style="margin-top:0;">File Uploader</h1>
+
+        <div class="tool-switcher">
+            <label for="api-select">Pilih Provider</label>
+            <select id="api-select">
+                <option value="catbox">Catbox (Rekomendasi)</option>
+                <option value="zann">Noku (Rekomendasi)</option>
+                <option value="cihuy">Cihuy (Error / 401)</option>
+                <option value="tmpfiles">Tmpfiles (Error / 419)</option>
+                <option value="uguu">Uguu</option>
+            </select>
+        </div>
+
+        <form id="upload-form">
+            <label for="file-input" class="upload-area" id="upload-label">
+                <div class="upload-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-cloud-arrow-up-fill" viewBox="0 0 16 16">
+                        <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 5.146a.5.5 0 0 1-.708 0L8.5 6.011V10.5a.5.5 0 0 1-1 0V6.011L6.354 7.146a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1 0 .708z"/>
+                    </svg>
+                </div>
+                <p>Klik atau Seret File ke Sini</p>
+                <span>Maks. 5 MB</span>
+            </label>
+            <input type="file" id="file-input">
+
+            <div id="preview"></div>
+            <button type="submit" id="upload-button" disabled>Upload File</button>
+        </form>
+
+        <div id="status" class="status"></div>
+    </div>
+
+    <script>
+        const uploadForm = document.getElementById('upload-form');
+        const fileInput = document.getElementById('file-input');
+        const uploadLabel = document.getElementById('upload-label');
+        const previewDiv = document.getElementById('preview');
+        const uploadButton = document.getElementById('upload-button');
+        const statusDiv = document.getElementById('status');
+        
+        // BARU: Definisikan elemen select
+        const apiSelect = document.getElementById('api-select');
+
+        let fileBase64 = null;
+        let selectedFileName = null;
+        const MAX_SIZE_MB = 5; 
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) handleFile(file);
+        });
+
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
+        function handleFile(file) {
+            resetState();
+            if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+                showError(`File terlalu besar! Maksimal ${MAX_SIZE_MB} MB.`);
+                return;
+            }
+            selectedFileName = file.name || null
+            previewDiv.innerHTML = `
+                <div class="file-preview">
+                    <div class="file-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-file-earmark-text" viewBox="0 0 16 16"><path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5.5 9a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5.5 11a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/><path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/></svg>
+                    </div>
+                    <div class="file-details">
+                        <strong>${file.name}</strong>
+                        <span>${formatBytes(file.size)}</span>
+                    </div>
+                </div>`;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                fileBase64 = e.target.result;
+                uploadButton.disabled = false;
+            };
+            reader.onerror = () => showError('Gagal membaca file.');
+            reader.readAsDataURL(file);
+        }
+
+        // === FUNGSI SUBMIT (DI-UPDATE) ===
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!fileBase64 || uploadButton.disabled) return;
+
+            // BARU: Baca API yang dipilih
+            const selectedApi = apiSelect.value;
+
+            showLoading(`Mengupload ke ${selectedApi}...`);
+            uploadButton.disabled = true;
+
+            try {
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    // BARU: Kirim 'api' dan 'base64'
+                    body: JSON.stringify({ 
+                        base64: fileBase64,
+                        api: selectedApi,
+                        originalName: selectedFileName,
+                    })
+                });
+                const data = await response.json();
+                if (!response.ok || data.status !== 200) {
+                    throw new Error(data.error || 'Gagal mengupload file.');
+                }
+                showSuccess(data.link);
+            } catch (error) {
+                showError(error.message);
+                uploadButton.disabled = false;
+            }
+        });
+
+        function resetState() {
+            previewDiv.innerHTML = '';
+            statusDiv.innerHTML = '';
+            uploadButton.disabled = true;
+            fileBase64 = null;
+            fileInput.value = '';
+        }
+        function showLoading(message) {
+            statusDiv.innerHTML = `<div class="loading"><div class="loader"></div><p>${message}</p></div>`;
+        }
+        function showError(message) {
+            statusDiv.innerHTML = `<p class="error">${message}</p>`;
+        }
+        function showSuccess(link) {
+            statusDiv.innerHTML = `
+                <div class="result-link">
+                    <p>Sukses! Link Anda:</p>
+                    <div class="result-group">
+                        <input type="text" id="result-link-input" value="${link}" readonly>
+                        <button type="button" id="copy-button">Salin</button>
+                    </div>
+                </div>`;
+            document.getElementById('copy-button').addEventListener('click', () => {
+                const input = document.getElementById('result-link-input');
+                input.select();
+                document.execCommand('copy');
+                alert('Link disalin ke clipboard!');
+            });
+            fileInput.value = '';
+        }
+
+        // === Drag and Drop (Tidak berubah) ===
+        ['dragover', 'dragenter'].forEach(eventName => {
+            uploadLabel.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                uploadLabel.classList.add('dragover');
+            });
+        });
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadLabel.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                uploadLabel.classList.remove('dragover');
+            });
+        });
+        uploadLabel.addEventListener('drop', (e) => {
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                fileInput.files = e.dataTransfer.files;
+                handleFile(file);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="icon" type="image/png" href="https://cihuy.biz.id/file/nLmiSWzy.png">
+    <script src="/script.js"></script>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 8px;
+            color: #444;
+        }
+        .tool-section {
+            margin-bottom: 30px;
+        }
+        form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        input[type="text"]:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
+            outline: none;
+        }
+        button {
+            padding: 12px 18px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        .loading {
+            text-align: center;
+            display: none;
+            margin: 20px 0;
+            color: #555;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .result-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            background: #fdfdfd;
+            border-left: 5px solid #007bff;
+        }
+        .result-item img, .result-item video {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .result-item a {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-right: 10px;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+        .error {
+            color: #D8000C;
+            background-color: #FFD2D2;
+            border: 1px solid #D8000C;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .tool-switcher {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        .tool-switcher label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+            font-size: 16px;
+        }
+        .tool-switcher select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007bff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-13%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2013l128%20128c3.6%203.6%207.8%205.4%2013%205.4s9.4-1.8%2013-5.4l128-128c3.6-3.6%205.4-7.8%205.4-13%200-5-1.8-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="/tools" class="back-link">&larr; Kembali ke Semua Tools</a>
+        
+        <h1 style="margin-top:0;">Downloader Tools</h1>
+
+        <div class="tool-switcher">
+            <label for="tool-select">Pilih Tipe Downloader</label>
+            <select id="tool-select">
+                <option value="tiktok">TikTok Downloader</option>
+                <option value="instagram">Instagram Downloader</option>
+                <option value="twitter">Twitter (X) Downloader</option>
+            </select>
+        </div>
+
+        <div class="tool-section" id="tiktok-tool">
+            <h2>TikTok Downloader</h2>
+            <form id="tiktok-form">
+                <input type="text" id="tiktok-url" placeholder="Tempel URL TikTok di sini..." required>
+                <button type="submit">Download</button>
+            </form>
+            <div id="loading-tt" class="loading">Memproses TikTok...</div>
+            <div id="results-tt" class="results"></div>
+        </div>
+
+        <div class="tool-section" id="instagram-tool">
+            <h2>Instagram Downloader</h2>
+            <form id="ig-form">
+                <input type="text" id="ig-url" placeholder="Tempel URL Instagram di sini..." required>
+                <button type="submit">Download</button>
+            </form>
+            <div id="loading-ig" class="loading">Memproses Instagram...</div>
+            <div id="results-ig" class="results"></div>
+        </div>
+
+        <div class="tool-section" id="twitter-tool">
+            <h2>Twitter (X) Downloader</h2>
+            <form id="twitter-form">
+                <input type="text" id="twitter-url" placeholder="Tempel URL Tweet di sini..." required>
+                <button type="submit">Download</button>
+            </form>
+            <div id="loading-tw" class="loading">Memproses Tweet...</div>
+            <div id="results-tw" class="results"></div>
+        </div>
+
+    </div>
+
+
+    <script>
+        const toolSelect = document.getElementById('tool-select');
+        const tiktokTool = document.getElementById('tiktok-tool');
+        const instagramTool = document.getElementById('instagram-tool');
+        const twitterTool = document.getElementById('twitter-tool');
+
+        function switchTool() {
+            const selectedValue = toolSelect.value;
+            
+            // Sembunyikan semua tool terlebih dahulu
+            tiktokTool.style.display = 'none';
+            instagramTool.style.display = 'none';
+            twitterTool.style.display = 'none'; 
+            
+            // Tampilkan hanya yang dipilih
+            if (selectedValue === 'tiktok') {
+                tiktokTool.style.display = 'block';
+            } else if (selectedValue === 'instagram') {
+                instagramTool.style.display = 'block';
+            } else if (selectedValue === 'twitter') {
+                twitterTool.style.display = 'block';
+            }
+        }
+
+        toolSelect.addEventListener('change', switchTool);
+        document.addEventListener('DOMContentLoaded', switchTool); // Atur state awal saat load
+
+        const tiktokForm = document.getElementById('tiktok-form');
+        const tiktokUrlInput = document.getElementById('tiktok-url');
+        const loadingTT = document.getElementById('loading-tt');
+        const resultsTT = document.getElementById('results-tt');
+
+        tiktokForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const url = tiktokUrlInput.value;
+            loadingTT.style.display = 'block';
+            resultsTT.innerHTML = '';
+            try {
+                const response = await fetch('/api/tiktok-download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: url })
+                });
+                const data = await response.json();
+                if (!response.ok || !data.status) {
+                    throw new Error(data.message || 'Gagal mengambil data');
+                }
+                displayTikTokResults(data);
+            } catch (error) {
+                resultsTT.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            } finally {
+                loadingTT.style.display = 'none';
+            }
+        });
+
+        function displayTikTokResults(data) {
+            resultsTT.innerHTML = '';
+            const item = document.createElement('div');
+            item.className = 'result-item';
+            let downloadLinks = '';
+            data.data.forEach(video => {
+                if (video.type === 'nowatermark') {
+                    downloadLinks += `<a href="${video.url}" target="_blank" download>Download (No WM)</a>`;
+                }
+                if (video.type === 'nowatermark_hd') {
+                    downloadLinks += `<a href="${video.url}" target="_blank" download>Download (HD)</a>`;
+                }
+            });
+            item.innerHTML = `<h3>${data.title}</h3><img src="${data.cover}" alt="Video Cover" style="max-width: 200px;"><p>Oleh: ${data.author.nickname}</p><div>${downloadLinks}</div>`;
+            resultsTT.appendChild(item);
+        }
+
+        const igForm = document.getElementById('ig-form');
+        const igUrlInput = document.getElementById('ig-url');
+        const loadingIG = document.getElementById('loading-ig');
+        const resultsIG = document.getElementById('results-ig');
+
+        igForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const url = igUrlInput.value;
+            loadingIG.style.display = 'block';
+            resultsIG.innerHTML = '';
+            try {
+                const response = await fetch('/api/instagram-download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: url })
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.message || 'Gagal mengambil data');
+                }
+                if (data.msg) {
+                    throw new Error(data.msg);
+                }
+                displayInstagramResults(data);
+            } catch (error) {
+                resultsIG.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            } finally {
+                loadingIG.style.display = 'none';
+            }
+        });
+
+        function displayInstagramResults(data) {
+            resultsIG.innerHTML = '';
+            const item = document.createElement('div');
+            item.className = 'result-item';
+            let mediaHTML = '';
+            let downloadLinks = '';
+            data.url.forEach((link, index) => {
+                const isVideo = link.includes('.mp4') || (data.metadata && data.metadata.isVideo);
+                if (index === 0) {
+                    if (isVideo) {
+                        mediaHTML = `<video controls src="${link}" style="max-width: 100%;"></video>`;
+                    } else {
+                        mediaHTML = `<img src="${link}" alt="Instagram Media">`;
+                    }
+                }
+                downloadLinks += `<a href="${link}" target="_blank" download>Download Media ${index + 1}</a>`;
+            });
+            let metadataHTML = '';
+            if (data.metadata && data.metadata.username) {
+                metadataHTML = `<p>Oleh: ${data.metadata.username}</p><p>Likes: ${data.metadata.like}, Komentar: ${data.metadata.comment}</p><p><b>Caption:</b> ${data.metadata.caption || 'Tidak ada caption'}</p>`;
+            } else {
+                metadataHTML = `<p>Media ditemukan (via Snapsave)</p>`;
+            }
+            item.innerHTML = `${mediaHTML}${metadataHTML}<div>${downloadLinks}</div>`;
+            resultsIG.appendChild(item);
+        }
+        
+        const twitterForm = document.getElementById('twitter-form');
+        const twitterUrlInput = document.getElementById('twitter-url');
+        const loadingTW = document.getElementById('loading-tw');
+        const resultsTW = document.getElementById('results-tw');
+
+        twitterForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const url = twitterUrlInput.value;
+
+            loadingTW.style.display = 'block';
+            resultsTW.innerHTML = '';
+
+            try {
+                const response = await fetch('/api/twitter-download', { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: url })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok || data.error) {
+                    throw new Error(data.message || data.error || 'Gagal mengambil data');
+                }
+                if (data.links.length === 0) {
+                    throw new Error('Tidak ada link download yang ditemukan.');
+                }
+                
+                displayTwitterResults(data);
+
+            } catch (error) {
+                resultsTW.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            } finally {
+                loadingTW.style.display = 'none';
+            }
+        });
+
+        function displayTwitterResults(data) {
+            resultsTW.innerHTML = '';
+            const item = document.createElement('div');
+            item.className = 'result-item';
+
+            let downloadLinks = '';
+            
+            // data.links adalah array berisi URL
+            data.links.forEach((link, index) => {
+                let quality = `Link ${index + 1}`;
+                if (link.includes('.mp4')) {
+                    // Coba tebak resolusi dari URL (jika ada)
+                    const match = link.match(/(\d+x\d+)\/.*\.mp4/);
+                    if (match) {
+                        quality = `Video MP4 (${match[1]})`;
+                    } else {
+                        quality = `Video MP4`;
+                    }
+                }
+                
+                downloadLinks += `<a href="${link}" target="_blank" download>Download ${quality}</a>`;
+            });
+            
+            item.innerHTML = `
+                <h3>Download Link Ditemukan</h3>
+                <p>Link untuk: <code style="word-wrap: break-word; display: block;">${data.url}</code></p>
+                <div>${downloadLinks}</div>
+            `;
+            resultsTW.appendChild(item);
+        }
+    </script>
+</body>
+</html>

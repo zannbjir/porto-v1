@@ -1,16 +1,31 @@
-require('dotenv').config();
-const express = require('express');
-const path = require('path');
-const nodemailer = require('nodemailer');
-const config = require('./config.js');
+import 'dotenv/config';
+
+import express from 'express';
+import path from 'path';
+import nodemailer from 'nodemailer';
+import config from './config.js';
+import { tiktokDownloaderVideo } from './scraper/tiktok.js';
+import { submitTwitterUrl } from './scraper/x.js';
+import { handleUpload } from './scraper/uploader.js';
+import Instagram from './scraper/instagram.js';
+
+// === Polyfill untuk __dirname di ESM ===
+// Kita perlu ini karena __dirname tidak ada di ES Modules
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+// ======================================
 
 const app = express();
 const PORT = 3000;
 
+// Kode ini sekarang aman karena __dirname sudah kita definisikan di atas
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use(express.json({ limit: '50mb' })); 
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -25,6 +40,15 @@ app.get('/', (req, res) => {
         pageTitle: `Portofolio - ${config.bio.name}`,
         ...config
     });
+});
+app.get('/tools', (req, res) => {
+    res.render('tools', { title: 'Halaman Tools', ...config });
+});
+app.get('/downloader', (req, res) => {
+    res.render('download', { title: 'Halaman Downloader', ...config });
+});
+app.get('/uploader', (req, res) => {
+    res.render('uploader', { title: 'Halaman Uploader', ...config });
 });
 
 app.post('/send-email', (req, res) => {
@@ -67,6 +91,73 @@ ${message}
             res.redirect('/#contact');
         }
     });
+});
+
+// == API INTERNAL ==
+app.post('/api/tiktok-download', async (req, res) => {
+    const { url } = req.body;
+
+    if (!url) {
+        return res.status(400).json({ status: false, message: 'URL tidak boleh kosong' });
+    }
+
+    try {
+        const data = await tiktokDownloaderVideo(url);
+        res.json(data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: false, message: 'Terjadi kesalahan di server' });
+    }
+});
+app.post('/api/instagram-download', async (req, res) => {
+    const { url } = req.body;
+
+    if (!url) {
+        return res.status(400).json({ status: false, message: 'URL tidak boleh kosong' });
+    }
+
+    try {
+        const data = await Instagram(url);
+        res.json(data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: false, message: 'Terjadi kesalahan di server' });
+    }
+});
+app.post('/api/twitter-download', async (req, res) => {
+    const { url } = req.body;
+
+    if (!url) {
+        return res.status(400).json({ status: false, message: 'URL tidak boleh kosong' });
+    }
+
+    try {
+        const data = await submitTwitterUrl(url);
+        if (data && data.length > 0) {
+            res.json(data[0]); 
+        } else {
+            throw new Error('Tidak ada data yang ditemukan');
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: false, message: 'Terjadi kesalahan di server' });
+    }
+});
+
+// Uploader Api
+app.post('/api/upload', async (req, res) => {
+    const { base64, api, originalName } = req.body;
+
+    try {
+        const link = await handleUpload(base64, api, { originalName });
+        res.json({
+            status: 200,
+            owner: "Razan Muhammad Ikhsan",
+            link: link
+        });
+    } catch (e) {
+        res.status(500).json({ status: 500, error: e.message });
+    }
 });
 
 app.listen(PORT, () => {
