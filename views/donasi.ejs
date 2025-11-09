@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="icon" type="image/png" href="https://cihuy.biz.id/file/nLmiSWzy.png">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        h1 { 
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        /* Deskripsi Halaman */
+        .description {
+            text-align: center;
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        /* Kartu Donasi (Mengadaptasi style .file-preview) */
+        .donation-card {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        .donation-card h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+        
+        /* Metode Pembayaran (Nomor) */
+        .payment-method {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .payment-method p {
+            font-size: 1.1em;
+            color: #212529;
+            font-weight: 500;
+            margin: 0;
+        }
+        .copy-btn {
+            padding: 8px 12px;
+            font-size: 14px;
+            background: #6c757d; /* Warna netral */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 0;
+            width: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.2s;
+        }
+        .copy-btn:hover {
+            background: #5a6268;
+        }
+        
+        /* Grup Form (Input/Textarea) */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            box-sizing: border-box; /* Mencegah overflow */
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Tombol Utama (Mengadaptasi style #upload-button) */
+        .main-button {
+            width: 100%;
+            padding: 12px 18px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: background-color 0.2s;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        .main-button:hover { background: #0056b3; }
+        .main-button:disabled { background: #aaa; cursor: not-allowed; }
+        
+        /* Tombol Aksi Sekunder (misal: QRIS) */
+        .secondary-button {
+            background: #28a745;
+            margin-top: 0;
+            width: auto;
+        }
+        .secondary-button:hover { background: #218838; }
+
+        /* Hasil QRIS */
+        #qris-result { margin-top: 15px; }
+        #qris-result img {
+            max-width: 100%;
+            height: auto;
+            margin: 10px auto;
+            border-radius: 8px;
+            display: block;
+            cursor: pointer;
+        }
+        #qris-result p {
+            font-size: 0.9em;
+            color: #555;
+            text-align: center;
+        }
+        
+        /* Toast (Notifikasi) */
+        .toast {
+            position: fixed; bottom: 20px; right: 20px;
+            background: #333;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 9999;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+
+        /* Modal (Pop-up QRIS) */
+        .modal {
+            display: none; position: fixed; z-index: 99999;
+            inset: 0; background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background: #ffffff;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-content h2 { margin-top: 0; color: #333; }
+        .modal-content p { color: #555; font-size: 0.9em; }
+        .modal-content img { max-width: 100%; border-radius: 8px; margin-bottom: 15px; }
+        .modal-btn {
+            padding: 10px 15px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        .modal-btn:hover { background: #218838; }
+
+        /* Animasi (dari uploader.ejs & donasi.html) */
+        .loading-spin { animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">&larr; Kembali ke Home</a>
+        <h1 style="margin-top:0;">Donasi</h1>
+        <p class="description">
+            Donasi seikhlasnya aja, kalo gak ikhlas juga gapapa.
+        </p>
+
+        <div class="donation-card payment-method">
+            <div>
+                <h2>Dana</h2>
+                <p id="dana-number">0857-5596-4573</p>
+            </div>
+            <button onclick="copyNumber('dana-number')" class="copy-btn">
+                <ion-icon name="copy-outline"></ion-icon> Copy
+            </button>
+        </div>
+
+        <div class="donation-card payment-method">
+            <div>
+                <h2>GoPay</h2>
+                <p id="gopay-number">0857-5596-4573</p>
+            </div>
+            <button onclick="copyNumber('gopay-number')" class="copy-btn">
+                <ion-icon name="copy-outline"></ion-icon> Copy
+            </button>
+        </div>
+
+        <div class="donation-card payment-method">
+            <div>
+                <h2>PayPal</h2>
+                <p id="paypal-number">@zannbjir</p>
+            </div>
+            <button onclick="copyNumber('paypal-number')" class="copy-btn">
+                <ion-icon name="copy-outline"></ion-icon> Copy
+            </button>
+        </div>
+
+        <div class="donation-card payment-method">
+            <div>
+                <h2>Saweria</h2>
+                <p id="saweria-number">saweria.co/zannbjir</p>
+            </div>
+            <button onclick="bukaLink('saweria-number')" class="copy-btn">
+                <ion-icon name="link-outline"></ion-icon> View
+            </button>
+        </div>
+        <div class="donation-card payment-method">
+            <div>
+                <h2>Qris Zone Id</h2>
+                <p id="qris-number">qris.zone.id/noku</p>
+            </div>
+            <button onclick="bukaLink('qris-number')" class="copy-btn">
+                <ion-icon name="link-outline"></ion-icon> View
+            </button>
+        </div>
+
+    <footer style="text-align: center; color: #6c757d; font-size: 0.9em; margin-top: 20px;">
+        © 2025 Razan Muhammad Ikhsan. All right reserved.
+    </footer>
+
+    <div id="toast" class="toast"></div>
+
+    <div id="qrModal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2>Terima kasih atas dukunganmu ❤️</h2>
+            <p>
+                Buat Makan 😹
+            </p>
+            <img id="qrModalImage" src="" alt="QRIS Zoom">
+            <button onclick="downloadQRIS()" class="modal-btn">
+                <ion-icon name="download-outline"></ion-icon> Download QRIS
+            </button>
+            <p style="margin-top: 15px; font-size: 0.8em;">Klik di luar kotak ini untuk menutup.</p>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script>
+        // === KONFIGURASI ===
+
+        // === FUNGSI TOAST ===
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // === FUNGSI COPY ===
+        function copyNumber(id) {
+            const text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("Berhasil disalin");
+            });
+        }
+        function bukaLink(url) {
+            const text = document.getElementById(url).innerText;
+            let link = `https://${text}`;
+            window.open(link, '_blank');
+        }
+
+        // === FUNGSI QRIS ===
+        async function generateQRIS() {
+            const btn = document.getElementById('qris-btn');
+            const amount = document.getElementById('qris-amount').value;
+            if (!amount || amount <= 0) return showToast("Masukkan nominal valid");
+
+            btn.innerHTML = `<ion-icon name="sync-outline" class="loading-spin"></ion-icon>`;
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(`https://api.kuromi.my.id/orkut/createqris?amount=${amount}&codeqr=00020101021126670016COM.NOBUBANK.WWW01189360050300000879140214009138292837580303UMI51440014ID.CO.QRIS.WWW0215ID20243485069220303UMI5204541153033605802ID5919RFK STORE OK20604506011PURBALINGGA61055331162070703A0163042AB4`);
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('qris-image').src = data.result.qrImageUrl;
+                    document.getElementById('qrModalImage').src = data.result.qrImageUrl;
+                    document.getElementById('qris-result').style.display = 'block';
+                } else {
+                    showToast("Gagal membuat QRIS");
+                }
+            } catch {
+                showToast("Terjadi kesalahan membuat QRIS");
+            }
+            btn.innerHTML = `<ion-icon name="qr-code-outline"></ion-icon> QR`;
+            btn.disabled = false;
+        }
+
+        // === FUNGSI MODAL ===
+        function openModal() {
+            document.getElementById('qrModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('qrModal').style.display = 'none';
+        }
+
+        // === FUNGSI DOWNLOAD ===
+        function downloadQRIS() {
+            const imageUrl = document.getElementById('qris-image').src;
+            fetch(imageUrl)
+                .then(res => res.blob())
+                .then(blob => {
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'qris-donasi.png';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(link.href);
+                })
+                .catch(() => showToast("Gagal mengunduh QRIS"));
+        }
+        
+        // === FUNGSI KIRIM PESAN ===
+        document.getElementById('msg-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('msg-btn');
+            let name = document.getElementById('sender-name').value;
+            const msg = document.getElementById('sender-msg').value;
+
+            if (name.trim() === "") {
+                name = "Anonim";
+            }
+
+            btn.innerHTML = `<ion-icon name="sync-outline" class="loading-spin"></ion-icon> Mengirim...`;
+            btn.disabled = true;
+
+            try {
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: `📩 Pesan Donasi\nNama: ${name}\nPesan: ${msg}` })
+                });
+                showToast("Pesan berhasil dikirim");
+                document.getElementById('msg-form').reset();
+            } catch {
+                showToast("Gagal mengirim pesan");
+            }
+            btn.innerHTML = `<ion-icon name="send-outline"></ion-icon> Kirim Pesan`;
+            btn.disabled = false;
+        });
+    </script>
+</body>
+</html>

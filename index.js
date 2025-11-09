@@ -42,13 +42,16 @@ app.get('/', (req, res) => {
     });
 });
 app.get('/tools', (req, res) => {
-    res.render('tools', { title: 'Halaman Tools', ...config });
+    res.render('tools', { title: 'Razan - Tools', ...config });
 });
 app.get('/downloader', (req, res) => {
-    res.render('download', { title: 'Halaman Downloader', ...config });
+    res.render('download', { title: 'Razan - Downloader', ...config });
 });
 app.get('/uploader', (req, res) => {
-    res.render('uploader', { title: 'Halaman Uploader', ...config });
+    res.render('uploader', { title: 'Razan - Uploader', ...config });
+});
+app.get('/donasi', (req, res) => {
+    res.render('donasi', { title: 'Razan - Donasi', ...config });
 });
 
 app.post('/send-email', (req, res) => {
