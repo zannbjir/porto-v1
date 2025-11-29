@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= title %></title>
+<link rel="icon" type="image/png" href="https://cihuy.biz.id/file/nLmiSWzy.png">
+<script src="/script.js"></script>
+<link rel="stylesheet" href="/style.css">
+<style>
+    /* Menggunakan style yang sama dari skiplink.ejs */
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
+    .container {
+        max-width: 600px;
+        margin: auto;
+        background: #ffffff;
+        padding: 25px 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    h1 { text-align: center; color: #333; margin-bottom: 25px; }
+    .back-link {
+        display: inline-block;
+        margin-bottom: 20px;
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    /* Style Form Input */
+    .shorten-form label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #555;
+        font-size: 16px;
+        margin-top: 15px;
+    }
+    .shorten-form input[type="url"],
+    .shorten-form input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-sizing: border-box;
+    }
+    
+    /* Tombol & Status */
+    button {
+        width: 100%;
+        padding: 12px 18px; background: #007bff;
+        color: white; border: none; border-radius: 8px; cursor: pointer;
+        font-size: 16px; font-weight: bold; margin-top: 20px;
+        transition: background-color 0.2s;
+    }
+    button:hover { background: #0056b3; }
+    button:disabled { background: #aaa; cursor: not-allowed; }
+    
+    .status { margin-top: 20px; text-align: center; }
+    .loading {
+        display: flex; flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .loader {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #007bff;
+        border-radius: 50%; width: 30px; height: 30px;
+        animation: spin 1s linear infinite; margin-bottom: 10px;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .error {
+        color: #D8000C; background-color: #FFD2D2;
+        border: 1px solid #D8000C; padding: 10px;
+        border-radius: 5px; font-weight: bold;
+    }
+    
+    /* Style Hasil */
+    .result-link { text-align: left; }
+    .result-link p { margin-bottom: 8px; font-weight: 500;}
+    .result-group { display: flex; gap: 10px; }
+    .result-group input {
+        flex-grow: 1; padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px; font-size: 1em; background: #f9f9f9;
+    }
+    .result-group button { width: auto;
+        margin-top: 0; background: #28a745; }
+    .result-group button:hover { background: #218838; }
+</style>
+</head>
+<body>
+<div class="container">
+    <a href="/tools" class="back-link">&larr; Kembali ke Semua Tools</a>
+    <h1 style="margin-top:0;">URL Shortener</h1>
+
+    <form id="shorten-form" class="shorten-form">
+        
+        <label for="long-url-input">URL Panjang</label>
+        <input type="url" id="long-url-input" placeholder="https://example.com" required>
+
+        <label for="custom-code-input">Custom Code (Opsional)</label>
+        <input type="text" id="custom-code-input" placeholder="ex: myweb">
+
+        <button type="submit" id="shorten-button">Shorten!</button>
+    </form>
+
+    <div id="status" class="status"></div>
+</div>
+
+<script>
+const shortenForm = document.getElementById('shorten-form');
+const longUrlInput = document.getElementById('long-url-input');
+const customCodeInput = document.getElementById('custom-code-input');
+const shortenButton = document.getElementById('shorten-button');
+const statusDiv = document.getElementById('status');
+
+shortenForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const longUrl = longUrlInput.value;
+    const customCode = customCodeInput.value;
+    
+    if (!longUrl) return;
+
+    showLoading('Membuat short link...');
+    shortenButton.disabled = true;
+
+    try {
+        const response = await fetch('/api/shorten', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ longUrl, customCode })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok || data.status !== 200) {
+            throw new Error(data.error || 'Gagal membuat link.');
+        }
+
+        showSuccess(data.link);
+
+    } catch (err) {
+        showError(err.message);
+    } finally {
+        shortenButton.disabled = false;
+    }
+});
+
+// --- Fungsi Helper (sama seperti halaman lain) ---
+
+function showLoading(message) {
+  statusDiv.innerHTML = `<div class="loading"><div class="loader"></div><p>${message}</p></div>`;
+}
+
+function showError(message) {
+  statusDiv.innerHTML = `<p class="error">${message}</p>`;
+}
+
+function showSuccess(link) {
+  statusDiv.innerHTML = `
+    <div class="result-link">
+      <p>Sukses! Short link Anda:</p>
+      <div class="result-group">
+        <input type="text" id="result-link-input" value="${link}" readonly>
+        <button type="button" id="copy-button">Salin</button>
+      </div>
+    </div>`;
+  
+  document.getElementById('copy-button').addEventListener('click', () => {
+    const input = document.getElementById('result-link-input');
+    input.select();
+    document.execCommand('copy');
+    alert('Link disalin ke clipboard!');
+  });
+  
+  longUrlInput.value = ''; // Kosongkan input setelah sukses
+  customCodeInput.value = '';
+}
+</script>
+</body>
+</html>

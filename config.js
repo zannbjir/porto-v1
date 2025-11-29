@@ -55,6 +55,20 @@ const portfolioData = {
             tagline: "Website Kelas Dibangun dengan React.js JavaScript dan Tailwind CSS.",
             image: "https://cihuy.biz.id/file/vIFwcJFB.png",
             url: "https://nettwo.zone.id"
+        },
+        {
+            id: 5,
+            title: "Backup Website Anime Streaming",
+            tagline: "Website Anime Streaming Dibangun dengan Express.js dan EJS.",
+            image: "https://file.noku.top/j5fm.png",
+            url: "https://zannime.web.id/"
+        },
+        {
+            id: 6,
+            title: "Website Baca Komik",
+            tagline: "Website Baca Komik Dibangun dengan Express.js dan EJS.",
+            image: "https://file.noku.top/ef2V.png",
+            url: "https://mangakuy.web.id/"
         }
     ],
     contact: {
