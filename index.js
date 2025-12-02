@@ -91,6 +91,12 @@ app.get('/skiplink', (req, res) => {
 app.get('/shortener', (req, res) => {
     res.render('shortener', { title: 'Razan - URL Shortener', ...config });
 });
+app.get('/decoder', (req, res) => {
+    res.render('decoder', { title: 'Razan - URL Decoder', ...config });
+});
+app.get('/kill-wifi', (req, res) => {
+    res.render('wifi', { title: 'Razan - Kill Wi-Fi', ...config });
+});
 
 app.post('/send-email', (req, res) => {
     const { name, email, message } = req.body;
@@ -182,6 +188,19 @@ app.post('/api/twitter-download', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ status: false, message: 'Terjadi kesalahan di server' });
+    }
+});
+
+app.post('/api/get-ip', async (req, res) => {
+    try {
+        // Kita gunakan API eksternal untuk cek IP publik
+        const response = await axios.get('https://api.ipify.org?format=json', {
+            timeout: 3000 // 3 detik timeout
+        });
+        res.json({ status: 200, ip: response.data.ip });
+    } catch (error) {
+        console.error('Gagal mengambil IP Publik:', error.message);
+        res.status(500).json({ status: 500, error: 'Gagal mengambil IP publik.' });
     }
 });
 

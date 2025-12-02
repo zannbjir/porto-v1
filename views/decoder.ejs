@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= title %></title>
+<link rel="icon" type="image/png" href="https://cihuy.biz.id/file/nLmiSWzy.png">
+<script src="/script.js"></script>
+<link rel="stylesheet" href="/style.css">
+<style>
+    /* Menggunakan style yang sama dari halaman lain */
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
+    .container {
+        max-width: 800px;
+        margin: auto;
+        background: #ffffff;
+        padding: 25px 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    h1 { text-align: center; color: #333; margin-bottom: 25px; }
+    .back-link {
+        display: inline-block;
+        margin-bottom: 20px;
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    /* Form Styles */
+    .converter-form label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #555;
+        font-size: 16px;
+        margin-top: 15px;
+    }
+    .converter-form select {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-sizing: border-box;
+        background-color: white;
+        appearance: none;
+        background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22%23555%22%3E%3Cpath%20d%3D%22M5.293%207.293a1%201%200%20011.414%200L10%2010.586l3.293-3.293a1%201%200%20111.414%201.414l-4%204a1%201%200%2001-1.414%200l-4-4a1%201%200%20010-1.414z%22%20%2F%3E%3C%2Fsvg%3E');
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 1em;
+        padding-right: 40px;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    
+    .text-areas {
+        display: flex;
+        flex-direction: column; /* Layout vertikal: Input di atas, Output di bawah */
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .text-areas textarea {
+        width: 100%;
+        height: 180px; /* Sedikit lebih pendek */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: 'Courier New', Courier, monospace;
+        box-sizing: border-box;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    
+    /* Efek Focus Baru */
+    .converter-form select:focus,
+    .text-areas textarea:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        outline: none;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 10px;
+        margin: 15px 0; /* Dipindahkan ke tengah */
+    }
+    
+    .button-group button {
+        flex: 1; /* Tombol jadi sama rata */
+        padding: 12px 18px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.2s, transform 0.1s;
+    }
+    .button-group button:hover { background: #0056b3; }
+    .button-group button:active { transform: scale(0.98); } /* Efek klik */
+    
+    .button-group button.secondary {
+        background: #6c757d;
+    }
+    .button-group button.secondary:hover {
+        background: #5a6268;
+    }
+
+    #copy-button {
+        width: 100%;
+        background: #28a745;
+    }
+    #copy-button:hover { background: #218838; }
+
+    .status { margin-top: 15px; text-align: center; }
+    .error {
+        color: #D8000C; background-color: #FFD2D2;
+        border: 1px solid #D8000C; padding: 10px;
+        border-radius: 5px; font-weight: bold;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <a href="/tools" class="back-link">&larr; Kembali ke Semua Tools</a>
+    <h1 style="margin-top:0;">Encoder / Decoder</h1>
+
+    <form id="converter-form" class="converter-form" onsubmit="return false;">
+        
+        <label for="convert-type">Pilih Tipe Konversi</label>
+        <select id="convert-type">
+            <option value="base64">Base64</option>
+            <option value="url">URL Encode (URI Component)</option>
+            <option value="binary">Text ke Binary</option>
+            <option value="morse">Morse Code</option>
+            <option value="hex">Hexadecimal</option>
+            <option value="ascii">ASCII</option>
+        </select>
+
+        <div class="text-areas">
+            <!-- Teks Masukan Selalu di Atas -->
+            <textarea id="input-text" placeholder="Masukkan teks di sini..."></textarea>
+
+            <!-- Grup Tombol Pindah ke Tengah -->
+            <div class="button-group">
+                <button type="button" id="encode-button">Encode &darr;</button>
+                <button type="button" id="decode-button">Decode &darr;</button>
+                <button type="button" id="swap-button" class="secondary">Tukar ⇅</button>
+            </div>
+
+            <!-- Teks Keluaran Selalu di Bawah -->
+            <textarea id="output-text" placeholder="Hasil akan muncul di sini..." readonly></textarea>
+        </div>
+        
+        <!-- Tombol Salin Tetap di Bawah -->
+        <button type="button" id="copy-button">Salin Hasil</button>
+        
+    </form>
+    
+    <div id="status" class="status"></div>
+
+</div>
+
+<script>
+// Ambil elemen DOM
+const convertType = document.getElementById('convert-type');
+const inputText = document.getElementById('input-text');
+const outputText = document.getElementById('output-text');
+const encodeButton = document.getElementById('encode-button');
+const decodeButton = document.getElementById('decode-button');
+const swapButton = document.getElementById('swap-button'); // Tombol baru
+const copyButton = document.getElementById('copy-button');
+const statusDiv = document.getElementById('status');
+
+// --- Kamus Morse Code (Sama seperti sebelumnya) ---
+const MORSE_CODE_DICT = {
+    'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....',
+    'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.',
+    'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+    'Y': '-.--', 'Z': '--..',
+    '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....',
+    '6': '-....', '7': '--...', '8': '---..', '9': '----.', '0': '-----',
+    ' ': '/', '.': '.-.-.-', ',': '--..--', '?': '..--..', "'": '.----.',
+    '!': '-.-.--', '/': '-..-.', '(': '-.--.', ')': '-.--.-', '&': '.-...',
+    ':': '---...', ';': '-.-.-.', '=': '-...-', '+': '.-.-.', '-': '-....-',
+    '_': '..--.-', '"': '.-..-.', '$': '...-..-', '@': '.--.-.'
+};
+const MORSE_TO_CHAR_DICT = {};
+for (const char in MORSE_CODE_DICT) {
+    MORSE_TO_CHAR_DICT[MORSE_CODE_DICT[char]] = char;
+}
+
+// --- Fungsi Helper (Sama seperti sebelumnya) ---
+function textToBinary(text) {
+    return text.split('').map(char => char.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
+}
+function binaryToText(binary) {
+    const cleanBinary = binary.replace(/\s/g, '');
+    if (cleanBinary.length % 8 !== 0) throw new Error('Input binary tidak valid.');
+    let text = '';
+    for (let i = 0; i < cleanBinary.length; i += 8) {
+        text += String.fromCharCode(parseInt(cleanBinary.substring(i, i + 8), 2));
+    }
+    return text;
+}
+function textToMorse(text) {
+    return text.toUpperCase().split('').map(char => MORSE_CODE_DICT[char] || '?').join(' ');
+}
+function morseToText(morse) {
+    return morse.split(' ').map(code => MORSE_TO_CHAR_DICT[code] || '?').join('');
+}
+function textToHex(text) {
+    return text.split('').map(char => char.charCodeAt(0).toString(16).padStart(2, '0')).join(' ');
+}
+function hexToText(hex) {
+    const cleanHex = hex.replace(/\s/g, '');
+    if (cleanHex.length % 2 !== 0) throw new Error('Input hex tidak valid.');
+    let text = '';
+    for (let i = 0; i < cleanHex.length; i += 2) {
+        text += String.fromCharCode(parseInt(cleanHex.substring(i, i + 2), 16));
+    }
+    return text;
+}
+function textToAscii(text) {
+    return text.split('').map(c => c.charCodeAt(0)).join(' ');
+}
+function asciiToText(ascii) {
+    return ascii.split(' ').map(c => {
+        const num = parseInt(c);
+        if (isNaN(num)) throw new Error('Input ASCII tidak valid.');
+        return String.fromCharCode(num);
+    }).join('');
+}
+
+// --- Event Listeners (Logika Diperbarui) ---
+
+encodeButton.addEventListener('click', () => {
+    const type = convertType.value;
+    const input = inputText.value; // Selalu ambil dari input
+    statusDiv.innerHTML = '';
+    
+    try {
+        let result = '';
+        switch (type) {
+            case 'base64':
+                result = btoa(unescape(encodeURIComponent(input)));
+                break;
+            case 'url':
+                result = encodeURIComponent(input);
+                break;
+            case 'binary':
+                result = textToBinary(input);
+                break;
+            case 'morse':
+                result = textToMorse(input);
+                break;
+            case 'hex':
+                result = textToHex(input);
+                break;
+            case 'ascii':
+                result = textToAscii(input);
+                break;
+        }
+        outputText.value = result; // Selalu taruh di output
+    } catch (e) {
+        statusDiv.innerHTML = `<p class="error">Error: ${e.message}</p>`;
+    }
+});
+
+decodeButton.addEventListener('click', () => {
+    const type = convertType.value;
+    const input = inputText.value; // Selalu ambil dari input
+    statusDiv.innerHTML = '';
+
+    try {
+        let result = '';
+        switch (type) {
+            case 'base64':
+                result = decodeURIComponent(escape(atob(input)));
+                break;
+            case 'url':
+                result = decodeURIComponent(input);
+                break;
+            case 'binary':
+                result = binaryToText(input);
+                break;
+            case 'morse':
+                result = morseToText(input);
+                break;
+            case 'hex':
+                result = hexToText(input);
+                break;
+            case 'ascii':
+                result = asciiToText(input);
+                break;
+        }
+        outputText.value = result; // Selalu taruh di output
+        
+    } catch (e) {
+        statusDiv.innerHTML = `<p class="error">Input tidak valid untuk di-decode: ${e.message}</p>`;
+    }
+});
+
+// Event listener baru untuk tombol SWAP
+swapButton.addEventListener('click', () => {
+    const tempText = inputText.value;
+    inputText.value = outputText.value;
+    outputText.value = tempText;
+    statusDiv.innerHTML = ''; // Hapus status
+});
+
+copyButton.addEventListener('click', () => {
+    outputText.select();
+    document.execCommand('copy');
+    statusDiv.innerHTML = '<p style="color: green;">Teks hasil disalin!</p>';
+    setTimeout(() => { statusDiv.innerHTML = ''; }, 2000);
+});
+
+</script>
+</body>
+</html>

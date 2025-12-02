@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= title %></title>
+<link rel="icon" type="image/png" href="https://cihuy.biz.id/file/nLmiSWzy.png">
+<script src="/script.js"></script>
+<link rel="stylesheet" href="/style.css">
+<!-- Leaflet CSS untuk Peta Lokasi -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        margin: 0; padding: 20px; background-color: #f8f9fa;
+    }
+    .container {
+        max-width: 800px; margin: auto; background: #ffffff;
+        padding: 25px 30px; border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    h1 { text-align: center; color: #333; margin-bottom: 25px; }
+    .back-link {
+        display: inline-block; margin-bottom: 20px; color: #007bff;
+        text-decoration: none; font-weight: 500;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    #getInfoButton {
+        width: 100%; padding: 12px 18px; background: #007bff;
+        color: white; border: none; border-radius: 8px; cursor: pointer;
+        font-size: 16px; font-weight: bold; margin-bottom: 20px;
+        transition: background-color 0.2s;
+    }
+    #getInfoButton:hover { background: #0056b3; }
+    #getInfoButton:disabled { background: #aaa; }
+
+    .results-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    @media (max-width: 600px) {
+        .results-grid {
+            grid-template-columns: 1fr; /* Satu kolom di HP */
+        }
+    }
+
+    .info-box {
+        background: #f9f9f9;
+        border: 1px solid #eee;
+        padding: 15px;
+        border-radius: 8px;
+    }
+    .info-box strong {
+        display: block;
+        color: #333;
+        margin-bottom: 5px;
+    }
+    .info-box span {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 1.1em;
+        color: #007bff;
+        word-wrap: break-word;
+    }
+    .info-box span.loading, .info-box span.error {
+        color: #888;
+        font-style: italic;
+    }
+    .info-box span.error { color: #dc3545; }
+    .info-box.full-width {
+        grid-column: 1 / -1; /* Lebar penuh */
+    }
+
+    #map {
+        height: 250px;
+        width: 100%;
+        border-radius: 8px;
+        margin-top: 10px;
+        background: #eee;
+    }
+</style>
+<!-- Leaflet JS untuk Peta Lokasi -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+<body>
+<div class="container">
+    <a href="/tools" class="back-link">&larr; Kembali ke Semua Tools</a>
+    <h1 style="margin-top:0;">Informasi Jaringan & Perangkat</h1>
+    
+    <button id="getInfoButton">Tampilkan Informasi Saya</button>
+    <div id="status" class="status"></div>
+    
+    <div class="results-grid">
+        <div class="info-box">
+            <strong>IP Publik (Internet)</strong>
+            <span id="public-ip" class="loading">...</span>
+        </div>
+        <div class="info-box">
+            <strong>IP Lokal (Jaringan)</strong>
+            <span id="local-ip" class="loading">...</span>
+        </div>
+        <div class="info-box">
+            <strong>Tipe Jaringan</strong>
+            <span id="net-type" class="loading">...</span>
+        </div>
+        <div class="info-box">
+            <strong>Status Baterai</strong>
+            <span id="battery" class="loading">...</span>
+        </div>
+        <div class="info-box full-width">
+            <strong>Lokasi (Estimasi)</strong>
+            <span id="location" class="loading">Klik tombol di atas...</span>
+            <div id="map"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+const getInfoButton = document.getElementById('getInfoButton');
+const statusDiv = document.getElementById('status');
+let map; // Variabel untuk menyimpan peta
+
+// Inisialisasi Peta
+try {
+    map = L.map('map').setView([-6.200000, 106.816666], 10); // Default Jakarta
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+} catch (e) {
+    document.getElementById('map').innerText = 'Gagal memuat peta. Coba refresh.';
+}
+
+
+getInfoButton.addEventListener('click', async () => {
+    getInfoButton.disabled = true;
+    getInfoButton.innerText = 'Mencari...';
+
+    // Reset tampilan
+    const spans = document.querySelectorAll('.results-grid span');
+    spans.forEach(span => {
+        span.className = 'loading';
+        span.innerText = 'Memuat...';
+    });
+    statusDiv.innerHTML = '';
+
+    // 1. Ambil IP Publik (dari API server kita)
+    const getPublicIP = async () => {
+        try {
+            const response = await fetch('/api/get-ip', { method: 'POST' });
+            if (!response.ok) throw new Error('Gagal ambil IP');
+            const data = await response.json();
+            document.getElementById('public-ip').innerText = data.ip || 'Tidak ditemukan';
+            document.getElementById('public-ip').className = '';
+        } catch (e) {
+            document.getElementById('public-ip').innerText = e.message;
+            document.getElementById('public-ip').className = 'error';
+        }
+    };
+
+    // 2. Ambil IP Lokal (Triky WebRTC)
+    const getLocalIP = () => {
+        return new Promise((resolve, reject) => {
+            try {
+                const pc = new RTCPeerConnection({ iceServers: [] });
+                pc.createDataChannel('');
+                pc.createOffer().then(pc.setLocalDescription.bind(pc));
+                pc.onicecandidate = (ice) => {
+                    if (!ice || !ice.candidate || !ice.candidate.candidate) {
+                        if (!pc.localDescription) {
+                            reject(new Error('Gagal (onicecandidate)'));
+                        }
+                        return;
+                    }
+                    const ip = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9:]{1,4}(:[a-f0-9:]{1,4}){7})/.exec(ice.candidate.candidate)[1];
+                    pc.close();
+                    resolve(ip);
+                };
+            } catch (e) {
+                reject(e);
+            }
+        });
+    };
+    
+    const runGetLocalIP = async () => {
+        try {
+            const ip = await getLocalIP();
+            document.getElementById('local-ip').innerText = ip;
+            document.getElementById('local-ip').className = '';
+        } catch (e) {
+            document.getElementById('local-ip').innerText = 'Tidak ditemukan';
+            document.getElementById('local-ip').className = 'error';
+        }
+    };
+
+    // 3. Ambil Tipe Jaringan
+    const getNetworkType = () => {
+        try {
+            const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+            if (!connection) throw new Error('API tidak didukung');
+            
+            let type = connection.type || 'unknown';
+            let effectiveType = connection.effectiveType || 'unknown';
+            let downSpeed = connection.downlink ? `${connection.downlink} Mbps` : 'N/A';
+
+            let result = `Tipe: ${type} (Efektif: ${effectiveType}) | Kecepatan Downlink: ${downSpeed}`;
+            document.getElementById('net-type').innerText = result;
+            document.getElementById('net-type').className = '';
+        } catch (e) {
+            document.getElementById('net-type').innerText = e.message;
+            document.getElementById('net-type').className = 'error';
+        }
+    };
+
+    // 4. Ambil Status Baterai
+    const getBatteryStatus = async () => {
+        try {
+            if (!navigator.getBattery) throw new Error('API tidak didukung');
+            
+            const battery = await navigator.getBattery();
+            const level = `${Math.floor(battery.level * 100)}%`;
+            const charging = battery.charging ? 'Sedang mengisi daya' : 'Tidak mengisi daya';
+            document.getElementById('battery').innerText = `${level} (${charging})`;
+            document.getElementById('battery').className = '';
+        } catch (e) {
+            document.getElementById('battery').innerText = e.message;
+            document.getElementById('battery').className = 'error';
+        }
+    };
+
+    // 5. Ambil Lokasi
+    const getLocation = () => {
+        try {
+            if (!navigator.geolocation) throw new Error('Geolokasi tidak didukung');
+            
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const acc = position.coords.accuracy;
+                    
+                    const text = `Lat: ${lat.toFixed(5)}, Lon: ${lon.toFixed(5)} (Akurasi: ${acc.toFixed(0)} meter)`;
+                    document.getElementById('location').innerText = text;
+                    document.getElementById('location').className = '';
+                    
+                    // Update Peta
+                    const userLocation = [lat, lon];
+                    map.setView(userLocation, 15);
+                    L.marker(userLocation).addTo(map)
+                        .bindPopup('Estimasi lokasi Anda di sini.')
+                        .openPopup();
+                },
+                (error) => {
+                    let msg = '';
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            msg = "Izin lokasi ditolak.";
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            msg = "Informasi lokasi tidak tersedia.";
+                            break;
+                        case error.TIMEOUT:
+                            msg = "Waktu tunggu habis.";
+                            break;
+                        default:
+                            msg = "Error tidak diketahui.";
+                    }
+                    throw new Error(msg);
+                }
+            );
+        } catch (e) {
+            document.getElementById('location').innerText = e.message;
+            document.getElementById('location').className = 'error';
+        }
+    };
+
+    // Jalankan semua
+    await Promise.allSettled([
+        getPublicIP(),
+        runGetLocalIP(),
+        getNetworkType(),
+        getBatteryStatus(),
+        getLocation()
+    ]);
+
+    getInfoButton.disabled = false;
+    getInfoButton.innerText = 'Tampilkan Informasi Saya';
+});
+
+</script>
+</body>
+</html>
