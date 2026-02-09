@@ -1,154 +1,414 @@
-<%- include('partials/header') %>
+<!DOCTYPE html>
+<html lang="id">
 
-<section id="bio" class="section section-bio">
-    <div class="bio-text">
-        <h1 class="bio-name"><%= bio.name %></h1>
-        <p class="bio-title"><%= bio.title %></p>
-        <p class="bio-desc"><%= bio.description %></p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Razan Muhammad Ikhsan</title>
+  <link rel="icon" href="https://emoji-cdn.mqrio.dev/😜?style=twitter" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Ubuntu+Mono&display=swap" rel="stylesheet">
 
-        <div class="bio-status-container">
-            <% bio.status.forEach(stat => { %>
-                <div class="status-item">
-                    <span class="status-label"><%= stat.label %>:</span>
-                    <span class="status-value"><%= stat.value %></span>
-                </div>
-            <% }) %>
-        </div>
-        </div>
-    <div class="bio-image">
-    <img src="<%= bio.image %>" alt="Foto Profil <%= bio.name %>" id="profile-pic-btn"> </div>
-    </div>
-</section>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            'mono': ['Ubuntu Mono', 'monospace'],
+            'sans': ['Inter', 'sans-serif']
+          },
+          colors: {
+            'nr': '#111',
+            'brutal-yellow': '#fef08a',
+            'brutal-blue': '#60a5fa',
+            'brutal-green': '#a7f3d0',
+            'brutal-pink': '#fbcfe8',
+            'brutal-orange': '#fb923c',
+            'brutal-red': '#f87171',
+            'brutal-purple': '#c084fc'
+          }
+        }
+      }
+    }
+  </script>
 
-<section id="skills" class="section">
-    <h2 class="section-title">Skills</h2>
+  <style>
+    :root {
+      --nr: #111;
+      --nr-shadow: 8px 8px 0 #111;
+      --transition-smooth: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    body {
+      background-color: #fff;
+      background-image:
+        linear-gradient(90deg, #4b4b4b10 1px, #0000 1px),
+        linear-gradient(#4b4b4b10 1px, #0000 1px),
+        repeating-linear-gradient(45deg, #4b4b4b05 0, #4b4b4b05 1px, #0000 1px, #0000 10px) !important;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    ::-webkit-scrollbar { display: none; }
+
+    #cursor {
+      width: 20px; height: 20px;
+      background: var(--brutal-red);
+      border: 3px solid #111;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s ease;
+      display: none;
+    }
+
+    @media (min-width: 768px) { #cursor { display: block; } }
+
+    .brutal-border { border: 4px solid var(--nr); }
+    .brutal-shadow { box-shadow: var(--nr-shadow); }
+
+    .btn-brutal {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      font-weight: 900;
+      background: var(--brutal-blue);
+      border: 4px solid var(--nr);
+      box-shadow: var(--nr-shadow);
+      transition: var(--transition-smooth);
+      cursor: pointer;
+    }
+
+    .btn-brutal:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 12px 12px 0 var(--nr);
+      background: var(--brutal-yellow);
+    }
+
+    .btn-brutal:active { transform: translate(6px, 6px); box-shadow: 0px 0px 0 var(--nr); }
+
+    .card-brutal {
+      background: #fff;
+      border: 4px solid var(--nr);
+      box-shadow: var(--nr-shadow);
+      padding: 24px;
+      transition: var(--transition-smooth);
+      will-change: transform;
+    }
     
-    <div class="skills-container">
+    .card-brutal:hover {
+      transform: scale(1.02) rotate(-1deg);
+      box-shadow: 15px 15px 0 var(--nr);
+      z-index: 10;
+    }
 
-        <div class="skill-category">
-            <h3 class="category-title">Frontend</h3>
-            <div class="skills-list">
-                <% skills.frontend.forEach(skill => { %>
-                    <div class="skill-entry">
-                        <div class="skill-info">
-                            <span class="skill-name"><%= skill.name %></span>
-                            <span class="skill-percentage"><%= skill.level %></span>
-                        </div>
-                        <div class="skill-bar-container">
-                            <div class="skill-bar-level" style="width: <%= skill.level %>;"></div>
-                        </div>
-                    </div>
-                <% }) %>
-            </div>
+    .nr-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 16px;
+      background: var(--brutal-yellow);
+      border: 3px solid var(--nr);
+      border-radius: 50px;
+      font-weight: 900;
+      font-size: 11px;
+      box-shadow: 4px 4px 0 var(--nr);
+      text-transform: uppercase;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 1s ease-out, transform 1s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    .action-glow:hover {
+      filter: drop-shadow(0 0 15px var(--brutal-red));
+      color: #f87171 !important;
+    }
+
+    /* Grid Khusus Contact Me */
+    .contact-grid-item {
+        transition: var(--transition-smooth);
+    }
+    .contact-grid-item:hover {
+        transform: translate(-4px, -4px);
+        box-shadow: 10px 10px 0 #111;
+    }
+
+  </style>
+</head>
+
+<body class="flex flex-col min-h-screen">
+  <div id="cursor"></div>
+  
+  <header class="bg-white py-4 border-b-[4px] border-black brutal-border sticky top-0 z-50">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+      <a href="#" class="text-xl md:text-2xl font-black tracking-tighter uppercase italic action-glow transition-all">RAZAN.</a>
+      <nav class="space-x-3 md:space-x-6 flex items-center">
+        <a href="#about" class="font-black text-[10px] md:text-xs uppercase hover:text-brutal-orange transition-all">ABOUT</a>
+        <a href="#skills" class="font-black text-[10px] md:text-xs uppercase hover:text-brutal-green transition-all">STATS</a>
+        <a href="#projects" class="font-black text-[10px] md:text-xs uppercase hover:text-brutal-blue transition-all">PROJECT</a>
+        <a href="#contact" class="font-black text-[10px] md:text-xs uppercase hover:text-brutal-purple transition-all">CONTACT</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container mx-auto flex-grow p-4 pt-12 pb-16 max-w-4xl space-y-20">
+    
+    <section id="about" class="reveal">
+      <div class="card-brutal flex flex-col md:flex-row items-center gap-12 bg-white relative overflow-hidden">
+        <div class="relative">
+          <div class="brutal-border brutal-shadow overflow-hidden w-44 h-44">
+            <img src="https://github.com/zannbjir.png" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" alt="Razan">
+          </div>
+          <div class="absolute -bottom-4 -left-4 nr-chip !bg-red-500 !text-white !rotate-[-5deg]">Sloth</div>
         </div>
-
-        <div class="skill-category">
-            <h3 class="category-title">Backend</h3>
-            <div class="skills-list">
-                <% skills.backend.forEach(skill => { %>
-                    <div class="skill-entry">
-                        <div class="skill-info">
-                            <span class="skill-name"><%= skill.name %></span>
-                            <span class="skill-percentage"><%= skill.level %></span>
-                        </div>
-                        <div class="skill-bar-container">
-                            <div class="skill-bar-level" style="width: <%= skill.level %>;"></div>
-                        </div>
-                    </div>
-                <% }) %>
-            </div>
+        <div class="flex-grow text-center md:text-left z-10">
+          <h1 class="text-5xl md:text-7xl font-black mb-4 uppercase italic tracking-tighter leading-none">
+            kang<br><span class="text-brutal-orange">gabut.</span>
+          </h1>
+          <p class="text-gray-700 font-bold leading-snug text-xl italic">
+            "Gue build sesuatu kalo mood lagi asik aja. Kalo lagi hancur? bodoamat."
+          </p>
         </div>
+      </div>
+    </section>
 
-    </div> </section>
-
-<section id="projects" class="section">
-    <h2 class="section-title">Projects</h2>
-    <div class="project-grid">
-        <% projects.forEach(project => { %>
-            <div class="project-card">
-                <img src="<%= project.image %>" alt="<%= project.title %>" class="project-img project-modal-trigger">
-                <div class="project-content">
-                    <h3><%= project.title %></h3>
-                    <p><%= project.tagline %></p>
-                    <a href="<%= project.url %>" class="btn" target="_blank" rel="noopener noreferrer">
-                        Lihat
-                    </a>
-                </div>
-            </div>
-        <% }) %>
-    </div>
-</section>
-
-<section id="contact" class="section">
-    <h2 class="section-title">Hubungi</h2>
-    <p class="contact-intro">
-        Ada yang ingin didiskusikan? Kirim saya pesan dan mari kita bicara.
-    </p>
-
-    <div class="contact-container">
-
-        <div class="contact-form-wrapper">
-            <form action="/send-email" method="POST">
-    <div class="form-group">
-        <label for="name">Nama Anda</label>
-        <input type="text" id="name" name="name" required>
-    </div>
-    <div class="form-group">
-        <label for="email">Email Anda</label>
-        <input type="email" id="email" name="email" required>
-    </div>
-    <div class="form-group">
-        <label for="message">Pesan Anda</label>
-        <textarea id="message" name="message" rows="6" required></textarea>
-    </div>
-    <button type="submit" class="btn">
-        Kirim Pesan
-    </button>
-</form>
+    <section class="reveal">
+<div class="flex items-center gap-3 mb-6">
+        <span class="nr-chip !bg-black !text-white !shadow-none !rounded-none tracking-[0.2em] italic">VIBE CHECKING...</span>
+        <div class="h-[4px] flex-grow bg-black"></div>
+      </div>
+      <div class="card-brutal !p-0 overflow-hidden bg-black brutal-border hover:rotate-0">
+        <div class="bg-[#1DB954] p-3 flex items-center justify-between border-b-[4px] border-black">
+          <div class="flex items-center gap-3">
+            <i class="fa-brands fa-spotify text-black text-2xl animate-spin-slow"></i>
+            <span class="text-black font-black text-sm uppercase tracking-widest italic font-sans">MY PLAYLIST</span>
+          </div>
+          <div class="flex gap-2">
+            <div class="w-3 h-3 bg-black rounded-full shadow-[2px_2px_0_rgba(0,0,0,0.2)]"></div>
+            <div class="w-3 h-3 bg-black rounded-full shadow-[2px_2px_0_rgba(0,0,0,0.2)]"></div>
+          </div>
         </div>
+      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/7tENBsNm0vZzOvcAGeTOaX?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </section>
 
-        <div class="connect-links-wrapper">
-            <h3 class="connect-title">Connect With Me</h3>
-            <div class="connect-grid">
-                
-                <% if (contact.github) { %>
-                    <a href="https://github.com/<%= contact.github %>" target="_blank" rel="noopener noreferrer" class="connect-card">
-                        <div class="connect-text">
-                            <h4>GitHub</h4>
-                            <p><%= contact.github %></p>
-                        </div>
-                    </a>
-                <% } %>
-                
-                <% if (contact.instagram) { %>
-                    <a href="https://instagram.com/<%= contact.instagram %>" target="_blank" rel="noopener noreferrer" class="connect-card">
-                        <div class="connect-text">
-                            <h4>Instagram</h4>
-                            <p>@<%= contact.instagram %></p>
-                        </div>
-                    </a>
-                <% } %>
-
-                <% if (contact.facebook) { %>
-                    <a href="https://facebook.com/<%= contact.facebook %>" target="_blank" rel="noopener noreferrer" class="connect-card">
-                        <div class="connect-text">
-                            <h4>Facebook</h4>
-                            <p><%= contact.facebook %></p>
-                        </div>
-                    </a>
-                <% } %>
-
-            </div>
+    <section id="skills" class="reveal">
+      <div class="flex items-center gap-3 mb-10">
+        <div class="h-[4px] flex-grow bg-black"></div>
+        <span class="nr-chip !bg-brutal-orange !shadow-[4px_4px_0_#111]">STATS & LOADOUT</span>
+        <div class="h-[4px] flex-grow bg-black"></div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="card-brutal !bg-brutal-red text-black group relative overflow-hidden hover:!bg-black hover:text-white transition-all">
+          <i class="mdi mdi-crosshairs-gps text-5xl absolute -right-4 -bottom-4 opacity-20 group-hover:rotate-90 transition-all duration-700"></i>
+          <h3 class="font-black text-2xl italic uppercase">GAME</h3>
+          <p class="font-bold text-sm mt-3 leading-relaxed">Battleroyale enthusiast. Tembakan & adrenalin. Kalo AIM lagi on-point, lobby manapun gue ratain.</p>
+          <p class="font-bold text-sm mt-3 filter blur-sm leading-relaxed">Tapi Bohong 😹😹</p>
         </div>
-    </div>
-</section>
+        <div class="card-brutal !bg-brutal-yellow transition-all group">
+          <i class="mdi mdi-palette-swatch text-5xl"></i>
+          <h3 class="font-black text-2xl mt-4 italic uppercase">GFX DESIGN</h3>
+          <p class="font-bold text-sm mt-2 leading-relaxed">Design kalo ada inspirasi lewat. Moody visualizer. Kalo buntu, mending main epep.</p>
+        </div>
+        <div class="card-brutal !bg-brutal-green transition-all group">
+          <i class="mdi mdi-xml text-5xl"></i>
+          <h3 class="font-black text-2xl mt-4 italic uppercase">CODING</h3>
+          <p class="font-bold text-sm mt-2 leading-relaxed">HTML, Tailwind, JS. Coding kalo mood lagi bagus doang. Kalo buruk? I Don Ker.</p>
+        </div>
+      </div>
+    </section>
 
-<div id="image-modal" class="modal-overlay">
-    <div class="modal-card modal-card-image">
-        <button id="image-modal-close-btn" class="modal-close-image">&times;</button>
-        
-        <img id="image-modal-content" src="" alt="Tampilan Modal">
-    </div>
-</div>
+    <section id="projects" class="reveal">
+        <div class="card-brutal !p-0 overflow-hidden brutal-shadow">
+          <div class="bg-black text-white p-4 flex justify-between items-center">
+            <h2 class="text-2xl font-black italic uppercase tracking-tighter">PROJECTS ARCHIVE</h2>
+            <i class="mdi mdi-folder-sync text-2xl"></i>
+          </div>
+          <div class="p-4 md:p-8 space-y-8 bg-white" id="project-container"></div>
+        </div>
+    </section>
 
-<%- include('partials/footer') %>
+    <section id="anime" class="reveal">
+        <div class="flex items-center gap-4 mb-8">
+            <span class="nr-chip !bg-brutal-pink !shadow-[6px_6px_0_#111]">ANIME WATCHLIST</span>
+            <div class="h-[4px] flex-grow bg-black"></div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="anime-grid"></div>
+    </section>
+
+    <section id="comics" class="reveal">
+        <div class="flex items-center gap-4 mb-8">
+            <div class="h-[4px] flex-grow bg-black"></div>
+            <span class="nr-chip !bg-brutal-blue !shadow-[6px_6px_0_#111]">COMIC / MANHWA</span>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="comic-grid"></div>
+    </section>
+
+    <section id="waifu" class="reveal">
+        <div class="flex items-center gap-4 mb-8">
+            <span class="nr-chip !bg-brutal-green !shadow-[6px_6px_0_#111]">WAIFU LIST</span>
+            <div class="h-[4px] flex-grow bg-black"></div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="waifu-grid"></div>
+    </section>
+
+    <section id="contact" class="reveal pt-10">
+        <div class="flex items-center gap-4 mb-8">
+            <span class="nr-chip !bg-brutal-purple !shadow-[6px_6px_0_#111]">CONTACT ME</span>
+            <div class="h-[4px] flex-grow bg-black"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="contact-grid">
+            </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-white text-center py-12 border-t-[4px] border-black font-black text-sm uppercase tracking-widest relative overflow-hidden">
+    <div class="absolute left-0 top-0 h-full w-2 bg-brutal-red"></div>
+    <div class="absolute right-0 top-0 h-full w-2 bg-brutal-blue"></div>
+    © 2026 — RAZAN MUHAMMAD IKHSAN
+  </footer>
+
+  <script>
+    /* --- DATA ARRAYS --- */
+    
+    const ANIME_LIST = [
+      { title: "Bleach", img: "https://files.catbox.moe/eild9y.jpg" },
+      { title: "Jujutsu Kaisen", img: "https://files.catbox.moe/0w8a7a.jpg" },
+      { title: "Gachiakuta", img: "https://files.catbox.moe/3heg5f.jpg" },
+      { title: "Fire Force", img: "https://files.catbox.moe/e5wcr5.jpg" },
+      { title: "Re:Zero", img: "https://files.catbox.moe/d92klw.jpg" },
+      { title: "Chainsaw Man", img: "https://files.catbox.moe/3k6fqa.jpg" },
+      { title: "Soul Eater", img: "https://files.catbox.moe/bxq3fi.jpg" },
+      { title: "Grand Blue", img: "https://files.catbox.moe/hxkzvu.jpg" }
+    ];
+
+    const COMIC_LIST = [
+      { title: "Star Ginseng Store", img: "https://files.catbox.moe/ldx0q4.jpg" },
+      { title: "Love Revolution", img: "https://file.noku.top/8lW9.jpg" },
+      { title: "Random Chat", img: "https://files.catbox.moe/8hklih.jpg" },
+      { title: "The Warrior Returns", img: "https://file.noku.top/1SgR.jpg" },
+      { title: "Juujika no Rokunin", img: "https://files.catbox.moe/aj9z52.jpg" },
+      { title: "Leviathan", img: "https://file.noku.top/U6ND.jpg" },
+      { title: "Eleceed", img: "https://files.catbox.moe/netb9d.jpg" },
+      { title: "Player", img: "https://files.catbox.moe/trb71a.jpg" }
+    ];
+
+    const WAIFU_LIST = [
+      { title: "Rem", img: "https://file.noku.top/q94b.webp" },
+      { title: "Nephilia", img: "https://files.catbox.moe/kxuxjv.webp" },
+      { title: "Asa Mitaka", img: "https://file.noku.top/HXiS.webp" },
+      { title: "Hamin Park", img: "https://file.noku.top/nXxS.webp" }
+    ];
+
+    // Array Contact lo, guys
+    const CONTACT_LIST = [
+      { name: "Telegram", handle: "@zannbjir", icon: "fa-brands fa-telegram", url: "https://zannbjir.t.me", color: "#229ED9" },
+      { name: "Discord", handle: "zannbjir", icon: "fa-brands fa-discord", url: "https://discord.com/users/zannbjir", color: "#5865F2" },
+      { name: "Instagram", handle: "@razanaja.cuy", icon: "fa-brands fa-instagram", url: "https://www.instagram.com/razanaja.cuy/", color: "#E4405F" },
+      { name: "WhatsApp", handle: "Send Message", icon: "fa-brands fa-whatsapp", url: "https://wa.me/6285755964573?text=hallo+bang", color: "#25D366" },
+      { name: "GitHub", handle: "zannbjir", icon: "fa-brands fa-github", url: "https://github.com/zannbjir", color: "#181717" },
+      { name: "Email", handle: "razan.smuler@gmail.com", icon: "fa-solid fa-envelope", url: "mailto:razan.smuler@gmail.com", color: "#FB923C" }
+    ];
+    const PROJECT_LIST = [
+        { name: "Zann Uploader", tag: "V2.0 // Archive", url: "https://zann.web.id", color: "var(--brutal-yellow)" },
+        { name: "Noku API", tag: "STABLE // API Portal", url: "https://api.noku.top", color: "var(--brutal-blue)" }
+    ];
+
+    /* --- INJECTION LOGIC --- */
+
+    const renderGrids = () => {
+      // Projects
+      document.getElementById('project-container').innerHTML = PROJECT_LIST.map(p => `
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b-4 border-black pb-6 group">
+          <div class="transform group-hover:translate-x-2 transition-all">
+            <h3 class="text-3xl font-black uppercase italic leading-none">${p.name}</h3>
+            <p class="text-sm font-bold text-gray-400 font-mono mt-1">${p.tag}</p>
+          </div>
+          <a href="${p.url}" class="btn-brutal hover:!bg-black hover:!text-white" style="background:${p.color}">OPEN</a>
+        </div>
+      `).join('');
+
+      // Anime
+      document.getElementById('anime-grid').innerHTML = ANIME_LIST.map(a => `
+        <div class="card-brutal !p-0 overflow-hidden group hover:rotate-2">
+            <img src="${a.img}" class="h-56 w-full object-cover group-hover:scale-110 transition-all duration-700" alt="${a.title}">
+            <div class="p-3 border-t-4 border-black bg-white"><p class="font-black text-xs uppercase italic">${a.title}</p></div>
+        </div>
+      `).join('');
+
+      // Comics
+      document.getElementById('comic-grid').innerHTML = COMIC_LIST.map(c => `
+        <div class="card-brutal !p-0 overflow-hidden group hover:rotate-[-2deg]">
+            <img src="${c.img}" class="h-56 w-full object-cover group-hover:scale-110 transition-all duration-700" alt="${c.title}">
+            <div class="p-3 border-t-4 border-black bg-white"><p class="font-black text-xs uppercase italic">${c.title}</p></div>
+        </div>
+      `).join('');
+
+      // Waifu
+      document.getElementById('waifu-grid').innerHTML = WAIFU_LIST.map(c => `
+        <div class="card-brutal !p-0 overflow-hidden group hover:rotate-[-2deg]">
+            <img src="${c.img}" class="h-56 w-full object-cover group-hover:scale-110 transition-all duration-700" alt="${c.title}">
+            <div class="p-3 border-t-4 border-black bg-white"><p class="font-black text-xs uppercase italic">${c.title}</p></div>
+        </div>
+      `).join('');
+
+      // Contacts
+      document.getElementById('contact-grid').innerHTML = CONTACT_LIST.map(c => `
+        <a href="${c.url}" target="_blank" class="contact-grid-item brutal-border p-4 flex items-center gap-4 bg-white" style="border-left: 12px solid ${c.color}">
+            <div class="w-12 h-12 brutal-border flex items-center justify-center text-white" style="background: ${c.color}">
+                <i class="${c.icon} text-2xl"></i>
+            </div>
+            <div>
+                <div class="font-black text-sm uppercase tracking-tighter text-nr">${c.name}</div>
+                <div class="font-mono text-[10px] font-bold text-gray-500">${c.handle}</div>
+            </div>
+        </a>
+      `).join('');
+    }
+
+    /* --- ANIMATION & CURSOR --- */
+
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+
+    document.addEventListener('mousedown', () => cursor.style.transform = 'scale(1.5) rotate(45deg)');
+    document.addEventListener('mouseup', () => cursor.style.transform = 'scale(1) rotate(0deg)');
+
+    const brutalElements = document.querySelectorAll('.btn-brutal, .card-brutal, a, .contact-grid-item');
+    brutalElements.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.style.width = '40px';
+            cursor.style.height = '40px';
+            cursor.style.mixBlendMode = 'difference';
+            cursor.style.backgroundColor = '#fff';
+        });
+        el.addEventListener('mouseleave', () => {
+            cursor.style.width = '20px';
+            cursor.style.height = '20px';
+            cursor.style.mixBlendMode = 'normal';
+            cursor.style.backgroundColor = '#f87171';
+        });
+    });
+
+    renderGrids();
+  </script>
+</body>
+</html>

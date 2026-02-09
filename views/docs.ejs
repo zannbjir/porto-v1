@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= apiData.title %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { fontFamily: { 'mono': ['Ubuntu Mono', 'monospace'], 'sans': ['Inter', 'system-ui', 'sans-serif'] } } }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { display: none !important; }
+        .gradient-text { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .method-badge { font-size: 0.65rem; padding: 0.2rem 0.5rem; font-weight: 700; letter-spacing: 0.05em; border-radius: 4px; }
+        .method-get { background-color: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .method-post { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .endpoint-card { transition: all 0.2s ease; }
+        .endpoint-card:hover { transform: translateY(-2px); border-color: #ef4444; }
+        input[type="file"]::file-selector-button { background-color: #374151; color: #d1d5db; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; margin-right: 10px; transition: background 0.2s; }
+        input[type="file"]::file-selector-button:hover { background-color: #4b5563; }
+    </style>
+</head>
+<body class="bg-gray-900 text-slate-300 antialiased font-mono min-h-screen">
+    <main class="max-w-5xl mx-auto px-6 py-12">
+        <div class="mb-10">
+            <h1 class="text-4xl font-bold gradient-text mb-3"><span id="title">API Documentation</span></h1>
+            <p class="text-slate-400 text-sm mb-6"><span id="description">Loading...</span></p>
+            <div class="bg-gray-800 border border-gray-700 p-1 rounded">
+                <select id="hostSelect" class="w-full px-4 py-3 bg-gray-900 text-slate-300 text-xs border-none focus:ring-0 outline-none rounded cursor-pointer">
+                    <option id="valueURL" value="" selected>Loading servers...</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-gray-800 border border-gray-700 p-4 rounded text-center">
+                <div class="text-2xl font-bold text-white" id="totalEndpoints">0</div>
+                <div class="text-xs text-slate-500 uppercase tracking-wider">Endpoints</div>
+            </div>
+            <div class="bg-gray-800 border border-gray-700 p-4 rounded text-center">
+                <div class="text-2xl font-bold text-white" id="totalCategories">0</div>
+                <div class="text-xs text-slate-500 uppercase tracking-wider">Categories</div>
+            </div>
+            <div class="bg-gray-800 border border-gray-700 p-0 rounded flex items-center">
+                <span class="material-icons text-gray-500 ml-4">search</span>
+                <input type="text" id="searchInput" placeholder="Search endpoints..." class="w-full bg-transparent border-none text-sm text-white px-3 py-4 focus:outline-none placeholder-gray-600">
+            </div>
+        </div>
+
+        <div id="content" class="space-y-6">
+            <div id="noResults" class="text-center py-16 hidden">
+                <div class="text-gray-600 text-5xl mb-4"><i class="material-icons" style="font-size: 48px;">search_off</i></div>
+                <h3 class="text-slate-400">No endpoints found.</h3>
+            </div>
+            <div id="apiList" class="space-y-6"></div>
+        </div>
+
+        <div class="mt-16 pt-8 border-t border-gray-800 text-center">
+            <p class="text-slate-500 text-xs">&copy; <span id="year"></span> <span id="footerTitle">API</span>. All rights reserved.</p>
+        </div>
+    </main>
+
+    <script>
+        const apiData = <%- JSON.stringify(apiData) %>;
+        
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result); 
+            reader.onerror = error => reject(error);
+        });
+
+        async function loadApiData() {
+            try {
+                document.getElementById('title').textContent = apiData.title;
+                document.getElementById('description').textContent = apiData.description;
+                document.getElementById('footerTitle').textContent = apiData.title;
+                document.getElementById('year').textContent = new Date().getFullYear();
+
+                const hostSelect = document.getElementById('hostSelect');
+                hostSelect.innerHTML = ''; 
+                const currentOrigin = window.location.origin; 
+                const optCurrent = document.createElement('option');
+                optCurrent.value = currentOrigin;
+                optCurrent.textContent = `${currentOrigin} (Current Server / Development)`;
+                hostSelect.appendChild(optCurrent);
+
+                if (apiData.baseURL) {
+                    const cleanBaseURL = apiData.baseURL.replace(/\/$/, ""); 
+                    if (cleanBaseURL !== currentOrigin) {
+                        const optProd = document.createElement('option');
+                        optProd.value = cleanBaseURL;
+                        optProd.textContent = `${cleanBaseURL} (Production Server)`;
+                        hostSelect.appendChild(optProd);
+                    }
+                }
+
+                const categories = {};
+                apiData.endpoints.forEach(endpoint => {
+                    if (!categories[endpoint.category]) categories[endpoint.category] = [];
+                    categories[endpoint.category].push(endpoint);
+                });
+
+                document.getElementById('totalEndpoints').textContent = apiData.endpoints.length;
+                document.getElementById('totalCategories').textContent = Object.keys(categories).length;
+
+                const apiList = document.getElementById('apiList');
+                apiList.innerHTML = '';
+                let categoryIndex = 0;
+
+                for (const [categoryName, endpoints] of Object.entries(categories)) {
+                    const categoryGroup = document.createElement('div');
+                    categoryGroup.className = 'category-group mb-6';
+                    categoryGroup.setAttribute('data-category', categoryName);
+
+                    let categoryContent = '';
+                    let endpointIndex = 0;
+
+                    endpoints.forEach(endpoint => {
+                        const method = endpoint.methods[0];
+                        let colorClass = method === 'POST' ? 'method-post' : 'method-get';
+                        if(method === 'GET') colorClass = 'method-get';
+
+                        let inputsHtml = '';
+                        const params = endpoint.paramsSchema || {};
+
+                        Object.entries(params).forEach(([paramName, paramSchema]) => {
+                            const isRequired = paramSchema.required ? 'required' : '';
+                            const reqStar = paramSchema.required ? '<span class="text-red-500 ml-1">*</span>' : '';
+
+                            // === LOGIC INPUT TIPE ===
+                            if (paramSchema.type === 'file') {
+                                inputsHtml += `
+                                    <div class="mb-3">
+                                        <label class="block text-xs font-semibold text-slate-400 mb-1.5 uppercase">${paramName} (Image) ${reqStar}</label>
+                                        <input type="file" name="${paramName}" accept="image/*" class="w-full text-xs text-slate-300 bg-gray-900 border border-gray-700 rounded p-1 focus:border-red-500 outline-none transition-colors" ${isRequired}>
+                                        <p class="text-[10px] text-slate-500 mt-1">Max 5MB. Auto-converted to Base64.</p>
+                                    </div>`;
+                            } 
+                            // === LOGIC SELECT (DROPDOWN) ===
+                            else if (paramSchema.type === 'select') {
+                                let optionsHtml = '';
+                                if(paramSchema.options && Array.isArray(paramSchema.options)){
+                                    paramSchema.options.forEach(opt => {
+                                        optionsHtml += `<option value="${opt}">${opt.toUpperCase()}</option>`;
+                                    });
+                                }
+                                inputsHtml += `
+                                    <div class="mb-3">
+                                        <label class="block text-xs font-semibold text-slate-400 mb-1.5 uppercase">${paramName} ${reqStar}</label>
+                                        <select name="${paramName}" class="w-full px-3 py-2.5 border border-gray-700 text-xs bg-gray-900 text-slate-200 focus:border-red-500 outline-none rounded cursor-pointer">
+                                            ${optionsHtml}
+                                        </select>
+                                    </div>`;
+                            } 
+                            // === LOGIC TEXT ===
+                            else {
+                                inputsHtml += `
+                                    <div class="mb-3">
+                                        <label class="block text-xs font-semibold text-slate-400 mb-1.5 uppercase">${paramName} ${reqStar}</label>
+                                        <input type="text" name="${paramName}" class="w-full px-3 py-2.5 border border-gray-700 text-xs bg-gray-900 text-slate-200 focus:border-red-500 outline-none rounded placeholder-gray-600" placeholder="Enter ${paramName}..." ${isRequired}>
+                                    </div>`;
+                            }
+                        });
+
+                        if (!inputsHtml) inputsHtml = '<div class="text-xs text-slate-500 italic mb-4">No parameters required.</div>';
+
+                        categoryContent += `
+                            <div class="endpoint-card bg-gray-800 border border-gray-700 mb-3 rounded overflow-hidden api-item" data-path="${endpoint.route}" data-alias="${endpoint.name}" data-category="${endpoint.category}">
+                                <div class="p-4 cursor-pointer select-none flex items-center justify-between hover:bg-gray-750 transition-colors" onclick="toggleEndpoint(${categoryIndex}, ${endpointIndex})">
+                                    <div class="flex items-center gap-3 overflow-hidden">
+                                        <span class="method-badge ${colorClass}">${method}</span>
+                                        <span class="font-mono text-sm text-slate-200 truncate">${endpoint.route}</span>
+                                        <span class="text-xs text-gray-500 hidden sm:inline-block border-l border-gray-600 pl-3 ml-1">${endpoint.name}</span>
+                                    </div>
+                                    <span class="material-icons text-gray-500 transition-transform duration-200" id="icon-${categoryIndex}-${endpointIndex}">expand_more</span>
+                                </div>
+                                <div id="endpoint-${categoryIndex}-${endpointIndex}" class="hidden border-t border-gray-700 bg-gray-900/50">
+                                    <div class="p-4">
+                                        <p class="text-sm text-slate-400 mb-4 border-l-2 border-red-500 pl-3">${endpoint.description}</p>
+                                        <div class="text-xs font-bold text-slate-500 mb-3 flex items-center gap-1"><span class="material-icons text-sm">settings</span> PARAMETERS</div>
+                                        <form onsubmit="executeRequest(event, ${categoryIndex}, ${endpointIndex}, '${method}', '${endpoint.route}')">
+                                            <div class="bg-gray-800 p-4 rounded border border-gray-700 mb-4">${inputsHtml}</div>
+                                            <div class="flex gap-3">
+                                                <button type="submit" class="bg-red-600 hover:bg-red-500 text-white px-6 py-2 text-xs font-bold rounded shadow-lg shadow-red-900/20 transition-all flex items-center gap-2">
+                                                    <span class="material-icons text-sm">play_arrow</span> EXECUTE
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <div id="response-box-${categoryIndex}-${endpointIndex}" class="hidden mt-4">
+                                            <div class="flex justify-between items-center mb-1">
+                                                <span class="text-xs font-bold text-slate-500">RESPONSE</span>
+                                                <span class="text-[10px] text-green-500" id="status-${categoryIndex}-${endpointIndex}"></span>
+                                            </div>
+                                            <div class="bg-gray-950 border border-gray-800 p-4 rounded text-xs font-mono overflow-auto max-h-96 text-slate-300 shadow-inner">
+                                                <pre id="json-output-${categoryIndex}-${endpointIndex}"></pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                        endpointIndex++;
+                    });
+
+                    categoryGroup.innerHTML = `
+                        <div class="mb-2">
+                            <h2 class="text-lg font-bold text-white mb-3 flex items-center gap-2"><span class="material-icons text-red-500">folder</span> ${categoryName}</h2>
+                            <div class="pl-2 border-l-2 border-gray-800">${categoryContent}</div>
+                        </div>`;
+                    apiList.appendChild(categoryGroup);
+                    categoryIndex++;
+                }
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('description').textContent = "Error loading API data.";
+            }
+        }
+
+        async function executeRequest(e, cIdx, eIdx, method, route) {
+            e.preventDefault();
+            const form = e.target;
+            const responseBox = document.getElementById(`response-box-${cIdx}-${eIdx}`);
+            const jsonOutput = document.getElementById(`json-output-${cIdx}-${eIdx}`);
+            const statusLabel = document.getElementById(`status-${cIdx}-${eIdx}`);
+            const host = document.getElementById('hostSelect').value;
+
+            responseBox.classList.remove('hidden');
+            jsonOutput.innerHTML = '<span class="text-yellow-500 animate-pulse">Processing request (Uploading/Converting)... please wait.</span>';
+            statusLabel.textContent = "SENDING...";
+
+            let url = host + route;
+            const formData = new FormData(form);
+            const data = {};
+
+            try {
+                for (const [key, value] of formData.entries()) {
+                    const inputElement = form.querySelector(`[name="${key}"]`);
+                    if (inputElement && inputElement.type === 'file') {
+                        if (inputElement.files.length > 0) {
+                            const file = inputElement.files[0];
+                            const base64String = await toBase64(file);
+                            data[key] = base64String; 
+                        } else {
+                            data[key] = ""; 
+                        }
+                    } else {
+                        data[key] = value;
+                    }
+                }
+
+                const options = { method: method, headers: {} };
+                if (method === 'GET') {
+                    const params = new URLSearchParams(data).toString();
+                    if (params) url += '?' + params;
+                } else {
+                    options.headers['Content-Type'] = 'application/json';
+                    options.body = JSON.stringify(data);
+                }
+
+                const res = await fetch(url, options);
+                const contentType = res.headers.get("content-type");
+                
+                statusLabel.textContent = `${res.status} ${res.statusText}`;
+                statusLabel.className = res.ok ? "text-[10px] text-green-400" : "text-[10px] text-red-400";
+
+                let outputHtml = "";
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    const json = await res.json();
+                    outputHtml = JSON.stringify(json, null, 2)
+                        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                        .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                            let cls = 'text-purple-400';
+                            if (/^"/.test(match)) {
+                                if (/:$/.test(match)) { cls = 'text-blue-400 font-bold'; } else { cls = 'text-green-400'; }
+                            } else if (/true|false/.test(match)) { cls = 'text-yellow-500'; } else if (/null/.test(match)) { cls = 'text-gray-500'; }
+                            return '<span class="' + cls + '">' + match + '</span>';
+                        });
+                } else {
+                    const text = await res.text();
+                    outputHtml = `<span class="text-white">${text}</span>`;
+                }
+                jsonOutput.innerHTML = outputHtml;
+
+            } catch (err) {
+                statusLabel.textContent = "CLIENT ERROR";
+                statusLabel.className = "text-[10px] text-red-500";
+                jsonOutput.innerHTML = `<span class="text-red-500">Error: ${err.message}</span>`;
+            }
+        }
+
+        function toggleEndpoint(cIdx, eIdx) {
+            const content = document.getElementById(`endpoint-${cIdx}-${eIdx}`);
+            const icon = document.getElementById(`icon-${cIdx}-${eIdx}`);
+            content.classList.toggle('hidden');
+            icon.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            let foundAny = false;
+            document.querySelectorAll('.api-item').forEach(item => {
+                const text = (item.dataset.path + " " + item.dataset.alias + " " + item.dataset.category).toLowerCase();
+                const match = text.includes(term);
+                if (match) { item.classList.remove('hidden'); foundAny = true; } else { item.classList.add('hidden'); }
+            });
+            document.querySelectorAll('.category-group').forEach(group => {
+                const visibleItems = group.querySelectorAll('.api-item:not(.hidden)').length;
+                group.style.display = visibleItems > 0 ? 'block' : 'none';
+            });
+            document.getElementById('noResults').classList.toggle('hidden', foundAny);
+        });
+
+        loadApiData();
+    </script>
+</body>
+</html>

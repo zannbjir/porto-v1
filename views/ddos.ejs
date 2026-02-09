@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bahwa Web Down</title>
+    
+    <!-- CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .warning {
+            color: #e74c3c;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .loader-container {
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            border-radius: 50%;
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: spin 1s linear infinite;
+        }
+        .loading {
+            color: #6c757d;
+            font-size: 24px;
+            text-align: center;
+        }
+        button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: transform 0.3s ease;
+        }
+        button:hover {
+            background-color: #4a5252;
+        }
+        .result-link {
+            color: #28a745;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .result-group input,
+        .result-group select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .result-group button {
+            margin-top: 0;
+            padding: 8px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .result-group button:hover {
+            background-color: #218838;
+        }
+        .status {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .error {
+            color: #e74c3c;
+            font-size: 1.2rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="margin-top:0;">Web yang Duh Demi Cinta</h1>
+        <form id="ddos-form">
+            <div class="loader-container">
+                <button type="button">Klik untuk Menyebabkan Web Down</button>
+            </div>
+            <p style="text-align: center; margin-bottom: 20px;">
+                Perhatian! Area yang dipilih akan menjadi target dari DDoS attack.
+            </p>
+            <form id="ddos-form" class="url-form">
+                <label for="provider-select">Pilih Jenis Attack</label>
+                <select id="provider-select">
+                    <option value="umum">Umum (Rekomendasi)</option>
+                    <option value="tutwuri">Tutwuri.id (Khusus)</option>
+                    <option value="bitly">bit.ly</option>
+                    <option value="ouo">ouo.io</option>
+                    <option value="safelinku">SafelinkU</option>
+                </select>
+                <label for="url-input">Masukkan URL Target</label>
+                <input type="url" id="url-input" placeholder="https://..." required>
+                <button type="submit" id="ddos-button">Lakukan DDoS</button>
+            </form>
+            <div id="status" class="status"></div>
+        </div>
+        <script>
+            const ddosForm = document.getElementById('ddos-form');
+            const urlInput = document.getElementById('url-input');
+            const providerSelect = document.getElementById('provider-select');
+            const ddosButton = document.getElementById('ddos-button');
+            const statusDiv = document.getElementById('status');
+            // Membatasi request untuk menghindari server overwhelmed
+            let attackLimit = 5; // Jumlah request yang bisa dilakukan per detik
+            let currentRequest = 0;
+            function updateStatus(message) {
+                statusDiv.innerHTML = `
+                    <div class="loading">${message}</div>
+                    <p style="margin-top: 20px;">Attacks performed: ${currentRequest}</p>
+                `;
+            }
+            async function ddos() {
+                try {
+                    urlInput.value = '';
+                    providerSelect.value = 'umum';
+                    currentRequest = 0;
+                    if (!urlInput.value || !providerSelect.value) {
+                        alert('Mengharapkan URL dan Pemilihan yang合法');
+                        return;
+                    }
+                    ddosButton.disabled = true;
+                    try {
+                        const interval = setInterval(() => {
+                            updateStatus(`Performing DDoS attack...`);
+                            
+                            if (currentRequest >= attackLimit) {
+                                clearInterval(interval);
+                                statusDiv.classList.remove('loading', 'error');
+                                alert(`Already reached attack limit: ${attackLimit} requests per second`);
+                                return;
+                            }
+                            currentRequest++;
+                            const response = await fetch('/api/ddos', {
+                                method: 'POST',
+                                headers: { 
+                                    'Content-Type': 'application/json',
+                                    'X-Attack-Type': providerSelect.value
+                                },
+                                body: JSON.stringify({ url: urlInput.value })
+                            });
+                            if (!response.ok) {
+                                throw new Error('Gagal mem-Perform DDoS attack');
+                            }
+                            updateStatus(`Successfully performed DDoS attack!`);
+                            statusDiv.classList.remove('error', 'loading');
+                            
+                            // Simulasi visual dari attack
+                            const attackIndicator = document.createElement('div');
+                            attackIndicator.className = 'result-link';
+                            attackIndicator.innerHTML = `
+                                <p style="color: red; font-size: 24px;">DDoS Attack Has Been Performed</p>
+                                <button class="copy-button">Copy Link</button>
+                            `;
+                            const link = document.createElement('a');
+                            link.href = window.location.href;
+                            link.download = 'ddos_result.txt';
+                            link.click();
+                            attackIndicator.style.animation = `
+                                spin ${1/5}s linear infinite,
+                                scale ${currentRequest / (attackLimit * 2)} ${50%} reverse
+                            `;
+                            
+                            setTimeout(() => {
+                                attackIndicator.style.animation = '';
+                                document.body.removeChild(attackIndicator);
+                            }, 3000);
+                        }, 200); // Melakukan attack setiap 200ms (5 request per detik)
+                    } catch (err) {
+                        setError(err.message);
+                    }
+                } catch (err) {
+                    setError('Something went wrong! Please try again later.');
+                } finally {
+                    ddosButton.disabled = false;
+                }
+            }
+            function setError(message) {
+                statusDiv.innerHTML = `
+                    <p class="error">${message}</p>
+                    <div id="copy-button">Klik untuk mem Salin Hasil</div>
+                `;
+                document.getElementById('copy-button').addEventListener('click', () => {
+                    alert('Link tidak dapat dikopy, harap coba lagi');
+                });
+            }
+            function showSuccess(link) {
+                // Pada halaman ini sudah di-handle
+            }
+        </script>
+    </body>
+</html>

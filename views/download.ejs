@@ -243,7 +243,7 @@
             loadingTT.style.display = 'block';
             resultsTT.innerHTML = '';
             try {
-                const response = await fetch('/api/tiktok-download', {
+                const response = await fetch('/api/tiktok', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ url: url })
@@ -288,7 +288,7 @@
             loadingIG.style.display = 'block';
             resultsIG.innerHTML = '';
             try {
-                const response = await fetch('/api/instagram-download', {
+                const response = await fetch('/api/instagram', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ url: url })
@@ -348,7 +348,7 @@
             resultsTW.innerHTML = '';
 
             try {
-                const response = await fetch('/api/twitter-download', { 
+                const response = await fetch('/api/twitter', { 
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ url: url })
