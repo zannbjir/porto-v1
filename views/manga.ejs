@@ -2,7 +2,7 @@
 <html lang="id" class="overflow-x-hidden">
 <head>
 <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta property="og:image" content="https://emoji-cdn.mqrio.dev/😜?style=twitter">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -13,6 +13,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&family=Architects+Daughter&display=swap" rel="stylesheet">
     
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
 <style>
   :root {
     --bg: #fdfbf7;
@@ -36,7 +38,7 @@
     --radius-wobbly-sm: 125px 15px 95px 15px / 15px 95px 15px 125px;
   }
   
-  * { margin:0; padding:0; box-sizing:border-box; }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
   
   body { 
     background-color: var(--bg); 
@@ -53,62 +55,37 @@
     background-size: 100% 100%, 100% 100%, 24px 24px;
   }
 
-  h1, h2, h3, h4, h5, h6, .kalam-font {
-    font-family: 'Kalam', cursive;
-    font-weight: 700;
-  }
+  h1, h2, h3, h4, h5, h6, .kalam-font { font-family: 'Kalam', cursive; font-weight: 700; }
 
   /* UTILS & DECORATIONS */
   .tape-decoration {
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%) rotate(-3deg);
-    width: 80px;
-    height: 25px;
-    background: rgba(220, 220, 220, 0.6);
-    border-left: 2px dashed rgba(0, 0, 0, 0.1);
-    border-right: 2px dashed rgba(0, 0, 0, 0.1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 5;
+    position: absolute; top: -10px; left: 50%; transform: translateX(-50%) rotate(-3deg);
+    width: 80px; height: 25px; background: rgba(220, 220, 220, 0.6);
+    border-left: 2px dashed rgba(0, 0, 0, 0.1); border-right: 2px dashed rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); z-index: 5;
   }
   .tack-decoration {
-    position: absolute;
-    top: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 16px;
-    height: 16px;
-    background: linear-gradient(135deg, #ff4d4d 0%, #cc3333 100%);
-    border-radius: 50%;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3), inset 0 -2px 4px rgba(0, 0, 0, 0.2);
-    z-index: 5;
+    position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+    width: 16px; height: 16px; background: linear-gradient(135deg, #ff4d4d 0%, #cc3333 100%);
+    border-radius: 50%; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3), inset 0 -2px 4px rgba(0, 0, 0, 0.2); z-index: 5;
   }
   .tack-decoration::after {
-    content: '';
-    position: absolute;
-    top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 6px; height: 6px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
+    content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 6px; height: 6px; background: rgba(255, 255, 255, 0.3); border-radius: 50%;
   }
   .wavy-underline {
     text-decoration: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath fill='none' stroke='%232d2d2d' stroke-width='1.5' d='M0,3 Q5,0 10,3 T20,3'/%3E%3C/svg%3E");
-    background-repeat: repeat-x;
-    background-position: 0 100%;
-    background-size: 20px 4px;
-    padding-bottom: 6px;
+    background-repeat: repeat-x; background-position: 0 100%; background-size: 20px 4px; padding-bottom: 6px;
   }
   .paper-texture { position: relative; }
   .paper-texture::before {
-    content: ''; position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3CfeColorMatrix values='0 0 0 0 0, 0 0 0 0 0, 0 0 0 0 0, 0 0 0 0.02 0'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' /%3E%3C/svg%3E");
     pointer-events: none; opacity: 0.4;
   }
 
-  /* NAV */
+  /* TOP NAV */
   nav { 
       position:sticky; top:0; z-index:100; 
       background: rgba(253, 251, 247, 0.95); backdrop-filter:blur(12px); 
@@ -136,12 +113,37 @@
   .nav-tabs::-webkit-scrollbar { display: none; }
   .nav-tab { 
       background:none; border:2px solid transparent; color:var(--text2); 
-      font-size:1.1rem; font-family: 'Patrick Hand', cursive; font-weight: 600; 
+      font-size:1rem; font-family: 'Patrick Hand', cursive; font-weight: 600; 
       padding:6px 12px; border-radius: var(--radius-wobbly-sm); 
       cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:5px; white-space:nowrap; 
   }
-  .nav-tab:hover, .nav-tab.active { background:var(--yellow); color:var(--text); border-color: var(--border); box-shadow: 2px 2px 0px 0px var(--border); transform: rotate(-1deg); }
+  .nav-tab:hover, .nav-tab.active, .m-nav-item.active { background:var(--yellow); color:var(--text); border-color: var(--border); box-shadow: 2px 2px 0px 0px var(--border); transform: rotate(-1deg); }
   .nav-tab svg { width:18px; height:18px; }
+
+  /* MOBILE BOTTOM NAVBAR */
+  .mobile-nav {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(253, 251, 247, 0.98); backdrop-filter: blur(10px);
+      border-top: 3px dashed var(--border); z-index: 100;
+      padding: 10px 5px; justify-content: space-around; align-items: center;
+      padding-bottom: env(safe-area-inset-bottom, 10px);
+  }
+  .m-nav-item {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: var(--text3); font-weight: bold; cursor: pointer; transition: 0.2s;
+      padding: 6px 10px; border-radius: var(--radius-wobbly-sm); border: 2px solid transparent;
+  }
+  .m-nav-item span { font-size: 0.75rem; margin-top: 2px; }
+  .m-nav-item svg { width: 22px; height: 22px; margin-bottom: 2px; }
+  
+  /* RESPONSIVE NAV LOGIC */
+  @media(max-width: 768px) {
+      .nav-tabs { display: none !important; }
+      .mobile-nav { display: flex !important; }
+      body { padding-bottom: 80px; } /* Spacer untuk navbar mobile */
+      nav { height: auto; padding: 15px 1rem; flex-wrap: wrap; justify-content: space-between;}
+      .search-wrap { order: 3; width: 100%; max-width: 100%; margin-top: 15px;}
+  }
 
   /* PAGES */
   .page { display:none; animation:fadeIn 0.3s ease-out; flex: 1; }
@@ -153,7 +155,18 @@
 
   /* SECTION HEADER */
   .sec-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; }
-  .sec-title { font-size:2rem; font-family: 'Kalam', cursive; font-weight:700; color:var(--text); }
+  .sec-title { font-size:1.8rem; font-family: 'Kalam', cursive; font-weight:700; color:var(--text); }
+
+  /* SWIPER BANNER HERO */
+  .swiper { width: 100%; height: 200px; border-radius: var(--radius-wobbly); border: 3px solid var(--border); box-shadow: var(--shadow-hard); background: var(--card); margin-bottom: 2rem;}
+  @media(min-width:768px) { .swiper { height: 350px; } }
+  .swiper-slide { position: relative; cursor: pointer; overflow: hidden;}
+  .swiper-slide img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); transition: 0.3s;}
+  .swiper-slide:hover img { filter: brightness(0.4) scale(1.05); }
+  .hero-info { position: absolute; bottom: 20px; left: 20px; right: 20px; color: white; z-index: 10;}
+  .hero-info h2 { font-family: 'Kalam', cursive; font-size: 1.5rem; line-height: 1.1; margin-bottom: 5px; text-shadow: 2px 2px 0 #000; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}
+  @media(min-width:768px) { .hero-info h2 { font-size: 2.5rem; } }
+  .hero-badge { display: inline-block; background: var(--accent); padding: 2px 8px; border-radius: 8px; font-size: 0.8rem; border: 2px solid #000; font-family: 'Patrick Hand', cursive; }
 
   /* MANGA GRID */
   .manga-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:16px; }
@@ -169,9 +182,10 @@
       border: 3px solid var(--border);
       box-shadow: var(--shadow);
       display: flex; flex-direction: column;
+      width: 100%; /* For Grid */
   }
   .manga-card:hover { transform:translateY(-6px) rotate(1deg); box-shadow: var(--shadow-hover); z-index: 5;}
-  .manga-card img { width:100%; aspect-ratio:2/3; object-fit:cover; display:block; background:#e5e0d8; border-bottom: 2px dashed var(--border);}
+  .manga-card img { width:100%; height:auto; aspect-ratio:2/3; object-fit:cover; display:block; background:#e5e0d8; border-bottom: 2px dashed var(--border);}
   .manga-card .badge { 
       position:absolute; top:10px; right:10px; 
       background:var(--yellow); color:var(--text); font-family: 'Patrick Hand', cursive;
@@ -180,7 +194,27 @@
   }
   .manga-card .info { padding:12px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;}
   .manga-card .title { font-family: 'Kalam', cursive; font-size:1.1rem; font-weight:700; line-height:1.2; margin-bottom:6px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-  .manga-card .sub { font-size:0.9rem; color:var(--text2); font-weight: 500; font-family: 'Patrick Hand', cursive;}
+  .manga-card .sub { font-size:0.85rem; color:var(--text2); font-weight: 500; font-family: 'Patrick Hand', cursive;}
+
+  /* FIX BUG HORIZONTAL LIST POPULER */
+  .horizontal-list { 
+      display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px; 
+      scrollbar-width: none; margin-bottom: 2rem;
+      align-items: stretch; /* Biar tinggi sama */
+  }
+  .horizontal-list::-webkit-scrollbar { display: none; }
+  .horizontal-list .manga-card { 
+      width: 140px; /* Ukuran pasti biar gak melar */
+      flex: 0 0 140px; 
+  }
+  @media(min-width:768px) { 
+      .horizontal-list .manga-card { width: 170px; flex: 0 0 170px; } 
+  }
+
+  /* FILTER TABS */
+  .filter-tabs { display: flex; gap: 10px; margin-bottom: 15px; }
+  .filter-tab { padding: 5px 15px; border: 2px solid var(--border); background: var(--card); border-radius: 15px; cursor: pointer; font-family: 'Patrick Hand'; font-weight: 600; box-shadow: 2px 2px 0px var(--border); transition: 0.2s;}
+  .filter-tab.active { background: var(--green); color: white; transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border);}
 
   /* GENRE CHIPS */
   .genre-wrap { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:2.5rem; justify-content: center;}
@@ -223,12 +257,9 @@
 
   /* DETAIL PAGE */
   .detail-card {
-      background: var(--card);
-      border: 3px solid var(--border);
-      border-radius: var(--radius-wobbly);
-      padding: 1.5rem;
-      position: relative;
-      box-shadow: var(--shadow);
+      background: var(--card); border: 3px solid var(--border);
+      border-radius: var(--radius-wobbly); padding: 1.5rem;
+      position: relative; box-shadow: var(--shadow);
   }
   .detail-hero { display:flex; flex-direction: column; gap:2rem; margin-bottom:2rem; }
   @media(min-width:600px){ .detail-hero { flex-direction: row; } }
@@ -264,54 +295,20 @@
 
   /* READER SPECIFIC */
   #reader-page { background:var(--bg); position: relative; }
-  
-  /* Progress Bar */
-  #reading-progress {
-      position: fixed; top: 0; left: 0; height: 6px; 
-      background: var(--accent); z-index: 1001; 
-      width: 0%; transition: width 0.1s linear;
-      border-bottom: 2px solid var(--border);
-  }
-
-  .reader-nav { 
-      display:flex; align-items:center; gap:12px; padding:12px 1rem; 
-      background:rgba(253, 251, 247, 0.98); border-bottom: 3px dashed var(--border); 
-      position:sticky; top:0; z-index:50;
-      transition: transform 0.3s ease;
-  }
+  #reading-progress { position: fixed; top: 0; left: 0; height: 6px; background: var(--accent); z-index: 1001; width: 0%; transition: width 0.1s linear; border-bottom: 2px solid var(--border); }
+  .reader-nav { display:flex; align-items:center; gap:12px; padding:12px 1rem; background:rgba(253, 251, 247, 0.98); border-bottom: 3px dashed var(--border); position:sticky; top:0; z-index:50; transition: transform 0.3s ease; }
   .reader-nav.hidden-nav { transform: translateY(-100%); }
-
   .reader-title { flex:1; font-family: 'Kalam', cursive; font-size:1.2rem; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align: center;}
-  
   .reader-hint { text-align: center; padding: 10px; font-size: 0.9rem; color: var(--text3); font-style: italic; }
-  
-  .reader-imgs { 
-      display:flex; flex-direction:column; align-items:center; gap:0; padding:0; 
-      max-width:800px; margin:0 auto; border-left: 3px solid var(--border); border-right: 3px solid var(--border);
-      cursor: pointer; /* Immersive mode toggle */
-  }
+  .reader-imgs { display:flex; flex-direction:column; align-items:center; gap:0; padding:0; max-width:800px; margin:0 auto; border-left: 3px solid var(--border); border-right: 3px solid var(--border); cursor: pointer; }
   .reader-imgs img { width:100%; display:block; min-height: 200px; background: #e5e0d8; border-bottom: 1px dashed var(--border);}
-  
-  .reader-btns { 
-      display:flex; gap:15px; justify-content:center; padding:2rem 1rem; 
-      transition: opacity 0.3s, transform 0.3s;
-  }
+  .reader-btns { display:flex; gap:15px; justify-content:center; padding:2rem 1rem; transition: opacity 0.3s, transform 0.3s; }
   .reader-btns.hidden-panel { opacity: 0; pointer-events: none; transform: translateY(20px); }
 
   /* AUTO SCROLL PANEL */
-  .auto-scroll-panel {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
-      background: var(--card); border: 3px solid var(--border); border-radius: var(--radius-wobbly-sm);
-      padding: 10px 20px; display: flex; align-items: center; gap: 15px; z-index: 90;
-      box-shadow: var(--shadow-hard); opacity: 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
+  .auto-scroll-panel { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--card); border: 3px solid var(--border); border-radius: var(--radius-wobbly-sm); padding: 10px 20px; display: flex; align-items: center; gap: 15px; z-index: 90; box-shadow: var(--shadow-hard); opacity: 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
   .auto-scroll-panel.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-  .speed-btn {
-      background: var(--yellow); border: 2px solid var(--border); border-radius: 50%; 
-      width: 36px; height: 36px; font-size: 1.2rem; font-family: 'Kalam', cursive;
-      display: flex; justify-content: center; align-items: center; font-weight: bold; 
-      cursor: pointer; box-shadow: 2px 2px 0px var(--border); transition: all 0.1s;
-  }
+  .speed-btn { background: var(--yellow); border: 2px solid var(--border); border-radius: 50%; width: 36px; height: 36px; font-size: 1.2rem; font-family: 'Kalam', cursive; display: flex; justify-content: center; align-items: center; font-weight: bold; cursor: pointer; box-shadow: 2px 2px 0px var(--border); transition: all 0.1s; }
   .speed-btn:active { transform: translate(2px,2px); box-shadow: 0px 0px 0px var(--border); }
   .speed-display { font-bold font-['Patrick_Hand'] text-lg min-w-[40px] text-center; }
 
@@ -319,72 +316,35 @@
   .empty-state { text-align:center; padding:4rem 1rem; color:var(--text); }
   .empty-state .doodle { font-size: 4rem; margin-bottom: 1rem; display: inline-block; animation: float 3s ease-in-out infinite;}
   .empty-state p { font-size:1.5rem; font-family: 'Kalam', cursive;}
+  @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
 
   /* SPINNER */
   .spinner { display:flex; justify-content:center; align-items:center; padding:4rem; }
-  .spin { 
-      width:50px; height:50px; 
-      border:4px dashed var(--border); border-top-color:var(--accent); 
-      border-radius:50%; animation:spin 1s linear infinite; 
-  }
+  .spin { width:50px; height:50px; border:4px dashed var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin 1s linear infinite; }
   @keyframes spin { to { transform:rotate(360deg); } }
 
   .search-empty { text-align:center; padding:3rem; color:var(--text); font-family: 'Kalam', cursive; font-size:1.5rem; }
 
   /* TOAST */
-  .toast { 
-      position:fixed; bottom:24px; right:24px; 
-      background:var(--yellow); color: var(--text); font-family: 'Patrick Hand', cursive; font-weight: 700; 
-      border: 3px solid var(--border); border-radius:var(--radius-wobbly-sm); 
-      padding:12px 24px; font-size:1.1rem; z-index:9999; 
-      transform:translateY(100px) rotate(5deg); opacity:0; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-      box-shadow: var(--shadow-hard);
-  }
+  .toast { position:fixed; bottom:24px; right:24px; background:var(--yellow); color: var(--text); font-family: 'Patrick Hand', cursive; font-weight: 700; border: 3px solid var(--border); border-radius:var(--radius-wobbly-sm); padding:12px 24px; font-size:1.1rem; z-index:9999; transform:translateY(100px) rotate(5deg); opacity:0; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: var(--shadow-hard); }
+  @media(max-width: 768px) { .toast { bottom: 90px; } } /* Biar toast di hp gak ketutupan nav */
   .toast.show { transform:translateY(0) rotate(-2deg); opacity:1; }
 
   /* BACK BTN */
-  .back-btn { 
-      background:none; border:none; color:var(--text); cursor:pointer; 
-      display:flex; align-items:center; gap:6px; font-size:1.2rem; font-family: 'Kalam', cursive; font-weight: 700; 
-      padding:8px 0; margin-bottom:1rem; transition: transform 0.2s;
-  }
+  .back-btn { background:none; border:none; color:var(--text); cursor:pointer; display:flex; align-items:center; gap:6px; font-size:1.2rem; font-family: 'Kalam', cursive; font-weight: 700; padding:8px 0; margin-bottom:1rem; transition: transform 0.2s; }
   .back-btn:hover { color:var(--accent); transform: translateX(-5px); }
 
   /* SCROLL TO TOP */
-  #scrollTop { 
-      position:fixed; bottom:24px; right:24px; 
-      background:var(--accent); color:#fff; border:3px solid var(--border); 
-      border-radius:50%; width:56px; height:56px; cursor:pointer; display:none; 
-      align-items:center; justify-content:center; z-index:200; 
-      box-shadow:var(--shadow-hard); transition: all 0.2s;
-  }
+  #scrollTop { position:fixed; bottom:24px; right:24px; background:var(--accent); color:#fff; border:3px solid var(--border); border-radius:50%; width:56px; height:56px; cursor:pointer; display:none; align-items:center; justify-content:center; z-index:200; box-shadow:var(--shadow-hard); transition: all 0.2s; }
   #scrollTop:hover { transform: scale(1.1) rotate(10deg); background: var(--accent2);}
   #scrollTop.visible { display:flex; }
+  @media(max-width: 768px) { #scrollTop { bottom: 90px; right: 16px; width:48px; height:48px;} }
 
   /* FOOTER CREDIT */
-  footer {
-    margin-top: auto;
-    text-align: center;
-    padding: 2rem 1rem;
-    border-top: 3px dashed var(--border);
-    background: rgba(253, 251, 247, 0.8);
-    color: var(--text);
-    font-family: 'Patrick Hand', cursive;
-    font-size: 1.1rem;
-  }
-  footer a {
-    color: var(--accent);
-    font-family: 'Kalam', cursive;
-    text-decoration: none;
-    font-weight: 700;
-  }
+  footer { margin-top: auto; text-align: center; padding: 2rem 1rem; border-top: 3px dashed var(--border); background: rgba(253, 251, 247, 0.8); color: var(--text); font-family: 'Patrick Hand', cursive; font-size: 1.1rem; }
+  footer a { color: var(--accent); font-family: 'Kalam', cursive; text-decoration: none; font-weight: 700; }
   footer a:hover { text-decoration: underline wavy var(--border); }
-  
-  @media(max-width:600px){
-    nav { height: auto; padding: 15px 1rem; flex-wrap: wrap; justify-content: space-between;}
-    .search-wrap { order: 3; width: 100%; max-width: 100%; margin-top: 15px;}
-    .nav-tabs { order: 2; margin-left: 0;}
-  }
+  @media(max-width: 768px) { footer { padding-bottom: 90px; } }
 </style>
 </head>
 <body>
@@ -401,32 +361,62 @@
     <input type="text" id="searchInput" placeholder="Cari manga..." autocomplete="off">
   </div>
   <div class="nav-tabs">
-    <button class="nav-tab active" id="tab-home" onclick="showPage('home')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
-      Home
-    </button>
-    <button class="nav-tab" id="tab-genre" onclick="showPage('genre')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-      Genre
-    </button>
-    <button class="nav-tab" id="tab-bookmark" onclick="showPage('bookmark')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-      Simpan
-    </button>
+    <button class="nav-tab tab-home active" onclick="showPage('home')">🏠 Home</button>
+    <button class="nav-tab tab-ongoing" onclick="showPage('ongoing'); loadOngoing(1);">⏳ Ongoing</button>
+    <button class="nav-tab tab-completed" onclick="showPage('completed'); loadCompleted(1);">🏁 Tamat</button>
+    <button class="nav-tab tab-genre" onclick="showPage('genre')">🏷️ Genre</button>
+    <button class="nav-tab tab-bookmark" onclick="showPage('bookmark')">📌 Simpan</button>
   </div>
 </nav>
 
 <div class="page active" id="home-page">
   <div class="container relative">
       <svg class="absolute top-10 right-0 w-24 h-24 opacity-20 hidden md:block wiggle" viewBox="0 0 100 100"><path d="M10 50 Q 30 30, 50 50 T 90 50" stroke="#ff4d4d" stroke-width="3" fill="none" stroke-dasharray="5,5" /></svg>
+    
+    <div class="swiper" id="hero-slider" style="display: none;">
+      <div class="swiper-wrapper" id="hero-wrapper"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+
+    <div id="popular-section" style="display: none;">
+        <div class="sec-head" style="margin-bottom: 0.5rem;">
+            <span class="sec-title wavy-underline text-[--blue]">Top Populer 🔥</span>
+        </div>
+        <div class="filter-tabs" id="popular-tabs">
+            <div class="filter-tab active" onclick="loadPopular('week', this)">Mingguan</div>
+            <div class="filter-tab" onclick="loadPopular('month', this)">Bulanan</div>
+            <div class="filter-tab" onclick="loadPopular('alltime', this)">All Time</div>
+        </div>
+        <div class="horizontal-list" id="popular-content">
+            <div class="spinner"><div class="spin"></div></div>
+        </div>
+    </div>
+
+    <div class="sec-head"><span class="sec-title wavy-underline">Terbaru Update 🌟</span></div>
     <div id="home-content"></div>
     <div id="home-pagination"></div>
   </div>
 </div>
 
+<div class="page" id="ongoing-page">
+  <div class="container">
+    <div class="sec-head"><span class="sec-title wavy-underline text-[--green]">Komik Ongoing ⏳</span></div>
+    <div id="ongoing-content"></div>
+    <div id="ongoing-pagination"></div>
+  </div>
+</div>
+
+<div class="page" id="completed-page">
+  <div class="container">
+    <div class="sec-head"><span class="sec-title wavy-underline text-[--blue]">Komik Tamat 🏁</span></div>
+    <div id="completed-content"></div>
+    <div id="completed-pagination"></div>
+  </div>
+</div>
+
 <div class="page" id="genre-page">
   <div class="container">
-    <div class="sec-head"><span class="sec-title wavy-underline text-[#2d5da1]">Semua Genre 🏷️</span></div>
+    <div class="sec-head"><span class="sec-title wavy-underline text-[--accent2]">Semua Genre 🏷️</span></div>
     <div class="genre-wrap" id="genre-chips"></div>
     <div id="genre-content"></div>
     <div id="genre-pagination"></div>
@@ -478,7 +468,7 @@
 
 <div class="page" id="bookmark-page">
   <div class="container">
-    <div class="sec-head"><span class="sec-title wavy-underline text-[#43b581]">Tersimpan & Riwayat 📌</span></div>
+    <div class="sec-head"><span class="sec-title wavy-underline text-[--green]">Tersimpan & Riwayat 📌</span></div>
     <div id="bookmark-content"></div>
   </div>
 </div>
@@ -487,16 +477,43 @@
   Mbud API made by <a href="https://github.com/zannbjir" target="_blank" rel="noopener noreferrer">Zann</a> • Doodles by System
 </footer>
 
+<div class="mobile-nav">
+  <div class="m-nav-item tab-home active" onclick="showPage('home')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+    <span>Home</span>
+  </div>
+  <div class="m-nav-item tab-ongoing" onclick="showPage('ongoing'); loadOngoing(1);">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <span>Ongoing</span>
+  </div>
+  <div class="m-nav-item tab-completed" onclick="showPage('completed'); loadCompleted(1);">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    <span>Tamat</span>
+  </div>
+  <div class="m-nav-item tab-genre" onclick="showPage('genre')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+    <span>Genre</span>
+  </div>
+  <div class="m-nav-item tab-bookmark" onclick="showPage('bookmark')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    <span>Simpan</span>
+  </div>
+</div>
+
 <button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18,15 12,9 6,15"/></svg>
 </button>
 
 <div class="toast paper-texture" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 <script>
 const API = 'https://mbud.my.id/api/manga';
 let state = {
   homePage: 1, homeLastPage: 1, homeItems: [],
+  ongoingPage: 1, ongoingLastPage: 1,
+  completedPage: 1, completedLastPage: 1,
   genrePage: 1, genreLastPage: 1, genreItems: [], activeGenre: '',
   searchPage: 1, searchLastPage: 1, searchItems: [], searchQuery: '',
   currentPage: 'home',
@@ -542,14 +559,17 @@ async function apiFetch(url) {
 function renderCards(items) {
   return items.map((m, i) => {
     const dec = i % 2 === 0 ? '<div class="tape-decoration"></div>' : '<div class="tack-decoration"></div>';
+    let subInfo = m.latestChapter || m.latest_chapter || m.status || '';
+    if(m.rating) subInfo = `⭐ ${m.rating} | ${subInfo}`;
+
     return `
-    <div class="manga-card paper-texture" onclick="goDetail('${escHtml(m.slug)}','${escHtml(m.title)}','${escHtml(m.coverUrl || m.cover)}')">
+    <div class="manga-card paper-texture" onclick="goDetail('${escHtml(m.slug)}','${escHtml(m.title)}','${escHtml(m.coverUrl || m.cover_url || m.cover)}')">
       ${dec}
-      <img src="${escHtml(m.coverUrl || m.cover)}" alt="${escHtml(m.title)}" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 2 3%22><rect width=%222%22 height=%223%22 fill=%22%23e5e0d8%22/></svg>'">
+      <img src="${escHtml(m.coverUrl || m.cover_url || m.cover)}" alt="${escHtml(m.title)}" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 2 3%22><rect width=%222%22 height=%223%22 fill=%22%23e5e0d8%22/></svg>'">
       ${m.type && m.type !== "Unknown" ? `<div class="badge">${escHtml(m.type)}</div>` : ''}
       <div class="info">
         <div class="title">${escHtml(m.title)}</div>
-        <div class="sub">${escHtml(m.latestChapter||m.latest_chapter||m.status||'')}</div>
+        <div class="sub">${escHtml(subInfo)}</div>
       </div>
     </div>`
   }).join('');
@@ -573,25 +593,27 @@ function renderPaginationHtml(current, last, funcName) {
 
 function escHtml(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
-// --- PAGES ---
+// --- PAGES NAVIGATION ---
 function showPage(name, push=true) {
   if (push && state.currentPage !== name) state.pageStack.push(state.currentPage);
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(name+'-page').classList.add('active');
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  const tab = document.getElementById('tab-'+name);
-  if (tab) tab.classList.add('active');
+  
+  // Update Active Class di Desktop & Mobile Nav
+  document.querySelectorAll('.nav-tab, .m-nav-item').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-'+name).forEach(t => t.classList.add('active'));
+  
   state.currentPage = name;
   
-  // Reset Immersive & Auto Scroll if leaving reader
   if (name !== 'reader') {
       document.getElementById('main-nav').style.display = 'flex';
+      document.querySelector('.mobile-nav').style.display = window.innerWidth <= 768 ? 'flex' : 'none';
       if(isAutoScrolling) toggleAutoScroll();
       document.getElementById('reading-progress').style.width = '0%';
   } else {
       document.getElementById('main-nav').style.display = 'none';
+      document.querySelector('.mobile-nav').style.display = 'none'; // Sembunyiin bottom nav pas baca
   }
-  
   window.scrollTo(0,0);
 }
 
@@ -605,23 +627,94 @@ function goHome() {
   showPage('home', false);
 }
 
-// --- HOME ---
+// --- HOME: LOAD HERO & POPULAR ---
+async function loadHomeWidgets() {
+    try {
+        const d = await apiFetch(`${API}/hero`);
+        if (d.data && d.data.length > 0) {
+            const swiperWrapper = document.getElementById('hero-wrapper');
+            swiperWrapper.innerHTML = d.data.map(h => `
+                <div class="swiper-slide" onclick="goDetail('${h.slug}', '${escHtml(h.title)}', '${h.cover_url}')">
+                    <img src="${h.cover_url}" alt="${escHtml(h.title)}">
+                    <div class="hero-info">
+                        <span class="hero-badge">⭐ ${h.rating} | ${h.type}</span>
+                        <h2>${escHtml(h.title)}</h2>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('hero-slider').style.display = 'block';
+            new Swiper('.swiper', { loop: true, autoplay: { delay: 4000, disableOnInteraction: false }, pagination: { el: '.swiper-pagination', clickable: true } });
+        }
+    } catch(e) {}
+
+    document.getElementById('popular-section').style.display = 'block';
+    loadPopular('week', document.querySelector('.filter-tab.active'));
+}
+
+async function loadPopular(period, btnEl) {
+    document.querySelectorAll('.filter-tab').forEach(btn => btn.classList.remove('active'));
+    if(btnEl) btnEl.classList.add('active');
+
+    const content = document.getElementById('popular-content');
+    content.innerHTML = '<div class="spinner"><div class="spin"></div></div>';
+    try {
+        const d = await apiFetch(`${API}/popular?period=${period}`);
+        if(d.data && d.data.length > 0) content.innerHTML = renderCards(d.data);
+        else content.innerHTML = '<div style="padding: 2rem; color: var(--text3);">Belum ada manga populer.</div>';
+    } catch(e) { content.innerHTML = '<div style="padding: 2rem; color: var(--text3);">Gagal memuat.</div>'; }
+}
+
+// --- HOME: LATEST UPDATE ---
 async function loadHome(page = 1) {
   if(page < 1) return;
   document.getElementById('home-content').innerHTML = '<div class="spinner"><div class="spin"></div></div>';
   document.getElementById('home-pagination').innerHTML = '';
-  window.scrollTo({top: 0, behavior: 'smooth'});
+  
+  if(page === 1) loadHomeWidgets(); 
+  else {
+      document.getElementById('hero-slider').style.display = 'none';
+      document.getElementById('popular-section').style.display = 'none';
+      window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
   try {
     const d = await apiFetch(`${API}/list?page=${page}`);
     state.homeItems = d.data || [];
     state.homePage = d.paginator ? d.paginator.current_page : page;
     state.homeLastPage = d.paginator ? d.paginator.last_page : 1;
-    
-    document.getElementById('home-content').innerHTML = `<div class="sec-head"><span class="sec-title wavy-underline">Terbaru Update 🌟</span></div><div class="manga-grid">${renderCards(state.homeItems)}</div>`;
+    document.getElementById('home-content').innerHTML = `<div class="manga-grid">${renderCards(state.homeItems)}</div>`;
     document.getElementById('home-pagination').innerHTML = renderPaginationHtml(state.homePage, state.homeLastPage, 'loadHome');
-  } catch(e) {
-    document.getElementById('home-content').innerHTML = '<div class="search-empty"><div class="doodle">🤔</div><br>Gagal memuat halaman utama.</div>';
-  }
+  } catch(e) { document.getElementById('home-content').innerHTML = '<div class="search-empty"><div class="doodle">🤔</div><br>Gagal memuat halaman utama.</div>'; }
+}
+
+// --- ONGOING PAGE ---
+async function loadOngoing(page = 1) {
+  if(page < 1) return;
+  document.getElementById('ongoing-content').innerHTML = '<div class="spinner"><div class="spin"></div></div>';
+  document.getElementById('ongoing-pagination').innerHTML = '';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  try {
+    const d = await apiFetch(`${API}/list?page=${page}&status=ongoing`);
+    state.ongoingPage = d.paginator ? d.paginator.current_page : page;
+    state.ongoingLastPage = d.paginator ? d.paginator.last_page : 1;
+    document.getElementById('ongoing-content').innerHTML = `<div class="manga-grid">${renderCards(d.data)}</div>`;
+    document.getElementById('ongoing-pagination').innerHTML = renderPaginationHtml(state.ongoingPage, state.ongoingLastPage, 'loadOngoing');
+  } catch(e) { document.getElementById('ongoing-content').innerHTML = '<div class="search-empty"><div class="doodle">🤕</div><br>Gagal memuat.</div>'; }
+}
+
+// --- COMPLETED PAGE ---
+async function loadCompleted(page = 1) {
+  if(page < 1) return;
+  document.getElementById('completed-content').innerHTML = '<div class="spinner"><div class="spin"></div></div>';
+  document.getElementById('completed-pagination').innerHTML = '';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  try {
+    const d = await apiFetch(`${API}/list?page=${page}&status=Completed`);
+    state.completedPage = d.paginator ? d.paginator.current_page : page;
+    state.completedLastPage = d.paginator ? d.paginator.last_page : 1;
+    document.getElementById('completed-content').innerHTML = `<div class="manga-grid">${renderCards(d.data)}</div>`;
+    document.getElementById('completed-pagination').innerHTML = renderPaginationHtml(state.completedPage, state.completedLastPage, 'loadCompleted');
+  } catch(e) { document.getElementById('completed-content').innerHTML = '<div class="search-empty"><div class="doodle">🤕</div><br>Gagal memuat.</div>'; }
 }
 
 // --- GENRES ---
@@ -637,10 +730,7 @@ async function loadGenres() {
 async function selectGenre(genreKey, page = 1) {
   if(page < 1) return;
   state.activeGenre = genreKey;
-  
-  document.querySelectorAll('.genre-chip').forEach(c => { 
-    c.classList.toggle('active', c.getAttribute('onclick').includes(`'${genreKey}'`)); 
-  });
+  document.querySelectorAll('.genre-chip').forEach(c => { c.classList.toggle('active', c.getAttribute('onclick').includes(`'${genreKey}'`)); });
   
   document.getElementById('genre-content').innerHTML = '<div class="spinner"><div class="spin"></div></div>';
   document.getElementById('genre-pagination').innerHTML = '';
@@ -650,12 +740,9 @@ async function selectGenre(genreKey, page = 1) {
     state.genreItems = d.data || [];
     state.genrePage = d.paginator ? d.paginator.current_page : page;
     state.genreLastPage = d.paginator ? d.paginator.last_page : 1;
-
     document.getElementById('genre-content').innerHTML = `<div class="manga-grid">${renderCards(state.genreItems)}</div>`;
     document.getElementById('genre-pagination').innerHTML = renderPaginationHtml(state.genrePage, state.genreLastPage, `(p) => selectGenre('${genreKey}', p)`);
-  } catch(e) {
-    document.getElementById('genre-content').innerHTML = '<div class="search-empty"><div class="doodle">🤕</div><br>Gagal memuat genre ini.</div>';
-  }
+  } catch(e) { document.getElementById('genre-content').innerHTML = '<div class="search-empty"><div class="doodle">🤕</div><br>Gagal memuat genre ini.</div>'; }
 }
 
 // --- SEARCH ---
@@ -667,11 +754,7 @@ document.getElementById('searchInput').addEventListener('input', function() {
   searchTimer = setTimeout(() => doSearch(q, 1), 500);
 });
 document.getElementById('searchInput').addEventListener('keydown', function(e) {
-  if (e.key==='Enter') { 
-    e.preventDefault(); 
-    clearTimeout(searchTimer); 
-    doSearch(this.value.trim(), 1); 
-  }
+  if (e.key==='Enter') { e.preventDefault(); clearTimeout(searchTimer); doSearch(this.value.trim(), 1); }
 });
 
 async function doSearch(q, page = 1) {
@@ -689,15 +772,11 @@ async function doSearch(q, page = 1) {
     state.searchLastPage = d.paginator ? d.paginator.last_page : 1;
 
     if (!state.searchItems.length) {
-      document.getElementById('search-content').innerHTML = '<div class="search-empty"><div class="doodle">👻</div><br>Kosong nih, gak ketemu.</div>';
-      return;
+      document.getElementById('search-content').innerHTML = '<div class="search-empty"><div class="doodle">👻</div><br>Kosong nih, gak ketemu.</div>'; return;
     }
-    
     document.getElementById('search-content').innerHTML = `<div class="manga-grid">${renderCards(state.searchItems)}</div>`;
     document.getElementById('search-pagination').innerHTML = renderPaginationHtml(state.searchPage, state.searchLastPage, `(p) => doSearch('${q.replace(/'/g, "\\'")}', p)`);
-  } catch(e) {
-    document.getElementById('search-content').innerHTML = '<div class="search-empty"><div class="doodle">💥</div><br>Gagal mencari. Error coy.</div>';
-  }
+  } catch(e) { document.getElementById('search-content').innerHTML = '<div class="search-empty"><div class="doodle">💥</div><br>Gagal mencari. Error coy.</div>'; }
 }
 
 // --- DETAIL ---
@@ -747,9 +826,7 @@ async function goDetail(slug, title, cover) {
         }).join('')}
       </div>
     `;
-  } catch(e) {
-    document.getElementById('detail-content').innerHTML = '<div class="tack-decoration"></div><div class="search-empty"><div class="doodle">😵</div><br>Gagal memuat detail buku.</div>';
-  }
+  } catch(e) { document.getElementById('detail-content').innerHTML = '<div class="tack-decoration"></div><div class="search-empty"><div class="doodle">😵</div><br>Gagal memuat detail buku.</div>'; }
 }
 
 function handleBM() {
@@ -759,15 +836,12 @@ function handleBM() {
 }
 
 // --- READER & AUTO SCROLL ---
-let autoScrollInterval;
-let scrollSpeed = 1.0;
-let isAutoScrolling = false;
+let autoScrollInterval; let scrollSpeed = 1.0; let isAutoScrolling = false;
 
 async function loadReader(chapterUrl, chapterTitle) {
   if (!chapterUrl) return;
   showPage('reader');
   
-  // Reset Immersive UI
   document.getElementById('reader-nav').classList.remove('hidden-nav');
   document.getElementById('reader-btns').classList.remove('hidden-panel');
   document.getElementById('reader-hint').style.display = 'block';
@@ -780,126 +854,71 @@ async function loadReader(chapterUrl, chapterTitle) {
   
   try {
     const d = await apiFetch(`${API}/read?chapterUrl=${encodeURIComponent(chapterUrl)}`);
-    const imgs = d.data || [];
-    const prev = d.prev_chapter;
-    const next = d.next_chapter;
+    const imgs = d.data || []; const prev = d.prev_chapter; const next = d.next_chapter;
     
-    document.getElementById('reader-imgs').innerHTML = imgs.map(src =>
-      `<img src="${escHtml(src)}" loading="lazy" alt="" onerror="this.style.display='none'">`
-    ).join('');
+    document.getElementById('reader-imgs').innerHTML = imgs.map(src => `<img src="${escHtml(src)}" loading="lazy" alt="" onerror="this.style.display='none'">`).join('');
     
     let btns = '';
     if (prev) btns += `<button class="btn btn-outline" onclick="loadReader('${escHtml(prev)}','Chapter Sebelumnya')">← Mundur</button>`;
-    
-    // Add Auto Scroll button logic inside reader btns
     btns += `<button class="btn bg-[--yellow] text-[--text] hover:bg-[--accent] hover:text-white" id="main-auto-btn" onclick="toggleAutoScroll()">▶️ Auto Baca</button>`;
-    
     if (next) btns += `<button class="btn" onclick="loadReader('${escHtml(next)}','Chapter Berikutnya')">Maju →</button>`;
     document.getElementById('reader-btns').innerHTML = btns;
     
-    // Hide hint after 3 seconds
-    setTimeout(() => {
-        document.getElementById('reader-hint').style.display = 'none';
-    }, 3000);
-    
-  } catch(e) {
-    document.getElementById('reader-imgs').innerHTML = '<div class="search-empty"><div class="doodle">🙈</div><br>Gagal memuat gambar. Coba lagi coy.</div>';
-  }
+    setTimeout(() => { document.getElementById('reader-hint').style.display = 'none'; }, 3000);
+  } catch(e) { document.getElementById('reader-imgs').innerHTML = '<div class="search-empty"><div class="doodle">🙈</div><br>Gagal memuat gambar. Coba lagi coy.</div>'; }
 }
 
-// Immersive Mode
 function toggleImmersiveMode() {
     document.getElementById('reader-nav').classList.toggle('hidden-nav');
     document.getElementById('reader-btns').classList.toggle('hidden-panel');
     document.getElementById('reader-hint').style.display = 'none';
 }
 
-// Auto Scroll Logic
 function toggleAutoScroll() {
     isAutoScrolling = !isAutoScrolling;
     const panel = document.getElementById('auto-scroll-panel');
     const mainBtn = document.getElementById('main-auto-btn');
     
-    if (isAutoScrolling) {
-        panel.classList.add('show');
-        if(mainBtn) mainBtn.textContent = '⏸️ Stop Auto';
-        runAutoScroll();
-    } else {
-        panel.classList.remove('show');
-        if(mainBtn) mainBtn.textContent = '▶️ Auto Baca';
-        cancelAnimationFrame(autoScrollInterval);
-    }
+    if (isAutoScrolling) { panel.classList.add('show'); if(mainBtn) mainBtn.textContent = '⏸️ Stop Auto'; runAutoScroll(); } 
+    else { panel.classList.remove('show'); if(mainBtn) mainBtn.textContent = '▶️ Auto Baca'; cancelAnimationFrame(autoScrollInterval); }
 }
 
-function runAutoScroll() {
-    if (!isAutoScrolling) return;
-    window.scrollBy(0, scrollSpeed);
-    autoScrollInterval = requestAnimationFrame(runAutoScroll);
-}
+function runAutoScroll() { if (!isAutoScrolling) return; window.scrollBy(0, scrollSpeed); autoScrollInterval = requestAnimationFrame(runAutoScroll); }
+function changeScrollSpeed(delta) { scrollSpeed = Math.max(0.5, Math.min(scrollSpeed + delta, 5.0)); document.getElementById('scroll-speed-display').textContent = scrollSpeed.toFixed(1) + 'x'; }
 
-function changeScrollSpeed(delta) {
-    scrollSpeed = Math.max(0.5, Math.min(scrollSpeed + delta, 5.0));
-    document.getElementById('scroll-speed-display').textContent = scrollSpeed.toFixed(1) + 'x';
-}
-
-// Pause autoscroll when user touches the screen (mobile friendliness)
 window.addEventListener('touchstart', () => { if(isAutoScrolling) cancelAnimationFrame(autoScrollInterval); });
 window.addEventListener('touchend', () => { if(isAutoScrolling) runAutoScroll(); });
 
-function bookmarkCurrentManga() {
-  if (!state.currentManga) return;
-  toggleBM(state.currentManga);
-}
+function bookmarkCurrentManga() { if (!state.currentManga) return; toggleBM(state.currentManga); }
 
 // --- BOOKMARKS ---
 function renderBookmarks() {
-  const bm = getBM();
-  const hist = getHistory();
-  let html = '';
+  const bm = getBM(); const hist = getHistory(); let html = '';
   if (bm.length) {
-    html += `<div class="sec-head"><span class="sec-title wavy-underline">Disimpan (${bm.length}) 📚</span></div>`;
+    html += `<div class="sec-head"><span class="sec-title wavy-underline text-[--green]">Disimpan (${bm.length}) 📚</span></div>`;
     html += `<div class="manga-grid">${renderCards(bm)}</div>`;
   }
   if (hist.length) {
     html += `<div class="sec-head" style="margin-top:3rem; border-top: 3px dashed var(--border); padding-top: 2rem;"><span class="sec-title wavy-underline">Habis Dibaca 📜</span></div>`;
     html += `<div class="chapter-list">${hist.map(h=>`
       <div class="chapter-item paper-texture" onclick="goDetail('${escHtml(h.slug)}','${escHtml(h.title)}','${escHtml(h.cover||'')}')">
-        <div>
-          <div class="ch-title">${escHtml(h.title)}</div>
-          <div class="ch-date">${escHtml(h.chapterTitle)} · ${timeAgo(h.time)}</div>
-        </div>
+        <div><div class="ch-title">${escHtml(h.title)}</div><div class="ch-date">${escHtml(h.chapterTitle)} · ${timeAgo(h.time)}</div></div>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg>
       </div>`).join('')}</div>`;
   }
-  if (!bm.length && !hist.length) {
-    html = `<div class="empty-state">
-      <div class="doodle">🕸️</div>
-      <p>Masih kosong, belum ada apa-apa di sini.</p>
-    </div>`;
-  }
+  if (!bm.length && !hist.length) { html = `<div class="empty-state"><div class="doodle">🕸️</div><p>Masih kosong, belum ada apa-apa di sini.</p></div>`; }
   document.getElementById('bookmark-content').innerHTML = html;
 }
 
 function timeAgo(ts) {
-  const diff = Date.now() - ts;
-  const m = Math.floor(diff/60000);
-  if (m<1) return 'Baru aja';
-  if (m<60) return m+'m lalu';
-  const h = Math.floor(m/60);
-  if (h<24) return h+'j lalu';
+  const diff = Date.now() - ts; const m = Math.floor(diff/60000);
+  if (m<1) return 'Baru aja'; if (m<60) return m+'m lalu';
+  const h = Math.floor(m/60); if (h<24) return h+'j lalu';
   return Math.floor(h/24)+'h lalu';
 }
 
-// nav bookmark tab override
-document.getElementById('tab-bookmark').addEventListener('click', renderBookmarks);
-document.getElementById('tab-genre').addEventListener('click', () => { if (!state.genres.length) loadGenres(); });
-
-// Global Scroll Events (Scroll To Top & Reading Progress)
 window.addEventListener('scroll', () => {
-  // Scroll to Top Button
   document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 400);
-  
-  // Reading Progress Bar
   if (state.currentPage === 'reader') {
       const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
       const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -908,7 +927,21 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// INIT
+// INIT EVENT LISTENER NAV
+document.querySelectorAll('.tab-bookmark').forEach(el => el.addEventListener('click', renderBookmarks));
+document.querySelectorAll('.tab-genre').forEach(el => el.addEventListener('click', () => { if (!state.genres.length) loadGenres(); }));
+
+// START APP
+window.addEventListener('resize', () => {
+    // Pastikan mobile nav hide di desktop saat window ditarik
+    if (window.innerWidth > 768 && state.currentPage !== 'reader') {
+        document.querySelector('.mobile-nav').style.display = 'none';
+        document.getElementById('main-nav').style.display = 'flex';
+    } else if (window.innerWidth <= 768 && state.currentPage !== 'reader') {
+        document.querySelector('.mobile-nav').style.display = 'flex';
+    }
+});
+
 loadHome(1);
 loadGenres();
 </script>
