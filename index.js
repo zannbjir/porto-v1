@@ -163,7 +163,8 @@ const transporter = nodemailer.createTransport({
 
 // === HALAMAN UTAMA ===
 app.get('/', (req, res) => {
-    res.render('index', { pageTitle: `Portofolio - ${config.bio.name}`, ...config });
+    const domain = `${req.protocol}://${req.get("host")}`;
+    res.render('index', { pageTitle: `Portofolio - ${config.bio.name}`, ...config, domain });
 });
 
 // === ROUTE BARU: API LANDING PAGE ===
@@ -183,6 +184,7 @@ app.get('/docs', (req, res) => {
 
 // === HALAMAN LAIN ===
 app.get('/tools', (req, res) => res.render('tools', { title: 'Razan - Tools', ...config }));
+app.get('/manga', (req, res) => res.render('manga', { title: 'Razan - Manga', ...config }));
 app.get('/downloader', (req, res) => res.render('download', { title: 'Razan - Downloader', ...config }));
 app.get('/uploader', (req, res) => res.render('uploader', { title: 'Razan - Uploader', ...config }));
 app.get('/donasi', (req, res) => res.render('donasi', { title: 'Razan - Donasi', ...config }));

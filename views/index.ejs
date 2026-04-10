@@ -1,414 +1,397 @@
 <!DOCTYPE html>
-<html lang="id">
-
+<html lang="id" class="overflow-x-hidden">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Razan Muhammad Ikhsan</title>
-  <link rel="icon" href="https://emoji-cdn.mqrio.dev/😜?style=twitter" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Ubuntu+Mono&display=swap" rel="stylesheet">
-
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            'mono': ['Ubuntu Mono', 'monospace'],
-            'sans': ['Inter', 'sans-serif']
-          },
-          colors: {
-            'nr': '#111',
-            'brutal-yellow': '#fef08a',
-            'brutal-blue': '#60a5fa',
-            'brutal-green': '#a7f3d0',
-            'brutal-pink': '#fbcfe8',
-            'brutal-orange': '#fb923c',
-            'brutal-red': '#f87171',
-            'brutal-purple': '#c084fc'
-          }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Razan Muhammad Ikhsan</title>
+    <link rel="icon" href="https://emoji-cdn.mqrio.dev/😜?style=twitter" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&family=Architects+Daughter&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Patrick Hand', cursive;
+            background-color: #fdfbf7;
+            color: #2d2d2d;
+            background-image:
+                radial-gradient(circle at 25% 25%, rgba(255, 77, 77, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(45, 93, 161, 0.05) 0%, transparent 50%),
+                radial-gradient(#e5e0d8 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 24px 24px;
+            position: relative;
         }
-      }
-    }
-  </script>
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Kalam', cursive;
+            font-weight: 700;
+        }
+        .handwritten-alt { font-family: 'Architects Daughter', cursive; }
+        
+        /* Wobbly Borders */
+        .wobbly { border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; }
+        .wobbly-md { border-radius: 185px 25px 155px 25px / 25px 155px 25px 185px; }
+        .wobbly-sm { border-radius: 125px 15px 95px 15px / 15px 95px 15px 125px; }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        .float { animation: float 4s ease-in-out infinite; }
+        .wiggle { animation: wiggle 2s ease-in-out infinite; }
 
-  <style>
-    :root {
-      --nr: #111;
-      --nr-shadow: 8px 8px 0 #111;
-      --transition-smooth: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-    }
+        /* Hand Drawn Components */
+        .btn-hand-drawn {
+            border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+            border: 3px solid #2d2d2d;
+            box-shadow: 4px 4px 0px 0px #2d2d2d;
+            transition: all 0.15s ease;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Kalam', cursive;
+        }
+        .btn-hand-drawn:hover {
+            box-shadow: 2px 2px 0px 0px #2d2d2d;
+            transform: translate(2px, 2px);
+            background: #fff9c4;
+        }
+        .card-hand-drawn {
+            background: white;
+            border: 3px solid #2d2d2d;
+            border-radius: 185px 25px 155px 25px / 25px 15px 25px 185px;
+            box-shadow: 4px 4px 0px 0px rgba(45, 45, 45, 0.15);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .card-hand-drawn:hover {
+            box-shadow: 8px 8px 0px 0px rgba(45, 45, 45, 0.25);
+            transform: rotate(1deg) translateY(-4px);
+            z-index: 10;
+        }
 
-    body {
-      background-color: #fff;
-      background-image:
-        linear-gradient(90deg, #4b4b4b10 1px, #0000 1px),
-        linear-gradient(#4b4b4b10 1px, #0000 1px),
-        repeating-linear-gradient(45deg, #4b4b4b05 0, #4b4b4b05 1px, #0000 1px, #0000 10px) !important;
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
-      cursor: none;
-    }
-
-    ::-webkit-scrollbar { display: none; }
-
-    #cursor {
-      width: 20px; height: 20px;
-      background: var(--brutal-red);
-      border: 3px solid #111;
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      transition: transform 0.1s ease;
-      display: none;
-    }
-
-    @media (min-width: 768px) { #cursor { display: block; } }
-
-    .brutal-border { border: 4px solid var(--nr); }
-    .brutal-shadow { box-shadow: var(--nr-shadow); }
-
-    .btn-brutal {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 24px;
-      font-weight: 900;
-      background: var(--brutal-blue);
-      border: 4px solid var(--nr);
-      box-shadow: var(--nr-shadow);
-      transition: var(--transition-smooth);
-      cursor: pointer;
-    }
-
-    .btn-brutal:hover {
-      transform: translate(-3px, -3px);
-      box-shadow: 12px 12px 0 var(--nr);
-      background: var(--brutal-yellow);
-    }
-
-    .btn-brutal:active { transform: translate(6px, 6px); box-shadow: 0px 0px 0 var(--nr); }
-
-    .card-brutal {
-      background: #fff;
-      border: 4px solid var(--nr);
-      box-shadow: var(--nr-shadow);
-      padding: 24px;
-      transition: var(--transition-smooth);
-      will-change: transform;
-    }
-    
-    .card-brutal:hover {
-      transform: scale(1.02) rotate(-1deg);
-      box-shadow: 15px 15px 0 var(--nr);
-      z-index: 10;
-    }
-
-    .nr-chip {
-      display: inline-flex;
-      align-items: center;
-      padding: 6px 16px;
-      background: var(--brutal-yellow);
-      border: 3px solid var(--nr);
-      border-radius: 50px;
-      font-weight: 900;
-      font-size: 11px;
-      box-shadow: 4px 4px 0 var(--nr);
-      text-transform: uppercase;
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 1s ease-out, transform 1s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-
-    .reveal.active { opacity: 1; transform: translateY(0); }
-
-    .action-glow:hover {
-      filter: drop-shadow(0 0 15px var(--brutal-red));
-      color: #f87171 !important;
-    }
-
-    /* Grid Khusus Contact Me */
-    .contact-grid-item {
-        transition: var(--transition-smooth);
-    }
-    .contact-grid-item:hover {
-        transform: translate(-4px, -4px);
-        box-shadow: 10px 10px 0 #111;
-    }
-
-  </style>
+        /* Decorations */
+        .tape-decoration {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-3deg);
+            width: 100px;
+            height: 25px;
+            background: rgba(220, 220, 220, 0.6);
+            border-left: 2px dashed rgba(0, 0, 0, 0.1);
+            border-right: 2px dashed rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 5;
+        }
+        .tack-decoration {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, #ff4d4d 0%, #cc3333 100%);
+            border-radius: 50%;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3), inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 5;
+        }
+        .tack-decoration::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+        .wavy-underline {
+            text-decoration: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath fill='none' stroke='%232d2d2d' stroke-width='1.5' d='M0,3 Q5,0 10,3 T20,3'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            background-position: 0 100%;
+            background-size: 20px 4px;
+            padding-bottom: 6px;
+        }
+        .paper-texture {
+            position: relative;
+        }
+        .paper-texture::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3CfeColorMatrix values='0 0 0 0 0, 0 0 0 0 0, 0 0 0 0 0, 0 0 0 0.02 0'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' /%3E%3C/svg%3E");
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        .skill-badge {
+            border-radius: 125px 15px 95px 15px / 15px 95px 15px 125px;
+            border: 2px solid #2d2d2d;
+            background: white;
+            padding: 0.25rem 0.75rem;
+            transition: all 0.15s ease;
+            display: inline-block;
+            font-family: 'Patrick Hand', cursive;
+        }
+        
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(253, 251, 247, 0.95);
+            backdrop-filter: blur(12px);
+        }
+        html { scroll-behavior: smooth; }
+    </style>
 </head>
+<body class="antialiased overflow-x-hidden flex flex-col min-h-screen">
 
-<body class="flex flex-col min-h-screen">
-  <div id="cursor"></div>
-  
-  <header class="bg-white py-4 border-b-[4px] border-black brutal-border sticky top-0 z-50">
-    <div class="container mx-auto px-4 flex justify-between items-center">
-      <a href="#" class="text-xl md:text-2xl font-black tracking-tighter uppercase italic action-glow transition-all">RAZAN.</a>
-      <nav class="space-x-3 md:space-x-6 flex items-center">
-        <a href="#about" class="font-black text-[10px] md:text-xs uppercase hover:text-brutal-orange transition-all">ABOUT</a>
-        <a href="#skills" class="font-black text-[10px] md:text-xs uppercase hover:text-brutal-green transition-all">STATS</a>
-        <a href="#projects" class="font-black text-[10px] md:text-xs uppercase hover:text-brutal-blue transition-all">PROJECT</a>
-        <a href="#contact" class="font-black text-[10px] md:text-xs uppercase hover:text-brutal-purple transition-all">CONTACT</a>
-      </nav>
-    </div>
-  </header>
-
-  <main class="container mx-auto flex-grow p-4 pt-12 pb-16 max-w-4xl space-y-20">
-    
-    <section id="about" class="reveal">
-      <div class="card-brutal flex flex-col md:flex-row items-center gap-12 bg-white relative overflow-hidden">
-        <div class="relative">
-          <div class="brutal-border brutal-shadow overflow-hidden w-44 h-44">
-            <img src="https://github.com/zannbjir.png" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" alt="Razan">
-          </div>
-          <div class="absolute -bottom-4 -left-4 nr-chip !bg-red-500 !text-white !rotate-[-5deg]">Sloth</div>
-        </div>
-        <div class="flex-grow text-center md:text-left z-10">
-          <h1 class="text-5xl md:text-7xl font-black mb-4 uppercase italic tracking-tighter leading-none">
-            kang<br><span class="text-brutal-orange">gabut.</span>
-          </h1>
-          <p class="text-gray-700 font-bold leading-snug text-xl italic">
-            "Gue build sesuatu kalo mood lagi asik aja. Kalo lagi hancur? bodoamat."
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="reveal">
-<div class="flex items-center gap-3 mb-6">
-        <span class="nr-chip !bg-black !text-white !shadow-none !rounded-none tracking-[0.2em] italic">VIBE CHECKING...</span>
-        <div class="h-[4px] flex-grow bg-black"></div>
-      </div>
-      <div class="card-brutal !p-0 overflow-hidden bg-black brutal-border hover:rotate-0">
-        <div class="bg-[#1DB954] p-3 flex items-center justify-between border-b-[4px] border-black">
-          <div class="flex items-center gap-3">
-            <i class="fa-brands fa-spotify text-black text-2xl animate-spin-slow"></i>
-            <span class="text-black font-black text-sm uppercase tracking-widest italic font-sans">MY PLAYLIST</span>
-          </div>
-          <div class="flex gap-2">
-            <div class="w-3 h-3 bg-black rounded-full shadow-[2px_2px_0_rgba(0,0,0,0.2)]"></div>
-            <div class="w-3 h-3 bg-black rounded-full shadow-[2px_2px_0_rgba(0,0,0,0.2)]"></div>
-          </div>
-        </div>
-      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/7tENBsNm0vZzOvcAGeTOaX?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </section>
-
-    <section id="skills" class="reveal">
-      <div class="flex items-center gap-3 mb-10">
-        <div class="h-[4px] flex-grow bg-black"></div>
-        <span class="nr-chip !bg-brutal-orange !shadow-[4px_4px_0_#111]">STATS & LOADOUT</span>
-        <div class="h-[4px] flex-grow bg-black"></div>
-      </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="card-brutal !bg-brutal-red text-black group relative overflow-hidden hover:!bg-black hover:text-white transition-all">
-          <i class="mdi mdi-crosshairs-gps text-5xl absolute -right-4 -bottom-4 opacity-20 group-hover:rotate-90 transition-all duration-700"></i>
-          <h3 class="font-black text-2xl italic uppercase">GAME</h3>
-          <p class="font-bold text-sm mt-3 leading-relaxed">Battleroyale enthusiast. Tembakan & adrenalin. Kalo AIM lagi on-point, lobby manapun gue ratain.</p>
-          <p class="font-bold text-sm mt-3 filter blur-sm leading-relaxed">Tapi Bohong 😹😹</p>
-        </div>
-        <div class="card-brutal !bg-brutal-yellow transition-all group">
-          <i class="mdi mdi-palette-swatch text-5xl"></i>
-          <h3 class="font-black text-2xl mt-4 italic uppercase">GFX DESIGN</h3>
-          <p class="font-bold text-sm mt-2 leading-relaxed">Design kalo ada inspirasi lewat. Moody visualizer. Kalo buntu, mending main epep.</p>
-        </div>
-        <div class="card-brutal !bg-brutal-green transition-all group">
-          <i class="mdi mdi-xml text-5xl"></i>
-          <h3 class="font-black text-2xl mt-4 italic uppercase">CODING</h3>
-          <p class="font-bold text-sm mt-2 leading-relaxed">HTML, Tailwind, JS. Coding kalo mood lagi bagus doang. Kalo buruk? I Don Ker.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="projects" class="reveal">
-        <div class="card-brutal !p-0 overflow-hidden brutal-shadow">
-          <div class="bg-black text-white p-4 flex justify-between items-center">
-            <h2 class="text-2xl font-black italic uppercase tracking-tighter">PROJECTS ARCHIVE</h2>
-            <i class="mdi mdi-folder-sync text-2xl"></i>
-          </div>
-          <div class="p-4 md:p-8 space-y-8 bg-white" id="project-container"></div>
-        </div>
-    </section>
-
-    <section id="anime" class="reveal">
-        <div class="flex items-center gap-4 mb-8">
-            <span class="nr-chip !bg-brutal-pink !shadow-[6px_6px_0_#111]">ANIME WATCHLIST</span>
-            <div class="h-[4px] flex-grow bg-black"></div>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="anime-grid"></div>
-    </section>
-
-    <section id="comics" class="reveal">
-        <div class="flex items-center gap-4 mb-8">
-            <div class="h-[4px] flex-grow bg-black"></div>
-            <span class="nr-chip !bg-brutal-blue !shadow-[6px_6px_0_#111]">COMIC / MANHWA</span>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="comic-grid"></div>
-    </section>
-
-    <section id="waifu" class="reveal">
-        <div class="flex items-center gap-4 mb-8">
-            <span class="nr-chip !bg-brutal-green !shadow-[6px_6px_0_#111]">WAIFU LIST</span>
-            <div class="h-[4px] flex-grow bg-black"></div>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="waifu-grid"></div>
-    </section>
-
-    <section id="contact" class="reveal pt-10">
-        <div class="flex items-center gap-4 mb-8">
-            <span class="nr-chip !bg-brutal-purple !shadow-[6px_6px_0_#111]">CONTACT ME</span>
-            <div class="h-[4px] flex-grow bg-black"></div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="contact-grid">
+    <nav class="border-b-3 border-dashed border-[#2d2d2d] py-5 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 flex justify-between items-center">
+            <div class="text-3xl md:text-4xl font-bold">
+                <span class="wavy-underline text-[#ff4d4d]">RAZAN.</span>
             </div>
-    </section>
-
-  </main>
-
-  <footer class="bg-white text-center py-12 border-t-[4px] border-black font-black text-sm uppercase tracking-widest relative overflow-hidden">
-    <div class="absolute left-0 top-0 h-full w-2 bg-brutal-red"></div>
-    <div class="absolute right-0 top-0 h-full w-2 bg-brutal-blue"></div>
-    © 2026 — RAZAN MUHAMMAD IKHSAN
-  </footer>
-
-  <script>
-    /* --- DATA ARRAYS --- */
-    
-    const ANIME_LIST = [
-      { title: "Bleach", img: "https://files.catbox.moe/eild9y.jpg" },
-      { title: "Jujutsu Kaisen", img: "https://files.catbox.moe/0w8a7a.jpg" },
-      { title: "Gachiakuta", img: "https://files.catbox.moe/3heg5f.jpg" },
-      { title: "Fire Force", img: "https://files.catbox.moe/e5wcr5.jpg" },
-      { title: "Re:Zero", img: "https://files.catbox.moe/d92klw.jpg" },
-      { title: "Chainsaw Man", img: "https://files.catbox.moe/3k6fqa.jpg" },
-      { title: "Soul Eater", img: "https://files.catbox.moe/bxq3fi.jpg" },
-      { title: "Grand Blue", img: "https://files.catbox.moe/hxkzvu.jpg" }
-    ];
-
-    const COMIC_LIST = [
-      { title: "Star Ginseng Store", img: "https://files.catbox.moe/ldx0q4.jpg" },
-      { title: "Love Revolution", img: "https://file.noku.top/8lW9.jpg" },
-      { title: "Random Chat", img: "https://files.catbox.moe/8hklih.jpg" },
-      { title: "The Warrior Returns", img: "https://file.noku.top/1SgR.jpg" },
-      { title: "Juujika no Rokunin", img: "https://files.catbox.moe/aj9z52.jpg" },
-      { title: "Leviathan", img: "https://file.noku.top/U6ND.jpg" },
-      { title: "Eleceed", img: "https://files.catbox.moe/netb9d.jpg" },
-      { title: "Player", img: "https://files.catbox.moe/trb71a.jpg" }
-    ];
-
-    const WAIFU_LIST = [
-      { title: "Rem", img: "https://file.noku.top/q94b.webp" },
-      { title: "Nephilia", img: "https://files.catbox.moe/kxuxjv.webp" },
-      { title: "Asa Mitaka", img: "https://file.noku.top/HXiS.webp" },
-      { title: "Hamin Park", img: "https://file.noku.top/nXxS.webp" }
-    ];
-
-    // Array Contact lo, guys
-    const CONTACT_LIST = [
-      { name: "Telegram", handle: "@zannbjir", icon: "fa-brands fa-telegram", url: "https://zannbjir.t.me", color: "#229ED9" },
-      { name: "Discord", handle: "zannbjir", icon: "fa-brands fa-discord", url: "https://discord.com/users/zannbjir", color: "#5865F2" },
-      { name: "Instagram", handle: "@razanaja.cuy", icon: "fa-brands fa-instagram", url: "https://www.instagram.com/razanaja.cuy/", color: "#E4405F" },
-      { name: "WhatsApp", handle: "Send Message", icon: "fa-brands fa-whatsapp", url: "https://wa.me/6285755964573?text=hallo+bang", color: "#25D366" },
-      { name: "GitHub", handle: "zannbjir", icon: "fa-brands fa-github", url: "https://github.com/zannbjir", color: "#181717" },
-      { name: "Email", handle: "razan.smuler@gmail.com", icon: "fa-solid fa-envelope", url: "mailto:razan.smuler@gmail.com", color: "#FB923C" }
-    ];
-    const PROJECT_LIST = [
-        { name: "Zann Uploader", tag: "V2.0 // Archive", url: "https://zann.web.id", color: "var(--brutal-yellow)" },
-        { name: "Noku API", tag: "STABLE // API Portal", url: "https://api.noku.top", color: "var(--brutal-blue)" }
-    ];
-
-    /* --- INJECTION LOGIC --- */
-
-    const renderGrids = () => {
-      // Projects
-      document.getElementById('project-container').innerHTML = PROJECT_LIST.map(p => `
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b-4 border-black pb-6 group">
-          <div class="transform group-hover:translate-x-2 transition-all">
-            <h3 class="text-3xl font-black uppercase italic leading-none">${p.name}</h3>
-            <p class="text-sm font-bold text-gray-400 font-mono mt-1">${p.tag}</p>
-          </div>
-          <a href="${p.url}" class="btn-brutal hover:!bg-black hover:!text-white" style="background:${p.color}">OPEN</a>
-        </div>
-      `).join('');
-
-      // Anime
-      document.getElementById('anime-grid').innerHTML = ANIME_LIST.map(a => `
-        <div class="card-brutal !p-0 overflow-hidden group hover:rotate-2">
-            <img src="${a.img}" class="h-56 w-full object-cover group-hover:scale-110 transition-all duration-700" alt="${a.title}">
-            <div class="p-3 border-t-4 border-black bg-white"><p class="font-black text-xs uppercase italic">${a.title}</p></div>
-        </div>
-      `).join('');
-
-      // Comics
-      document.getElementById('comic-grid').innerHTML = COMIC_LIST.map(c => `
-        <div class="card-brutal !p-0 overflow-hidden group hover:rotate-[-2deg]">
-            <img src="${c.img}" class="h-56 w-full object-cover group-hover:scale-110 transition-all duration-700" alt="${c.title}">
-            <div class="p-3 border-t-4 border-black bg-white"><p class="font-black text-xs uppercase italic">${c.title}</p></div>
-        </div>
-      `).join('');
-
-      // Waifu
-      document.getElementById('waifu-grid').innerHTML = WAIFU_LIST.map(c => `
-        <div class="card-brutal !p-0 overflow-hidden group hover:rotate-[-2deg]">
-            <img src="${c.img}" class="h-56 w-full object-cover group-hover:scale-110 transition-all duration-700" alt="${c.title}">
-            <div class="p-3 border-t-4 border-black bg-white"><p class="font-black text-xs uppercase italic">${c.title}</p></div>
-        </div>
-      `).join('');
-
-      // Contacts
-      document.getElementById('contact-grid').innerHTML = CONTACT_LIST.map(c => `
-        <a href="${c.url}" target="_blank" class="contact-grid-item brutal-border p-4 flex items-center gap-4 bg-white" style="border-left: 12px solid ${c.color}">
-            <div class="w-12 h-12 brutal-border flex items-center justify-center text-white" style="background: ${c.color}">
-                <i class="${c.icon} text-2xl"></i>
+            <div class="hidden md:flex gap-6 md:gap-8 items-center font-['Kalam']">
+                <a href="#about" class="text-xl hover:text-[#ff4d4d] transition-colors relative group">
+                    About
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#ff4d4d] group-hover:w-full transition-all"></span>
+                </a>
+                <a href="#skills" class="text-xl hover:text-[#2d5da1] transition-colors relative group">
+                    Stats
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#2d5da1] group-hover:w-full transition-all"></span>
+                </a>
+                <a href="#projects" class="text-xl hover:text-[#43b581] transition-colors relative group">
+                    Projects
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#43b581] group-hover:w-full transition-all"></span>
+                </a>
+                <a href="#contact" class="btn-hand-drawn bg-white px-5 py-2 text-lg inline-block">
+                    Let's Talk!
+                </a>
             </div>
-            <div>
-                <div class="font-black text-sm uppercase tracking-tighter text-nr">${c.name}</div>
-                <div class="font-mono text-[10px] font-bold text-gray-500">${c.handle}</div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto flex-grow px-4 sm:px-6 pt-12 pb-16 space-y-24 w-full">
+        
+        <section id="about" class="relative">
+            <svg class="absolute -top-10 -left-10 w-24 h-24 opacity-20 hidden md:block wiggle" viewBox="0 0 100 100">
+                <path d="M10 50 Q 30 30, 50 50 T 90 50" stroke="#ff4d4d" stroke-width="3" fill="none" stroke-dasharray="5,5" />
+            </svg>
+            <div class="card-hand-drawn p-8 md:p-12 paper-texture bg-white transform rotate-1">
+                <div class="tape-decoration"></div>
+                <div class="flex flex-col md:flex-row items-center gap-10">
+                    <div class="relative flex-shrink-0">
+                        <div class="w-48 h-48 md:w-56 md:h-56 p-2 border-3 border-[#2d2d2d] wobbly-md bg-white">
+                            <img src="https://github.com/zannbjir.png" class="w-full h-full object-cover wobbly-sm grayscale hover:grayscale-0 transition-all duration-500" alt="Razan">
+                        </div>
+                        <div class="absolute -bottom-4 -left-6 bg-[#ff4d4d] text-white px-4 py-2 transform -rotate-12 wobbly border-2 border-[#2d2d2d] text-xl font-bold font-['Kalam']">
+                            Sloth 🦥
+                        </div>
+                    </div>
+                    <div class="text-center md:text-left">
+                        <h1 class="text-5xl md:text-7xl mb-4 leading-none">
+                            Kang <span class="text-[#ff4d4d] inline-block hover:scale-110 transition-transform cursor-pointer">Gabut.</span>
+                        </h1>
+                        <p class="text-xl md:text-2xl text-[#2d2d2d]/80 handwritten-alt bg-[#fff9c4] p-3 inline-block wobbly-sm transform -rotate-1">
+                            "Gue build sesuatu kalo mood lagi asik aja. Kalo lagi hancur? bodoamat."
+                        </p>
+                    </div>
+                </div>
             </div>
-        </a>
-      `).join('');
-    }
+        </section>
 
-    /* --- ANIMATION & CURSOR --- */
+        <section>
+            <div class="flex items-center gap-4 mb-6">
+                <h2 class="text-3xl md:text-4xl"><span class="wavy-underline">Vibe Checking...</span></h2>
+                <i class="fa-brands fa-spotify text-4xl text-[#1DB954] animate-bounce"></i>
+            </div>
+            <div class="card-hand-drawn p-4 bg-[#1DB954]/10 transform -rotate-1 hover:rotate-0">
+                <div class="tack-decoration"></div>
+                <iframe style="border-radius: 185px 25px 155px 25px / 25px 15px 25px 185px; border: 3px solid #2d2d2d;" src="https://open.spotify.com/embed/playlist/7tENBsNm0vZzOvcAGeTOaX?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+        </section>
 
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+        <section id="skills">
+            <h2 class="text-3xl md:text-4xl mb-8 text-center"><span class="wavy-underline">Stats & Loadout</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card-hand-drawn p-6 bg-[#ff4d4d]/10 transform rotate-1 hover:scale-105 group">
+                    <div class="tape-decoration"></div>
+                    <i class="mdi mdi-crosshairs-gps text-5xl text-[#ff4d4d] mb-4 inline-block group-hover:rotate-90 transition-transform duration-500"></i>
+                    <h3 class="text-2xl mb-2">GAME</h3>
+                    <p class="text-lg handwritten-alt leading-relaxed">Battleroyale enthusiast. Tembakan & adrenalin. Kalo AIM lagi on-point, lobby manapun gue ratain.</p>
+                    <p class="text-sm mt-2 filter blur-sm hover:blur-none transition-all cursor-pointer">Tapi Bohong 😹😹</p>
+                </div>
+                <div class="card-hand-drawn p-6 bg-[#fff9c4] transform -rotate-2 hover:scale-105 group">
+                    <div class="tack-decoration"></div>
+                    <i class="mdi mdi-palette-swatch text-5xl text-[#faa61a] mb-4 inline-block group-hover:wiggle"></i>
+                    <h3 class="text-2xl mb-2">GFX DESIGN</h3>
+                    <p class="text-lg handwritten-alt leading-relaxed">Design kalo ada inspirasi lewat. Moody visualizer. Kalo buntu, mending main epep.</p>
+                </div>
+                <div class="card-hand-drawn p-6 bg-[#43b581]/10 transform rotate-2 hover:scale-105 group">
+                    <div class="tape-decoration"></div>
+                    <i class="mdi mdi-xml text-5xl text-[#43b581] mb-4 inline-block group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-2xl mb-2">CODING</h3>
+                    <p class="text-lg handwritten-alt leading-relaxed">HTML, Tailwind, JS. Coding kalo mood lagi bagus doang. Kalo buruk? I Don Ker.</p>
+                </div>
+            </div>
+        </section>
 
-    const cursor = document.getElementById('cursor');
-    document.addEventListener('mousemove', (e) => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-    });
+        <section id="projects">
+            <h2 class="text-3xl md:text-4xl mb-8"><span class="wavy-underline">Projects Archive</span> 📁</h2>
+            <div class="card-hand-drawn p-6 md:p-8 bg-white paper-texture">
+                <div class="tack-decoration"></div>
+                <div id="project-container" class="space-y-6"></div>
+            </div>
+        </section>
 
-    document.addEventListener('mousedown', () => cursor.style.transform = 'scale(1.5) rotate(45deg)');
-    document.addEventListener('mouseup', () => cursor.style.transform = 'scale(1) rotate(0deg)');
+        <section id="anime">
+            <h2 class="text-3xl md:text-4xl mb-8"><span class="wavy-underline">Anime Watchlist</span> 📺</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="anime-grid"></div>
+        </section>
 
-    const brutalElements = document.querySelectorAll('.btn-brutal, .card-brutal, a, .contact-grid-item');
-    brutalElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursor.style.width = '40px';
-            cursor.style.height = '40px';
-            cursor.style.mixBlendMode = 'difference';
-            cursor.style.backgroundColor = '#fff';
-        });
-        el.addEventListener('mouseleave', () => {
-            cursor.style.width = '20px';
-            cursor.style.height = '20px';
-            cursor.style.mixBlendMode = 'normal';
-            cursor.style.backgroundColor = '#f87171';
-        });
-    });
+        <section id="comics">
+            <h2 class="text-3xl md:text-4xl mb-8 text-right">📚 <span class="wavy-underline">Comic / Manhwa</span></h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="comic-grid"></div>
+        </section>
 
-    renderGrids();
-  </script>
+        <section id="waifu">
+            <h2 class="text-3xl md:text-4xl mb-8"><span class="wavy-underline">Waifu List</span> ✨</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="waifu-grid"></div>
+        </section>
+
+        <section id="contact" class="pb-10">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-5xl mb-4"><span class="wavy-underline">Let's Connect!</span> 🤝</h2>
+                <p class="text-xl handwritten-alt text-[#2d2d2d]/70">Hit me up for collaborations or just random chats.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="contact-grid"></div>
+        </section>
+
+    </main>
+
+    <footer class="py-10 border-t-3 border-dashed border-[#2d2d2d] bg-white/60 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="text-2xl font-bold mb-2 font-['Kalam']">© 2026 — RAZAN MUHAMMAD IKHSAN</p>
+            <p class="text-lg text-[#2d2d2d]/60 handwritten-alt">Built with mood & lots of caffeine ☕</p>
+        </div>
+    </footer>
+
+    <script>
+        /* --- DATA ARRAYS --- */
+        const ANIME_LIST = [
+            { title: "Bleach", img: "https://files.catbox.moe/eild9y.jpg" },
+            { title: "Jujutsu Kaisen", img: "https://files.catbox.moe/0w8a7a.jpg" },
+            { title: "Gachiakuta", img: "https://files.catbox.moe/3heg5f.jpg" },
+            { title: "Fire Force", img: "https://files.catbox.moe/e5wcr5.jpg" },
+            { title: "Re:Zero", img: "https://files.catbox.moe/d92klw.jpg" },
+            { title: "Chainsaw Man", img: "https://files.catbox.moe/3k6fqa.jpg" },
+            { title: "Soul Eater", img: "https://files.catbox.moe/bxq3fi.jpg" },
+            { title: "Grand Blue", img: "https://files.catbox.moe/hxkzvu.jpg" }
+        ];
+        
+        const COMIC_LIST = [
+            { title: "Star Ginseng", img: "https://files.catbox.moe/ldx0q4.jpg" },
+            { title: "Love Revolution", img: "https://file.noku.top/8lW9.jpg" },
+            { title: "Random Chat", img: "https://files.catbox.moe/8hklih.jpg" },
+            { title: "Warrior Returns", img: "https://file.noku.top/1SgR.jpg" },
+            { title: "Juujika", img: "https://files.catbox.moe/aj9z52.jpg" },
+            { title: "Leviathan", img: "https://file.noku.top/U6ND.jpg" },
+            { title: "Inu To Kuzu", img: "https://anime.jepang.org/gambar/manga/2/250897.jpg" },
+            { title: "Player", img: "https://files.catbox.moe/trb71a.jpg" }
+        ];
+        
+        const WAIFU_LIST = [
+            { title: "Rem", img: "https://file.noku.top/q94b.webp" },
+            { title: "Nephilia", img: "https://files.catbox.moe/kxuxjv.webp" },
+            { title: "Asa Mitaka", img: "https://file.noku.top/HXiS.webp" },
+            { title: "Hamin Park", img: "https://file.noku.top/nXxS.webp" }
+        ];
+        
+        const CONTACT_LIST = [
+            { name: "Telegram", handle: "@zannbjir", icon: "fa-brands fa-telegram", url: "https://zannbjir.t.me", color: "#229ED9" },
+            { name: "Discord", handle: "zannbjir", icon: "fa-brands fa-discord", url: "https://discord.com/users/zannbjir", color: "#5865F2" },
+            { name: "Instagram", handle: "@razanaja.cuy", icon: "fa-brands fa-instagram", url: "https://www.instagram.com/razanaja.cuy/", color: "#E4405F" },
+            { name: "WhatsApp", handle: "Send Message", icon: "fa-brands fa-whatsapp", url: "https://wa.me/6285755964573?text=hallo+bang", color: "#25D366" },
+            { name: "GitHub", handle: "zannbjir", icon: "fa-brands fa-github", url: "https://github.com/zannbjir", color: "#2d2d2d" },
+            { name: "Email", handle: "razan.smuler@gmail.com", icon: "fa-solid fa-envelope", url: "mailto:razan.smuler@gmail.com", color: "#FB923C" }
+        ];
+        
+        const PROJECT_LIST = [
+            { name: "Zann Uploader", tag: "V2.0 // Archive", url: "https://zann.web.id" },
+            { name: "Noku API", tag: "STABLE // API Portal", url: "https://api.noku.top" },
+            { name: "TotoGo", tag: "Manga Reader Application", url: "https://tg.foo.ng" },
+            { name: "Manga Mbud", tag: "Manga Reader Website", url: "<%= domain %>/manga" },
+        ];
+
+        /* --- INJECTION LOGIC --- */
+        const renderGrids = () => {
+            // Projects Render
+            document.getElementById('project-container').innerHTML = PROJECT_LIST.map((p, index) => {
+                return `
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b-2 border-dashed border-[#2d2d2d] pb-6 group last:border-0 last:pb-0">
+                    <div class="transform group-hover:translate-x-2 transition-all">
+                        <h3 class="text-2xl md:text-3xl font-black font-['Kalam']">${p.name}</h3>
+                        <p class="text-sm font-bold text-[#2d2d2d]/60 handwritten-alt mt-1">${p.tag}</p>
+                    </div>
+                    <a href="${p.url}" target="_blank" class="btn-hand-drawn bg-white px-6 py-2 text-lg inline-block text-center hover:bg-[#fff9c4]">OPEN PROJECT</a>
+                </div>
+                `;
+            }).join('');
+
+            // Helper for Media Grids (Anime, Comic, Waifu)
+            function generateMediaGrid(list) {
+                return list.map((item, index) => {
+                    const rotations = ['rotate-1', '-rotate-1', 'rotate-2', '-rotate-2'];
+                    const rotation = rotations[index % rotations.length];
+                    const decoration = index % 2 !== 0 ? '<div class="tape-decoration"></div>' : '<div class="tack-decoration"></div>';
+                    
+                    return `
+                    <div class="card-hand-drawn overflow-hidden p-2 relative transform ${rotation} hover:rotate-0 transition-all bg-white group">
+                        ${decoration}
+                        <img src="${item.img}" class="h-48 md:h-56 w-full object-cover wobbly-sm group-hover:scale-105 transition-transform duration-500" alt="${item.title}">
+                        <div class="p-2 mt-2 text-center">
+                            <p class="font-bold text-lg font-['Kalam']">${item.title}</p>
+                        </div>
+                    </div>
+                    `;
+                }).join('');
+            }
+
+            document.getElementById('anime-grid').innerHTML = generateMediaGrid(ANIME_LIST);
+            document.getElementById('comic-grid').innerHTML = generateMediaGrid(COMIC_LIST);
+            document.getElementById('waifu-grid').innerHTML = generateMediaGrid(WAIFU_LIST);
+
+            // Contact Render
+            document.getElementById('contact-grid').innerHTML = CONTACT_LIST.map((c, index) => {
+                const rotations = ['rotate-1', '-rotate-2', 'rotate-2', '-rotate-1', 'rotate-1', '-rotate-2'];
+                const rotation = rotations[index % rotations.length];
+                
+                return `
+                <a href="${c.url}" target="_blank" class="card-hand-drawn p-4 flex items-center gap-4 bg-white hover:bg-[#fff9c4] transition-all transform ${rotation} hover:rotate-0 hover:scale-105 group">
+                    <div class="w-14 h-14 wobbly-sm flex flex-shrink-0 items-center justify-center text-white text-3xl border-2 border-[#2d2d2d] group-hover:wiggle" style="background: ${c.color}">
+                        <i class="${c.icon}"></i>
+                    </div>
+                    <div class="overflow-hidden">
+                        <div class="font-bold text-2xl font-['Kalam']">${c.name}</div>
+                        <div class="handwritten-alt text-lg text-[#2d2d2d]/70 truncate">${c.handle}</div>
+                    </div>
+                </a>
+                `;
+            }).join('');
+        };
+
+        // Render on load
+        document.addEventListener('DOMContentLoaded', renderGrids);
+    </script>
 </body>
 </html>

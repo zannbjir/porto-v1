@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="id" class="overflow-x-hidden">
+<head>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content="https://emoji-cdn.mqrio.dev/😜?style=twitter">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <title>Manga Mbud</title>
+    <link rel="icon" href="https://emoji-cdn.mqrio.dev/😜?style=twitter" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&family=Architects+Daughter&display=swap" rel="stylesheet">
+    
+<style>
+  :root {
+    --bg: #fdfbf7;
+    --text: #2d2d2d;
+    --text2: #5a5a5a;
+    --text3: #8a8a8a;
+    --card: #ffffff;
+    --border: #2d2d2d;
+    --accent: #ff4d4d;
+    --accent-soft: #ff4d4d20;
+    --accent2: #cc3333;
+    --blue: #2d5da1;
+    --yellow: #fff9c4;
+    --green: #43b581;
+    
+    --shadow: 4px 4px 0px 0px rgba(45,45,45,0.15);
+    --shadow-hover: 8px 8px 0px 0px rgba(45,45,45,0.25);
+    --shadow-hard: 4px 4px 0px 0px #2d2d2d;
+    
+    --radius-wobbly: 185px 25px 155px 25px / 25px 15px 25px 185px;
+    --radius-wobbly-sm: 125px 15px 95px 15px / 15px 95px 15px 125px;
+  }
+  
+  * { margin:0; padding:0; box-sizing:border-box; }
+  
+  body { 
+    background-color: var(--bg); 
+    color: var(--text); 
+    font-family: 'Patrick Hand', cursive;
+    min-height:100vh; 
+    display: flex; 
+    flex-direction: column; 
+    overflow-x:hidden; 
+    background-image:
+        radial-gradient(circle at 25% 25%, rgba(255, 77, 77, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(45, 93, 161, 0.05) 0%, transparent 50%),
+        radial-gradient(#e5e0d8 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 24px 24px;
+  }
+
+  h1, h2, h3, h4, h5, h6, .kalam-font {
+    font-family: 'Kalam', cursive;
+    font-weight: 700;
+  }
+
+  /* UTILS & DECORATIONS */
+  .tape-decoration {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+    width: 80px;
+    height: 25px;
+    background: rgba(220, 220, 220, 0.6);
+    border-left: 2px dashed rgba(0, 0, 0, 0.1);
+    border-right: 2px dashed rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 5;
+  }
+  .tack-decoration {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(135deg, #ff4d4d 0%, #cc3333 100%);
+    border-radius: 50%;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3), inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 5;
+  }
+  .tack-decoration::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 6px; height: 6px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+  }
+  .wavy-underline {
+    text-decoration: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath fill='none' stroke='%232d2d2d' stroke-width='1.5' d='M0,3 Q5,0 10,3 T20,3'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-position: 0 100%;
+    background-size: 20px 4px;
+    padding-bottom: 6px;
+  }
+  .paper-texture { position: relative; }
+  .paper-texture::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3CfeColorMatrix values='0 0 0 0 0, 0 0 0 0 0, 0 0 0 0 0, 0 0 0 0.02 0'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' /%3E%3C/svg%3E");
+    pointer-events: none; opacity: 0.4;
+  }
+
+  /* NAV */
+  nav { 
+      position:sticky; top:0; z-index:100; 
+      background: rgba(253, 251, 247, 0.95); backdrop-filter:blur(12px); 
+      border-bottom: 3px dashed var(--border); 
+      padding:0 1rem; display:flex; align-items:center; gap:1rem; height:70px; 
+      transition: transform 0.3s ease;
+  }
+  nav.hidden-nav { transform: translateY(-100%); }
+  
+  .logo { font-size:1.6rem; font-family: 'Kalam', cursive; font-weight:800; color:var(--accent); cursor:pointer; flex-shrink:0; display:flex; align-items:center; gap:6px; letter-spacing: 0px;}
+  .logo svg { width:28px; height:28px; }
+  
+  .search-wrap { flex:1; max-width:480px; position:relative; }
+  .search-wrap input { 
+      width:100%; background:var(--card); 
+      border: 2px solid var(--border); border-radius: var(--radius-wobbly-sm); 
+      padding:10px 16px 10px 40px; color:var(--text); font-family: 'Patrick Hand', cursive; font-size:1.1rem; 
+      outline:none; transition:all 0.2s; 
+  }
+  .search-wrap input:focus { border-color:var(--accent); box-shadow: var(--shadow-hard); transform: translateY(-2px); }
+  .search-wrap input::placeholder { color:var(--text3); }
+  .search-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--text3); width:18px; }
+  
+  .nav-tabs { display:flex; gap:8px; margin-left:auto; flex-shrink:0; overflow-x: auto; scrollbar-width: none; }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab { 
+      background:none; border:2px solid transparent; color:var(--text2); 
+      font-size:1.1rem; font-family: 'Patrick Hand', cursive; font-weight: 600; 
+      padding:6px 12px; border-radius: var(--radius-wobbly-sm); 
+      cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:5px; white-space:nowrap; 
+  }
+  .nav-tab:hover, .nav-tab.active { background:var(--yellow); color:var(--text); border-color: var(--border); box-shadow: 2px 2px 0px 0px var(--border); transform: rotate(-1deg); }
+  .nav-tab svg { width:18px; height:18px; }
+
+  /* PAGES */
+  .page { display:none; animation:fadeIn 0.3s ease-out; flex: 1; }
+  .page.active { display:block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+  /* CONTAINER */
+  .container { max-width:1200px; margin:0 auto; padding:2rem 1rem; min-height: 80vh; }
+
+  /* SECTION HEADER */
+  .sec-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; }
+  .sec-title { font-size:2rem; font-family: 'Kalam', cursive; font-weight:700; color:var(--text); }
+
+  /* MANGA GRID */
+  .manga-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:16px; }
+  @media(min-width:480px){ .manga-grid { grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:20px; } }
+  @media(min-width:768px){ .manga-grid { grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:24px; } }
+  @media(min-width:1024px){ .manga-grid { grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); } }
+
+  .manga-card { 
+      background:var(--card); 
+      border-radius:var(--radius-wobbly); 
+      overflow:hidden; cursor:pointer; 
+      transition:all 0.2s ease; position:relative; 
+      border: 3px solid var(--border);
+      box-shadow: var(--shadow);
+      display: flex; flex-direction: column;
+  }
+  .manga-card:hover { transform:translateY(-6px) rotate(1deg); box-shadow: var(--shadow-hover); z-index: 5;}
+  .manga-card img { width:100%; aspect-ratio:2/3; object-fit:cover; display:block; background:#e5e0d8; border-bottom: 2px dashed var(--border);}
+  .manga-card .badge { 
+      position:absolute; top:10px; right:10px; 
+      background:var(--yellow); color:var(--text); font-family: 'Patrick Hand', cursive;
+      font-size:0.8rem; font-weight:700; padding:2px 10px; 
+      border-radius: var(--radius-wobbly-sm); border: 2px solid var(--border); box-shadow: 2px 2px 0px 0px var(--border);
+  }
+  .manga-card .info { padding:12px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;}
+  .manga-card .title { font-family: 'Kalam', cursive; font-size:1.1rem; font-weight:700; line-height:1.2; margin-bottom:6px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .manga-card .sub { font-size:0.9rem; color:var(--text2); font-weight: 500; font-family: 'Patrick Hand', cursive;}
+
+  /* GENRE CHIPS */
+  .genre-wrap { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:2.5rem; justify-content: center;}
+  .genre-chip { 
+      background:var(--card); border:2px solid var(--border); 
+      border-radius:var(--radius-wobbly-sm); padding:6px 16px; 
+      font-size:1rem; font-family: 'Patrick Hand', cursive; font-weight: 600; 
+      cursor:pointer; transition:all 0.15s; color:var(--text); white-space:nowrap; 
+  }
+  .genre-chip:hover, .genre-chip.active { 
+      background:var(--accent); color:#fff; 
+      transform: translateY(-2px) rotate(-2deg); box-shadow: var(--shadow-hard);
+  }
+
+  /* PAGINATION */
+  .pagination { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 3rem; margin-bottom: 1rem; }
+  .pagination .page-info { font-family: 'Kalam', cursive; font-size: 1.2rem; font-weight: 700; color: var(--text); background: var(--yellow); padding: 8px 16px; border-radius: var(--radius-wobbly-sm); border: 2px dashed var(--border);}
+  .page-btn { 
+      padding: 8px 20px; border-radius: var(--radius-wobbly-sm); 
+      background: var(--card); border: 3px solid var(--border); box-shadow: 3px 3px 0px 0px var(--border);
+      color: var(--text); cursor: pointer; transition: all 0.2s; 
+      font-family: 'Patrick Hand', cursive; font-weight: 700; font-size: 1.1rem; 
+      display: flex; align-items: center; gap: 6px;
+  }
+  .page-btn:hover:not(:disabled) { background: var(--accent); color: #fff; transform: translate(2px, 2px); box-shadow: 1px 1px 0px 0px var(--border);}
+  .page-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; transform: translate(3px, 3px); }
+
+  /* BUTTONS */
+  .btn { 
+      display:inline-flex; align-items:center; justify-content: center; gap:8px; 
+      background:var(--accent); color:#fff; border: 3px solid var(--border); box-shadow: 3px 3px 0px 0px var(--border);
+      border-radius:var(--radius-wobbly-sm); padding:10px 24px; 
+      font-family: 'Kalam', cursive; font-size:1.1rem; font-weight:700; 
+      cursor:pointer; transition:all 0.15s; 
+  }
+  .btn:hover { background:var(--accent2); transform: translate(2px,2px); box-shadow: 1px 1px 0px 0px var(--border);}
+  .btn-outline { background:var(--card); color:var(--text); }
+  .btn-outline:hover { background:var(--yellow); }
+  .btn-sm { padding:6px 16px; font-size:1rem; }
+
+  /* DETAIL PAGE */
+  .detail-card {
+      background: var(--card);
+      border: 3px solid var(--border);
+      border-radius: var(--radius-wobbly);
+      padding: 1.5rem;
+      position: relative;
+      box-shadow: var(--shadow);
+  }
+  .detail-hero { display:flex; flex-direction: column; gap:2rem; margin-bottom:2rem; }
+  @media(min-width:600px){ .detail-hero { flex-direction: row; } }
+  
+  .detail-cover { width: 100%; max-width: 220px; margin: 0 auto; flex-shrink:0; border-radius:var(--radius-wobbly-sm); overflow:hidden; border: 3px solid var(--border); box-shadow: var(--shadow-hard); transform: rotate(-2deg);}
+  .detail-cover img { width:100%; aspect-ratio:2/3; object-fit:cover; display:block; }
+  @media(min-width:600px){ .detail-cover { width:240px; margin: 0; } }
+  
+  .detail-info h1 { font-family: 'Kalam', cursive; font-size:2rem; font-weight:800; margin-bottom:12px; line-height:1.2; }
+  @media(min-width:600px){ .detail-info h1 { font-size:2.5rem; } }
+  
+  .detail-meta { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:15px; }
+  .meta-tag { background:var(--card); border:2px solid var(--border); border-radius:var(--radius-wobbly-sm); padding:4px 12px; font-size:0.9rem; font-family: 'Patrick Hand', cursive; font-weight: 600; color:var(--text); }
+  .meta-tag.status-ongoing { background: var(--green); color: white; }
+  .meta-tag.status-completed { background: var(--blue); color: white; }
+  
+  .synopsis { font-size:1.1rem; color:var(--text2); line-height:1.6; margin-bottom:20px; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; cursor:pointer; background: var(--yellow); padding: 15px; border-radius: var(--radius-wobbly-sm); border: 2px dashed var(--border); font-family: 'Patrick Hand', cursive;}
+  .synopsis.expanded { -webkit-line-clamp:unset; }
+
+  /* CHAPTER LIST */
+  .chapter-list { display:flex; flex-direction:column; gap:8px; }
+  .chapter-item { 
+      display:flex; align-items:center; justify-content:space-between; 
+      padding:12px 20px; background:var(--card); 
+      border: 2px dashed var(--border); border-radius:var(--radius-wobbly-sm); 
+      cursor:pointer; transition:all 0.2s; font-family: 'Patrick Hand', cursive;
+  }
+  .chapter-item:hover { background:var(--yellow); transform: translateX(5px) rotate(-1deg); border-style: solid;}
+  .chapter-item .ch-title { font-size:1.1rem; font-weight:700; }
+  .chapter-item .ch-date { font-size:0.9rem; color:var(--text3); }
+  .chapter-item.read { opacity: 0.6; background: #e5e0d8; }
+  .chapter-item.read .ch-title { text-decoration: line-through; }
+
+  /* READER SPECIFIC */
+  #reader-page { background:var(--bg); position: relative; }
+  
+  /* Progress Bar */
+  #reading-progress {
+      position: fixed; top: 0; left: 0; height: 6px; 
+      background: var(--accent); z-index: 1001; 
+      width: 0%; transition: width 0.1s linear;
+      border-bottom: 2px solid var(--border);
+  }
+
+  .reader-nav { 
+      display:flex; align-items:center; gap:12px; padding:12px 1rem; 
+      background:rgba(253, 251, 247, 0.98); border-bottom: 3px dashed var(--border); 
+      position:sticky; top:0; z-index:50;
+      transition: transform 0.3s ease;
+  }
+  .reader-nav.hidden-nav { transform: translateY(-100%); }
+
+  .reader-title { flex:1; font-family: 'Kalam', cursive; font-size:1.2rem; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align: center;}
+  
+  .reader-hint { text-align: center; padding: 10px; font-size: 0.9rem; color: var(--text3); font-style: italic; }
+  
+  .reader-imgs { 
+      display:flex; flex-direction:column; align-items:center; gap:0; padding:0; 
+      max-width:800px; margin:0 auto; border-left: 3px solid var(--border); border-right: 3px solid var(--border);
+      cursor: pointer; /* Immersive mode toggle */
+  }
+  .reader-imgs img { width:100%; display:block; min-height: 200px; background: #e5e0d8; border-bottom: 1px dashed var(--border);}
+  
+  .reader-btns { 
+      display:flex; gap:15px; justify-content:center; padding:2rem 1rem; 
+      transition: opacity 0.3s, transform 0.3s;
+  }
+  .reader-btns.hidden-panel { opacity: 0; pointer-events: none; transform: translateY(20px); }
+
+  /* AUTO SCROLL PANEL */
+  .auto-scroll-panel {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
+      background: var(--card); border: 3px solid var(--border); border-radius: var(--radius-wobbly-sm);
+      padding: 10px 20px; display: flex; align-items: center; gap: 15px; z-index: 90;
+      box-shadow: var(--shadow-hard); opacity: 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .auto-scroll-panel.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .speed-btn {
+      background: var(--yellow); border: 2px solid var(--border); border-radius: 50%; 
+      width: 36px; height: 36px; font-size: 1.2rem; font-family: 'Kalam', cursive;
+      display: flex; justify-content: center; align-items: center; font-weight: bold; 
+      cursor: pointer; box-shadow: 2px 2px 0px var(--border); transition: all 0.1s;
+  }
+  .speed-btn:active { transform: translate(2px,2px); box-shadow: 0px 0px 0px var(--border); }
+  .speed-display { font-bold font-['Patrick_Hand'] text-lg min-w-[40px] text-center; }
+
+  /* STATES */
+  .empty-state { text-align:center; padding:4rem 1rem; color:var(--text); }
+  .empty-state .doodle { font-size: 4rem; margin-bottom: 1rem; display: inline-block; animation: float 3s ease-in-out infinite;}
+  .empty-state p { font-size:1.5rem; font-family: 'Kalam', cursive;}
+
+  /* SPINNER */
+  .spinner { display:flex; justify-content:center; align-items:center; padding:4rem; }
+  .spin { 
+      width:50px; height:50px; 
+      border:4px dashed var(--border); border-top-color:var(--accent); 
+      border-radius:50%; animation:spin 1s linear infinite; 
+  }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  .search-empty { text-align:center; padding:3rem; color:var(--text); font-family: 'Kalam', cursive; font-size:1.5rem; }
+
+  /* TOAST */
+  .toast { 
+      position:fixed; bottom:24px; right:24px; 
+      background:var(--yellow); color: var(--text); font-family: 'Patrick Hand', cursive; font-weight: 700; 
+      border: 3px solid var(--border); border-radius:var(--radius-wobbly-sm); 
+      padding:12px 24px; font-size:1.1rem; z-index:9999; 
+      transform:translateY(100px) rotate(5deg); opacity:0; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+      box-shadow: var(--shadow-hard);
+  }
+  .toast.show { transform:translateY(0) rotate(-2deg); opacity:1; }
+
+  /* BACK BTN */
+  .back-btn { 
+      background:none; border:none; color:var(--text); cursor:pointer; 
+      display:flex; align-items:center; gap:6px; font-size:1.2rem; font-family: 'Kalam', cursive; font-weight: 700; 
+      padding:8px 0; margin-bottom:1rem; transition: transform 0.2s;
+  }
+  .back-btn:hover { color:var(--accent); transform: translateX(-5px); }
+
+  /* SCROLL TO TOP */
+  #scrollTop { 
+      position:fixed; bottom:24px; right:24px; 
+      background:var(--accent); color:#fff; border:3px solid var(--border); 
+      border-radius:50%; width:56px; height:56px; cursor:pointer; display:none; 
+      align-items:center; justify-content:center; z-index:200; 
+      box-shadow:var(--shadow-hard); transition: all 0.2s;
+  }
+  #scrollTop:hover { transform: scale(1.1) rotate(10deg); background: var(--accent2);}
+  #scrollTop.visible { display:flex; }
+
+  /* FOOTER CREDIT */
+  footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 2rem 1rem;
+    border-top: 3px dashed var(--border);
+    background: rgba(253, 251, 247, 0.8);
+    color: var(--text);
+    font-family: 'Patrick Hand', cursive;
+    font-size: 1.1rem;
+  }
+  footer a {
+    color: var(--accent);
+    font-family: 'Kalam', cursive;
+    text-decoration: none;
+    font-weight: 700;
+  }
+  footer a:hover { text-decoration: underline wavy var(--border); }
+  
+  @media(max-width:600px){
+    nav { height: auto; padding: 15px 1rem; flex-wrap: wrap; justify-content: space-between;}
+    .search-wrap { order: 3; width: 100%; max-width: 100%; margin-top: 15px;}
+    .nav-tabs { order: 2; margin-left: 0;}
+  }
+</style>
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<nav id="main-nav">
+  <div class="logo" onclick="goHome()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    Manga Mbud
+  </div>
+  <div class="search-wrap">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="searchInput" placeholder="Cari manga..." autocomplete="off">
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" id="tab-home" onclick="showPage('home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      Home
+    </button>
+    <button class="nav-tab" id="tab-genre" onclick="showPage('genre')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      Genre
+    </button>
+    <button class="nav-tab" id="tab-bookmark" onclick="showPage('bookmark')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      Simpan
+    </button>
+  </div>
+</nav>
+
+<div class="page active" id="home-page">
+  <div class="container relative">
+      <svg class="absolute top-10 right-0 w-24 h-24 opacity-20 hidden md:block wiggle" viewBox="0 0 100 100"><path d="M10 50 Q 30 30, 50 50 T 90 50" stroke="#ff4d4d" stroke-width="3" fill="none" stroke-dasharray="5,5" /></svg>
+    <div id="home-content"></div>
+    <div id="home-pagination"></div>
+  </div>
+</div>
+
+<div class="page" id="genre-page">
+  <div class="container">
+    <div class="sec-head"><span class="sec-title wavy-underline text-[#2d5da1]">Semua Genre 🏷️</span></div>
+    <div class="genre-wrap" id="genre-chips"></div>
+    <div id="genre-content"></div>
+    <div id="genre-pagination"></div>
+  </div>
+</div>
+
+<div class="page" id="search-page">
+  <div class="container">
+    <div class="sec-head"><span class="sec-title wavy-underline" id="search-heading">Hasil Pencarian 🔍</span></div>
+    <div id="search-content"></div>
+    <div id="search-pagination"></div>
+  </div>
+</div>
+
+<div class="page" id="detail-page">
+  <div class="container">
+    <button class="back-btn" onclick="goBack()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15,18 9,12 15,6"/></svg>
+      Balik Dulu
+    </button>
+    <div id="detail-content" class="detail-card paper-texture"></div>
+  </div>
+</div>
+
+<div class="page" id="reader-page">
+  <div class="reader-nav" id="reader-nav">
+    <button class="btn btn-sm btn-outline" onclick="goBack()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15,18 9,12 15,6"/></svg>
+      Balik
+    </button>
+    <span class="reader-title" id="reader-title">—</span>
+    <button class="btn btn-sm" onclick="bookmarkCurrentManga()" id="reader-bm-btn" title="Simpan">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>
+  </div>
+  
+  <div class="reader-hint" id="reader-hint">👆 Ketuk gambar untuk layar penuh / mode fokus</div>
+  
+  <div class="reader-imgs" id="reader-imgs" onclick="toggleImmersiveMode()"></div>
+  <div class="reader-btns" id="reader-btns"></div>
+
+  <div class="auto-scroll-panel" id="auto-scroll-panel">
+    <button class="speed-btn" onclick="changeScrollSpeed(-0.5)">-</button>
+    <span id="scroll-speed-display" class="speed-display">1.0x</span>
+    <button class="speed-btn" onclick="changeScrollSpeed(0.5)">+</button>
+    <button class="btn btn-sm" style="margin-left:8px;" onclick="toggleAutoScroll()">Stop</button>
+  </div>
+</div>
+
+<div class="page" id="bookmark-page">
+  <div class="container">
+    <div class="sec-head"><span class="sec-title wavy-underline text-[#43b581]">Tersimpan & Riwayat 📌</span></div>
+    <div id="bookmark-content"></div>
+  </div>
+</div>
+
+<footer>
+  Mbud API made by <a href="https://github.com/zannbjir" target="_blank" rel="noopener noreferrer">Zann</a> • Doodles by System
+</footer>
+
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18,15 12,9 6,15"/></svg>
+</button>
+
+<div class="toast paper-texture" id="toast"></div>
+
+<script>
+const API = 'https://mbud.my.id/api/manga';
+let state = {
+  homePage: 1, homeLastPage: 1, homeItems: [],
+  genrePage: 1, genreLastPage: 1, genreItems: [], activeGenre: '',
+  searchPage: 1, searchLastPage: 1, searchItems: [], searchQuery: '',
+  currentPage: 'home',
+  pageStack: [],
+  currentManga: null,
+  currentChapterUrl: '',
+  genres: [],
+};
+
+// --- STORAGE ---
+function getBM() { try { return JSON.parse(localStorage.getItem('mangaku_bm')||'[]'); } catch(e){ return []; } }
+function saveBM(arr) { localStorage.setItem('mangaku_bm', JSON.stringify(arr)); }
+function getHistory() { try { return JSON.parse(localStorage.getItem('mangaku_hist')||'[]'); } catch(e){ return []; } }
+function saveHistory(arr) { localStorage.setItem('mangaku_hist', JSON.stringify(arr.slice(0,50))); }
+function addHistory(manga, chapterTitle, chapterUrl) {
+  let hist = getHistory().filter(h => h.slug !== manga.slug);
+  hist.unshift({ slug:manga.slug, title:manga.title, cover:manga.cover, chapterTitle, chapterUrl, time:Date.now() });
+  saveHistory(hist);
+}
+function isBookmarked(slug) { return getBM().some(b => b.slug === slug); }
+function toggleBM(manga) {
+  let bm = getBM();
+  if (isBookmarked(manga.slug)) { bm = bm.filter(b => b.slug !== manga.slug); showToast('Coret dari daftar! ✏️'); }
+  else { bm.unshift({ slug:manga.slug, title:manga.title, cover:manga.cover, time:Date.now() }); showToast('Ditulis ke buku! 📖'); }
+  saveBM(bm);
+}
+
+// --- TOAST ---
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// --- FETCH WRAPPER ---
+async function apiFetch(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error('Gagal fetch');
+  return r.json();
+}
+
+// --- RENDER CARDS ---
+function renderCards(items) {
+  return items.map((m, i) => {
+    const dec = i % 2 === 0 ? '<div class="tape-decoration"></div>' : '<div class="tack-decoration"></div>';
+    return `
+    <div class="manga-card paper-texture" onclick="goDetail('${escHtml(m.slug)}','${escHtml(m.title)}','${escHtml(m.coverUrl || m.cover)}')">
+      ${dec}
+      <img src="${escHtml(m.coverUrl || m.cover)}" alt="${escHtml(m.title)}" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 2 3%22><rect width=%222%22 height=%223%22 fill=%22%23e5e0d8%22/></svg>'">
+      ${m.type && m.type !== "Unknown" ? `<div class="badge">${escHtml(m.type)}</div>` : ''}
+      <div class="info">
+        <div class="title">${escHtml(m.title)}</div>
+        <div class="sub">${escHtml(m.latestChapter||m.latest_chapter||m.status||'')}</div>
+      </div>
+    </div>`
+  }).join('');
+}
+
+// --- PAGINATION BUILDER ---
+function renderPaginationHtml(current, last, funcName) {
+  if (last <= 1) return '';
+  return `
+    <div class="pagination">
+      <button class="page-btn" onclick="${funcName}(${current - 1})" ${current <= 1 ? 'disabled' : ''}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15,18 9,12 15,6"/></svg> Mundur
+      </button>
+      <span class="page-info">Hal ${current} / ${last}</span>
+      <button class="page-btn" onclick="${funcName}(${current + 1})" ${current >= last ? 'disabled' : ''}>
+        Maju <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg>
+      </button>
+    </div>
+  `;
+}
+
+function escHtml(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+// --- PAGES ---
+function showPage(name, push=true) {
+  if (push && state.currentPage !== name) state.pageStack.push(state.currentPage);
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(name+'-page').classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  const tab = document.getElementById('tab-'+name);
+  if (tab) tab.classList.add('active');
+  state.currentPage = name;
+  
+  // Reset Immersive & Auto Scroll if leaving reader
+  if (name !== 'reader') {
+      document.getElementById('main-nav').style.display = 'flex';
+      if(isAutoScrolling) toggleAutoScroll();
+      document.getElementById('reading-progress').style.width = '0%';
+  } else {
+      document.getElementById('main-nav').style.display = 'none';
+  }
+  
+  window.scrollTo(0,0);
+}
+
+function goBack() {
+  const prev = state.pageStack.pop() || 'home';
+  showPage(prev, false);
+}
+
+function goHome() {
+  state.pageStack = [];
+  showPage('home', false);
+}
+
+// --- HOME ---
+async function loadHome(page = 1) {
+  if(page < 1) return;
+  document.getElementById('home-content').innerHTML = '<div class="spinner"><div class="spin"></div></div>';
+  document.getElementById('home-pagination').innerHTML = '';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  try {
+    const d = await apiFetch(`${API}/list?page=${page}`);
+    state.homeItems = d.data || [];
+    state.homePage = d.paginator ? d.paginator.current_page : page;
+    state.homeLastPage = d.paginator ? d.paginator.last_page : 1;
+    
+    document.getElementById('home-content').innerHTML = `<div class="sec-head"><span class="sec-title wavy-underline">Terbaru Update 🌟</span></div><div class="manga-grid">${renderCards(state.homeItems)}</div>`;
+    document.getElementById('home-pagination').innerHTML = renderPaginationHtml(state.homePage, state.homeLastPage, 'loadHome');
+  } catch(e) {
+    document.getElementById('home-content').innerHTML = '<div class="search-empty"><div class="doodle">🤔</div><br>Gagal memuat halaman utama.</div>';
+  }
+}
+
+// --- GENRES ---
+async function loadGenres() {
+  try {
+    const d = await apiFetch(`${API}/genres`);
+    state.genres = d.data || [];
+    const el = document.getElementById('genre-chips');
+    el.innerHTML = state.genres.map(g => `<div class="genre-chip" onclick="selectGenre('${escHtml(g.key)}', 1)">#${escHtml(g.title)}</div>`).join('');
+  } catch(e) {}
+}
+
+async function selectGenre(genreKey, page = 1) {
+  if(page < 1) return;
+  state.activeGenre = genreKey;
+  
+  document.querySelectorAll('.genre-chip').forEach(c => { 
+    c.classList.toggle('active', c.getAttribute('onclick').includes(`'${genreKey}'`)); 
+  });
+  
+  document.getElementById('genre-content').innerHTML = '<div class="spinner"><div class="spin"></div></div>';
+  document.getElementById('genre-pagination').innerHTML = '';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  try {
+    const d = await apiFetch(`${API}/genre/${encodeURIComponent(genreKey)}?page=${page}`);
+    state.genreItems = d.data || [];
+    state.genrePage = d.paginator ? d.paginator.current_page : page;
+    state.genreLastPage = d.paginator ? d.paginator.last_page : 1;
+
+    document.getElementById('genre-content').innerHTML = `<div class="manga-grid">${renderCards(state.genreItems)}</div>`;
+    document.getElementById('genre-pagination').innerHTML = renderPaginationHtml(state.genrePage, state.genreLastPage, `(p) => selectGenre('${genreKey}', p)`);
+  } catch(e) {
+    document.getElementById('genre-content').innerHTML = '<div class="search-empty"><div class="doodle">🤕</div><br>Gagal memuat genre ini.</div>';
+  }
+}
+
+// --- SEARCH ---
+let searchTimer;
+document.getElementById('searchInput').addEventListener('input', function() {
+  const q = this.value.trim();
+  clearTimeout(searchTimer);
+  if (!q) { if(state.currentPage==='search') goBack(); return; }
+  searchTimer = setTimeout(() => doSearch(q, 1), 500);
+});
+document.getElementById('searchInput').addEventListener('keydown', function(e) {
+  if (e.key==='Enter') { 
+    e.preventDefault(); 
+    clearTimeout(searchTimer); 
+    doSearch(this.value.trim(), 1); 
+  }
+});
+
+async function doSearch(q, page = 1) {
+  if (!q || page < 1) return;
+  showPage('search');
+  state.searchQuery = q;
+  document.getElementById('search-heading').textContent = `Hasil: "${q}"`;
+  document.getElementById('search-content').innerHTML = '<div class="spinner"><div class="spin"></div></div>';
+  document.getElementById('search-pagination').innerHTML = '';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  try {
+    const d = await apiFetch(`${API}/search/${encodeURIComponent(q)}?page=${page}`);
+    state.searchItems = d.data || [];
+    state.searchPage = d.paginator ? d.paginator.current_page : page;
+    state.searchLastPage = d.paginator ? d.paginator.last_page : 1;
+
+    if (!state.searchItems.length) {
+      document.getElementById('search-content').innerHTML = '<div class="search-empty"><div class="doodle">👻</div><br>Kosong nih, gak ketemu.</div>';
+      return;
+    }
+    
+    document.getElementById('search-content').innerHTML = `<div class="manga-grid">${renderCards(state.searchItems)}</div>`;
+    document.getElementById('search-pagination').innerHTML = renderPaginationHtml(state.searchPage, state.searchLastPage, `(p) => doSearch('${q.replace(/'/g, "\\'")}', p)`);
+  } catch(e) {
+    document.getElementById('search-content').innerHTML = '<div class="search-empty"><div class="doodle">💥</div><br>Gagal mencari. Error coy.</div>';
+  }
+}
+
+// --- DETAIL ---
+async function goDetail(slug, title, cover) {
+  showPage('detail');
+  state.currentManga = { slug, title, cover };
+  document.getElementById('detail-content').innerHTML = '<div class="tack-decoration"></div><div class="spinner"><div class="spin"></div></div>';
+  try {
+    const d = await apiFetch(`${API}/detail/${encodeURIComponent(slug)}`);
+    const m = d.data;
+    if (!m) throw new Error();
+    state.currentManga = { slug: m.slug||slug, title: m.title||title, cover: m.cover_url||cover, ...m };
+    const bmed = isBookmarked(slug);
+    const chapters = (m.chapters||[]);
+    const readHistory = getHistory();
+    const hist = readHistory.find(h => h.slug===slug);
+    
+    document.getElementById('detail-content').innerHTML = `
+      <div class="tape-decoration"></div>
+      <div class="detail-hero">
+        <div class="detail-cover"><img src="${escHtml(m.cover_url||cover)}" alt="${escHtml(m.title||title)}" onerror="this.src=''"></div>
+        <div class="detail-info">
+          <h1>${escHtml(m.title||title)}</h1>
+          <div class="detail-meta">
+            ${m.status && m.status !== "Unknown" ? `<span class="meta-tag status-${(m.status||'').toLowerCase()}">${escHtml(m.status)}</span>` : ''}
+            ${m.type && m.type !== "Unknown" ? `<span class="meta-tag">${escHtml(m.type)}</span>` : ''}
+            ${(m.tags||[]).slice(0,6).map(g=>`<span class="meta-tag" style="cursor:pointer" onclick="selectGenre('${escHtml(g.toLowerCase().replace(/ /g, '-'))}', 1);showPage('genre')">#${escHtml(g)}</span>`).join('')}
+          </div>
+          ${m.description ? `<div class="synopsis" id="synopsis-el" onclick="this.classList.toggle('expanded')">${escHtml(m.description)}</div>` : ''}
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            ${hist ? `<button class="btn btn-sm" onclick="loadReader('${escHtml(hist.chapterUrl)}','${escHtml(hist.chapterTitle)}')">Lanjut: ${escHtml(hist.chapterTitle)}</button>` : ''}
+            ${chapters.length ? `<button class="btn btn-sm btn-outline" onclick="loadReader('${escHtml(chapters[chapters.length-1].url||'')}','${escHtml(chapters[chapters.length-1].title||'')}')">Mulai Ch. Awal</button>` : ''}
+            <button class="btn btn-sm btn-outline" id="bm-btn" onclick="handleBM()">
+              ${bmed ? '★ Ada di Buku' : '☆ Simpan'}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="sec-head" style="margin-bottom:12px; border-top: 3px dashed var(--border); padding-top: 15px;"><span class="sec-title">${chapters.length} Bab</span></div>
+      <div class="chapter-list">
+        ${chapters.map((c,i) => {
+          const isRead = readHistory.some(h => h.chapterUrl===c.url);
+          return `<div class="chapter-item${isRead?' read':''}" onclick="loadReader('${escHtml(c.url||'')}','${escHtml(c.title||'')}')">
+            <span class="ch-title">${escHtml(c.title||'Chapter '+(chapters.length-i))}</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg>
+          </div>`;
+        }).join('')}
+      </div>
+    `;
+  } catch(e) {
+    document.getElementById('detail-content').innerHTML = '<div class="tack-decoration"></div><div class="search-empty"><div class="doodle">😵</div><br>Gagal memuat detail buku.</div>';
+  }
+}
+
+function handleBM() {
+  toggleBM(state.currentManga);
+  const btn = document.getElementById('bm-btn');
+  if (btn) btn.textContent = isBookmarked(state.currentManga.slug) ? '★ Ada di Buku' : '☆ Simpan';
+}
+
+// --- READER & AUTO SCROLL ---
+let autoScrollInterval;
+let scrollSpeed = 1.0;
+let isAutoScrolling = false;
+
+async function loadReader(chapterUrl, chapterTitle) {
+  if (!chapterUrl) return;
+  showPage('reader');
+  
+  // Reset Immersive UI
+  document.getElementById('reader-nav').classList.remove('hidden-nav');
+  document.getElementById('reader-btns').classList.remove('hidden-panel');
+  document.getElementById('reader-hint').style.display = 'block';
+  
+  state.currentChapterUrl = chapterUrl;
+  document.getElementById('reader-title').textContent = chapterTitle || 'Membaca...';
+  document.getElementById('reader-imgs').innerHTML = '<div class="spinner"><div class="spin"></div></div>';
+  document.getElementById('reader-btns').innerHTML = '';
+  if (state.currentManga) addHistory(state.currentManga, chapterTitle, chapterUrl);
+  
+  try {
+    const d = await apiFetch(`${API}/read?chapterUrl=${encodeURIComponent(chapterUrl)}`);
+    const imgs = d.data || [];
+    const prev = d.prev_chapter;
+    const next = d.next_chapter;
+    
+    document.getElementById('reader-imgs').innerHTML = imgs.map(src =>
+      `<img src="${escHtml(src)}" loading="lazy" alt="" onerror="this.style.display='none'">`
+    ).join('');
+    
+    let btns = '';
+    if (prev) btns += `<button class="btn btn-outline" onclick="loadReader('${escHtml(prev)}','Chapter Sebelumnya')">← Mundur</button>`;
+    
+    // Add Auto Scroll button logic inside reader btns
+    btns += `<button class="btn bg-[--yellow] text-[--text] hover:bg-[--accent] hover:text-white" id="main-auto-btn" onclick="toggleAutoScroll()">▶️ Auto Baca</button>`;
+    
+    if (next) btns += `<button class="btn" onclick="loadReader('${escHtml(next)}','Chapter Berikutnya')">Maju →</button>`;
+    document.getElementById('reader-btns').innerHTML = btns;
+    
+    // Hide hint after 3 seconds
+    setTimeout(() => {
+        document.getElementById('reader-hint').style.display = 'none';
+    }, 3000);
+    
+  } catch(e) {
+    document.getElementById('reader-imgs').innerHTML = '<div class="search-empty"><div class="doodle">🙈</div><br>Gagal memuat gambar. Coba lagi coy.</div>';
+  }
+}
+
+// Immersive Mode
+function toggleImmersiveMode() {
+    document.getElementById('reader-nav').classList.toggle('hidden-nav');
+    document.getElementById('reader-btns').classList.toggle('hidden-panel');
+    document.getElementById('reader-hint').style.display = 'none';
+}
+
+// Auto Scroll Logic
+function toggleAutoScroll() {
+    isAutoScrolling = !isAutoScrolling;
+    const panel = document.getElementById('auto-scroll-panel');
+    const mainBtn = document.getElementById('main-auto-btn');
+    
+    if (isAutoScrolling) {
+        panel.classList.add('show');
+        if(mainBtn) mainBtn.textContent = '⏸️ Stop Auto';
+        runAutoScroll();
+    } else {
+        panel.classList.remove('show');
+        if(mainBtn) mainBtn.textContent = '▶️ Auto Baca';
+        cancelAnimationFrame(autoScrollInterval);
+    }
+}
+
+function runAutoScroll() {
+    if (!isAutoScrolling) return;
+    window.scrollBy(0, scrollSpeed);
+    autoScrollInterval = requestAnimationFrame(runAutoScroll);
+}
+
+function changeScrollSpeed(delta) {
+    scrollSpeed = Math.max(0.5, Math.min(scrollSpeed + delta, 5.0));
+    document.getElementById('scroll-speed-display').textContent = scrollSpeed.toFixed(1) + 'x';
+}
+
+// Pause autoscroll when user touches the screen (mobile friendliness)
+window.addEventListener('touchstart', () => { if(isAutoScrolling) cancelAnimationFrame(autoScrollInterval); });
+window.addEventListener('touchend', () => { if(isAutoScrolling) runAutoScroll(); });
+
+function bookmarkCurrentManga() {
+  if (!state.currentManga) return;
+  toggleBM(state.currentManga);
+}
+
+// --- BOOKMARKS ---
+function renderBookmarks() {
+  const bm = getBM();
+  const hist = getHistory();
+  let html = '';
+  if (bm.length) {
+    html += `<div class="sec-head"><span class="sec-title wavy-underline">Disimpan (${bm.length}) 📚</span></div>`;
+    html += `<div class="manga-grid">${renderCards(bm)}</div>`;
+  }
+  if (hist.length) {
+    html += `<div class="sec-head" style="margin-top:3rem; border-top: 3px dashed var(--border); padding-top: 2rem;"><span class="sec-title wavy-underline">Habis Dibaca 📜</span></div>`;
+    html += `<div class="chapter-list">${hist.map(h=>`
+      <div class="chapter-item paper-texture" onclick="goDetail('${escHtml(h.slug)}','${escHtml(h.title)}','${escHtml(h.cover||'')}')">
+        <div>
+          <div class="ch-title">${escHtml(h.title)}</div>
+          <div class="ch-date">${escHtml(h.chapterTitle)} · ${timeAgo(h.time)}</div>
+        </div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg>
+      </div>`).join('')}</div>`;
+  }
+  if (!bm.length && !hist.length) {
+    html = `<div class="empty-state">
+      <div class="doodle">🕸️</div>
+      <p>Masih kosong, belum ada apa-apa di sini.</p>
+    </div>`;
+  }
+  document.getElementById('bookmark-content').innerHTML = html;
+}
+
+function timeAgo(ts) {
+  const diff = Date.now() - ts;
+  const m = Math.floor(diff/60000);
+  if (m<1) return 'Baru aja';
+  if (m<60) return m+'m lalu';
+  const h = Math.floor(m/60);
+  if (h<24) return h+'j lalu';
+  return Math.floor(h/24)+'h lalu';
+}
+
+// nav bookmark tab override
+document.getElementById('tab-bookmark').addEventListener('click', renderBookmarks);
+document.getElementById('tab-genre').addEventListener('click', () => { if (!state.genres.length) loadGenres(); });
+
+// Global Scroll Events (Scroll To Top & Reading Progress)
+window.addEventListener('scroll', () => {
+  // Scroll to Top Button
+  document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 400);
+  
+  // Reading Progress Bar
+  if (state.currentPage === 'reader') {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('reading-progress').style.width = scrolled + "%";
+  }
+});
+
+// INIT
+loadHome(1);
+loadGenres();
+</script>
+</body>
+</html>
